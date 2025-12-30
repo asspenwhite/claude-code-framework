@@ -2,6 +2,8 @@
 
 A ready-to-use configuration for [Claude Code](https://docs.anthropic.com/en/docs/claude-code) that makes AI-assisted coding significantly better.
 
+[![Use this template](https://img.shields.io/badge/Use%20this%20template-238636?style=for-the-badge&logo=github&logoColor=white)](https://github.com/asspenwhite/claude-code-project-template/generate)
+
 ---
 
 ## What is Claude Code?
