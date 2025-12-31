@@ -186,9 +186,18 @@ See [QUICKSTART.md](QUICKSTART.md) for more example prompts.
     └── [matching .md files]
 
 docs/
-├── CLAUDE.md.example          # Template for main instructions
+├── ARCHITECTURE.md            # How Skills/Agents/Commands work
+├── WORKFLOW.md                # Documentation workflow guide
 ├── MCP.md                     # MCP server setup guide
-└── ARCHITECTURE.md            # How Skills/Agents/Commands work
+├── CLAUDE.md.example          # Template for main instructions
+└── templates/                 # Documentation templates
+    ├── CHANGELOG.template.md      # Version history
+    ├── TODO.template.md           # Task tracking
+    ├── DECISIONS.template.md      # Architectural decisions
+    ├── LOGIC_AUDIT.template.md    # User flows & edge cases
+    ├── API.template.md            # API documentation
+    ├── SCHEMA.template.md         # Database schema
+    └── PROJECT_README.template.md # Project overview
 ```
 
 ---
@@ -254,16 +263,27 @@ This is your main configuration. Include:
 
 ## Documentation Workflow
 
-This template includes a complete docs-as-code workflow:
+This template includes a complete **docs-as-code** workflow with templates for every doc your project needs:
 
-- **CHANGELOG.md** - Auto-updated with every change
-- **DECISIONS.md** - Log architectural decisions as they happen
-- **TODO.md** - Track tasks with clear status
-- **LOGIC_AUDIT.md** - Document user flows and edge cases
+| Document | Purpose | When to Update |
+|----------|---------|----------------|
+| **CHANGELOG.md** | Version history | After every change |
+| **TODO.md** | Tasks by priority with file paths | When adding/completing tasks |
+| **DECISIONS.md** | Architectural decisions with context | When making tech choices |
+| **LOGIC_AUDIT.md** | User states, page logic, edge cases | When changing user flows |
+| **API.md** | Routes, requests, responses | When changing API |
+| **SCHEMA.md** | Database tables, RLS, queries | When changing database |
 
-Run `/docs-update` after any session to sync documentation with code.
+All templates are in `docs/templates/` - Claude will customize them for your project.
 
-See [docs/WORKFLOW.md](docs/WORKFLOW.md) for details.
+### How It Works
+
+1. **Claude updates docs automatically** - Every code change updates CHANGELOG
+2. **Decisions are logged** - Tech choices are documented with reasoning
+3. **TODOs stay current** - Tasks marked complete as work finishes
+4. **Run `/docs-update`** - Syncs all docs after a coding session
+
+See [docs/WORKFLOW.md](docs/WORKFLOW.md) for the full guide.
 
 ---
 
