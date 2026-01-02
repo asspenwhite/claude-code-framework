@@ -189,6 +189,7 @@ docs/
 ├── ARCHITECTURE.md            # How Skills/Agents/Commands work
 ├── WORKFLOW.md                # Documentation workflow guide
 ├── MCP.md                     # MCP server setup guide
+├── CLAUDE_CODE_INTERNALS.md   # Session storage, folder migration
 ├── CLAUDE.md.example          # Template for main instructions
 └── templates/                 # Documentation templates
     ├── CHANGELOG.template.md      # Version history
@@ -284,6 +285,20 @@ All templates are in `docs/templates/` - Claude will customize them for your pro
 4. **Run `/docs-update`** - Syncs all docs after a coding session
 
 See [docs/WORKFLOW.md](docs/WORKFLOW.md) for the full guide.
+
+---
+
+## Session Management
+
+Claude Code stores your conversation history locally. Key things to know:
+
+| Command | Purpose |
+|---------|---------|
+| `claude --resume` | Pick from recent sessions for current folder |
+| `claude --continue` | Continue most recent session (any project) |
+| `claude` | Start fresh session |
+
+**Moving or renaming project folders?** Your session history won't automatically follow. See [docs/CLAUDE_CODE_INTERNALS.md](docs/CLAUDE_CODE_INTERNALS.md) for how to migrate sessions to a new folder path.
 
 ---
 
