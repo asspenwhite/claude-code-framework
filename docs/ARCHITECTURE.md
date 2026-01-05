@@ -280,6 +280,49 @@ Brief description.
 
 ---
 
+## Token-Efficient File Formats
+
+Different file formats have different token costs. Choose wisely:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│ YAML     → Most efficient (schemas, configs, APIs)          │
+│            Indentation-based, minimal syntax overhead        │
+└─────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────┐
+│ Markdown → Good for docs (headings aid navigation)          │
+│            ## headings let models skip to relevant sections  │
+└─────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────┐
+│ XML      → Claude-optimized (constraints, rules)             │
+│            Anthropic fine-tuned to recognize tags as         │
+│            containers and separators                         │
+└─────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────┐
+│ JSON     → Least efficient (avoid for large files)          │
+│            Braces and quotes add ~30% token overhead         │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Recommended File Structure
+
+```
+docs/
+├── CLAUDE.md          # Markdown - AI instructions
+├── TODO.md            # Markdown - Task tracking
+├── CHANGELOG.md       # Markdown - Version history
+├── schema.yaml        # YAML - Database schema
+├── api.yaml           # YAML - API specification
+├── FILE_FORMATS.md    # Markdown - Format guidelines
+└── templates/
+    ├── schema.template.yaml
+    └── api.template.yaml
+```
+
+See `docs/FILE_FORMATS.md` for detailed guidelines and conversion examples.
+
+---
+
 ## Research Sources
 
 - [Building Effective Agents](https://www.anthropic.com/research/building-effective-agents)

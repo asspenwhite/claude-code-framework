@@ -1,0 +1,65 @@
+# [Project Name] - Database Schema
+# Format: YAML (most token-efficient for structured data)
+# See docs/FILE_FORMATS.md for format guidelines
+
+project: your-project-name
+database: postgresql  # or: supabase, mysql, mongodb
+last_updated: YYYY-MM-DD
+
+# Entity Relationships (ASCII diagram)
+# users ─────┬───── posts
+#            └───── comments
+
+tables:
+  users:
+    description: User accounts
+    columns:
+      id: { type: uuid, pk: true }
+      email: { type: text, unique: true }
+      password_hash: { type: text }
+      display_name: { type: text }
+      role: { type: text, values: [admin, user], default: user }
+      created_at: { type: timestamptz, default: now() }
+      updated_at: { type: timestamptz }
+    rls:  # Row Level Security (Supabase)
+      - users_read_own: Users can read own profile
+      - users_update_own: Users can update own profile
+      - users_admin_all: Admins can manage all
+
+  posts:
+    description: User-created content
+    columns:
+      id: { type: uuid, pk: true }
+      author_id: { type: uuid, fk: users }
+      title: { type: text }
+      content: { type: text }
+      status: { type: text, values: [draft, published, archived] }
+      published_at: { type: timestamptz, nullable: true }
+      created_at: { type: timestamptz }
+      updated_at: { type: timestamptz }
+    rls:
+      - posts_read_published: Anyone can read published
+      - posts_read_own: Authors can read own drafts
+      - posts_manage_own: Authors can update/delete own
+
+  # Add more tables as needed...
+
+indexes:
+  users:
+    - idx_users_email: [email]
+  posts:
+    - idx_posts_author: [author_id]
+    - idx_posts_status: [status, published_at]
+
+# Required database extensions
+extensions:
+  - pgcrypto   # UUID generation
+  # - ltree    # Hierarchical data
+  # - postgis  # Geospatial
+
+# Database triggers
+triggers:
+  update_timestamp:
+    tables: [users, posts]
+    timing: BEFORE UPDATE
+    description: Auto-update updated_at column

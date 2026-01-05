@@ -12,11 +12,23 @@
 
 Before any task, read the relevant documentation:
 
-| Doc | When to Read |
-|-----|--------------|
-| `docs/TODO.md` | Check first - active tasks |
-| `docs/API.md` | Before API changes |
-| `docs/SCHEMA.md` | Before database changes |
+| Doc | Format | When to Read |
+|-----|--------|--------------|
+| `docs/TODO.md` | Markdown | Check first - active tasks |
+| `docs/api.yaml` | YAML | Before API changes |
+| `docs/schema.yaml` | YAML | Before database changes |
+| `docs/FILE_FORMATS.md` | Markdown | Understanding doc formats |
+
+### File Format Guidelines
+
+Use token-efficient formats for AI documentation:
+
+| Format | Use For | Token Efficiency |
+|--------|---------|------------------|
+| **YAML** | Schemas, APIs, configs | Most efficient |
+| **Markdown** | Docs, guides, changelogs | Good (headings aid navigation) |
+| **XML** | Constraints, rules (Claude-optimized) | Good for distinct sections |
+| **JSON** | Avoid for large files | Least efficient |
 
 ---
 

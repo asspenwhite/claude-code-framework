@@ -1,0 +1,131 @@
+# [Project Name] - API Reference
+# Format: YAML (most token-efficient for structured data)
+# See docs/FILE_FORMATS.md for format guidelines
+
+base_url: https://api.yourproject.com  # or localhost:3000/api
+version: v1
+last_updated: YYYY-MM-DD
+
+auth:
+  type: bearer  # or: api_key, session, oauth2
+  header: "Authorization: Bearer <access_token>"
+  note: Protected endpoints require valid JWT
+
+endpoints:
+  # Health & Setup
+  system:
+    GET /health:
+      auth: false
+      description: Health check endpoint
+      response: { status: ok, timestamp: string }
+
+  # Authentication
+  auth:
+    POST /auth/signup:
+      auth: false
+      request:
+        email: string
+        password: string
+        display_name: string
+      response:
+        session: { access_token, refresh_token, expires_in }
+        user: { id, email, display_name, role }
+
+    POST /auth/signin:
+      auth: false
+      request: { email: string, password: string }
+      response: same as signup
+
+    POST /auth/signout:
+      auth: true
+      response: { success: true }
+
+    GET /auth/session:
+      auth: true
+      response: { user: User }
+
+  # Resources (example: posts)
+  posts:
+    GET /posts:
+      auth: false
+      params:
+        status: filter by status
+        author_id: filter by author
+        limit: number (default 20)
+        offset: pagination offset
+      response: { posts: Post[], total: number }
+
+    GET /posts/:id:
+      auth: false
+      response: { post: Post }
+
+    POST /posts:
+      auth: true
+      roles: [user, admin]
+      request:
+        title: string
+        content: string
+        status: [draft, published]
+      response: { post: Post }
+
+    PUT /posts/:id:
+      auth: true
+      roles: [author, admin]
+      request: { title?, content?, status? }
+      response: { post: Post }
+
+    DELETE /posts/:id:
+      auth: true
+      roles: [author, admin]
+      response: { success: true }
+
+  # Admin endpoints
+  admin:
+    GET /admin/users:
+      auth: true
+      roles: [admin]
+      response: { users: User[], total: number }
+
+    PUT /admin/users/:id:
+      auth: true
+      roles: [admin]
+      request: { role?, status? }
+      response: { user: User }
+
+# Error responses
+errors:
+  format: { error: string, code: string, details?: object }
+  codes:
+    400: Bad Request / Validation Error
+    401: Unauthorized (missing/invalid token)
+    403: Forbidden (insufficient permissions)
+    404: Not Found
+    409: Conflict (duplicate resource)
+    422: Unprocessable Entity
+    429: Rate Limited
+    500: Server Error
+
+# Type definitions
+types:
+  User:
+    id: uuid
+    email: string
+    display_name: string
+    role: [admin, user]
+    created_at: timestamp
+
+  Post:
+    id: uuid
+    author_id: uuid
+    title: string
+    content: string
+    status: [draft, published, archived]
+    published_at: timestamp | null
+    created_at: timestamp
+    author: User  # Expanded in response
+
+# Rate limiting
+rate_limits:
+  default: 100 requests/minute
+  auth: 10 requests/minute
+  upload: 20 requests/hour
