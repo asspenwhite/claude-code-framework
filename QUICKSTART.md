@@ -13,7 +13,7 @@ This opens an interactive chat with Claude. **Paste the prompt below** and Claud
 ## The Prompt
 
 ```
-I'm starting a new project using the Claude Code project template. Here's what I'm building:
+I'm starting a new project using the Claude Code framework. Here's what I'm building:
 
 **Project Name:** [Your project name]
 **Description:** [One paragraph about what it does]
@@ -41,7 +41,7 @@ Start by reading the template files in .claude/ and docs/, then customize everyt
 ## Example: Recipe App
 
 ```
-I'm starting a new project using the Claude Code project template. Here's what I'm building:
+I'm starting a new project using the Claude Code framework. Here's what I'm building:
 
 **Project Name:** MealPrep Pro
 **Description:** A meal planning app where users can save recipes, generate weekly meal plans, and create shopping lists automatically.
@@ -61,7 +61,7 @@ Please customize the template for my project...
 ## Example: SaaS App
 
 ```
-I'm starting a new project using the Claude Code project template. Here's what I'm building:
+I'm starting a new project using the Claude Code framework. Here's what I'm building:
 
 **Project Name:** TaskFlow
 **Description:** A project management tool for small teams with Kanban boards, time tracking, and client invoicing.
@@ -81,7 +81,7 @@ Please customize the template for my project...
 ## Example: E-commerce
 
 ```
-I'm starting a new project using the Claude Code project template. Here's what I'm building:
+I'm starting a new project using the Claude Code framework. Here's what I'm building:
 
 **Project Name:** Artisan Market
 **Description:** A marketplace for handmade goods where artisans can set up shops and sell directly to customers.

@@ -1,8 +1,8 @@
-# Claude Code Project Template
+# Claude Code Framework
 
-A ready-to-use configuration for [Claude Code](https://docs.anthropic.com/en/docs/claude-code) that makes AI-assisted coding significantly better.
+A complete AI-guided development framework for [Claude Code](https://docs.anthropic.com/en/docs/claude-code) that makes AI-assisted coding significantly better.
 
-[![Use this template](https://img.shields.io/badge/Use%20this%20template-238636?style=for-the-badge&logo=github&logoColor=white)](https://github.com/asspenwhite/claude-code-project-template/generate)
+[![Use this template](https://img.shields.io/badge/Use%20this%20template-238636?style=for-the-badge&logo=github&logoColor=white)](https://github.com/asspenwhite/claude-code-framework/generate)
 
 ---
 
@@ -23,7 +23,20 @@ A ready-to-use configuration for [Claude Code](https://docs.anthropic.com/en/doc
 
 Before using this template, you need:
 
-### 1. Claude Code CLI (Required)
+### 1. Node.js (Required)
+
+You need Node.js to install Claude Code. Download and install it first:
+
+[Download Node.js](https://nodejs.org/) (LTS version recommended)
+
+Verify it's installed:
+
+```bash
+node --version
+npm --version
+```
+
+### 2. Claude Code CLI (Required)
 
 Install Claude Code globally:
 
@@ -37,9 +50,8 @@ Then authenticate:
 claude auth
 ```
 
-> Don't have Node.js? [Download it here](https://nodejs.org/) (LTS version recommended)
 
-### 2. Git (Required)
+### 3. Git (Required)
 
 You need Git to clone repositories. Check if you have it:
 
@@ -49,15 +61,15 @@ git --version
 
 > Don't have Git? [Download it here](https://git-scm.com/downloads)
 
-### 3. A Code Editor
+### 4. A Code Editor (Optional)
 
-Any editor works: VS Code, Cursor, Sublime, etc.
+I built this entire framework using just Claude Code in the terminal - no editor needed. But if you prefer one: VS Code, Cursor, Sublime, etc. all work.
 
 ---
 
-## What This Template Does
+## What This Framework Provides
 
-Instead of basic Claude Code, this template adds:
+Instead of basic Claude Code, this framework provides:
 
 | Feature | What It Does |
 |---------|--------------|
@@ -129,7 +141,7 @@ If you already have a project and want to add the Claude Code configuration:
 cd /path/to/your/existing-project
 
 # Download just the .claude folder and docs
-git clone --depth 1 https://github.com/asspenwhite/claude-code-project-template.git temp-template
+git clone --depth 1 https://github.com/asspenwhite/claude-code-framework.git temp-template
 cp -r temp-template/.claude ./
 cp -r temp-template/docs ./
 cp temp-template/QUICKSTART.md ./
@@ -304,12 +316,22 @@ Claude Code stores your conversation history locally. Key things to know:
 
 ## Research Background
 
-This template is based on:
+This framework builds on research from:
 
 - [Building Effective Agents](https://www.anthropic.com/research/building-effective-agents)
 - [Claude Code Best Practices](https://www.anthropic.com/engineering/claude-code-best-practices)
 
 Key insight: **Skills prevent mistakes during creation**, while **Agents catch issues during review**. Using both together produces the best results.
+
+---
+
+## Built With
+
+This framework was built using [Claude Code](https://www.npmjs.com/package/@anthropic-ai/claude-code), Anthropic's official CLI for AI-assisted development.
+
+```bash
+npm install -g @anthropic-ai/claude-code
+```
 
 ---
 

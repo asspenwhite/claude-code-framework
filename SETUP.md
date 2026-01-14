@@ -23,7 +23,7 @@ Click "Use this template" on GitHub to create your own copy.
 **Option B: Clone Directly**
 
 ```bash
-git clone https://github.com/asspenwhite/claude-code-project-template.git my-project
+git clone https://github.com/asspenwhite/claude-code-framework.git my-project
 cd my-project
 ```
 
@@ -31,7 +31,7 @@ cd my-project
 
 ```bash
 # From your existing project folder
-git clone --depth 1 https://github.com/asspenwhite/claude-code-project-template.git temp
+git clone --depth 1 https://github.com/asspenwhite/claude-code-framework.git temp
 cp -r temp/.claude ./
 cp -r temp/docs ./
 rm -rf temp
@@ -44,7 +44,7 @@ rm -rf temp
 Copy the example and customize:
 
 ```bash
-cp claude-code-project-template/docs/CLAUDE.md.example your-project/CLAUDE.md
+cp claude-code-framework/docs/CLAUDE.md.example your-project/CLAUDE.md
 ```
 
 Edit `CLAUDE.md` to include:
