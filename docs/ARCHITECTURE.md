@@ -323,7 +323,74 @@ See `docs/FILE_FORMATS.md` for detailed guidelines and conversion examples.
 
 ---
 
+## Claude 4.6 Behavior Changes
+
+Claude Opus 4.6 behaves differently from 4.5 in ways that affect how you write CLAUDE.md, skills, and agents.
+
+### What Changed
+
+| Behavior | 4.5 | 4.6 |
+|----------|-----|-----|
+| Proactiveness | Moderate | **High** — will add features you didn't ask for |
+| Tool triggering | Under-triggered | **Over-triggers** on aggressive imperatives |
+| Parallel tool calls | ~60% | **~100%** with explicit XML instruction |
+| Thinking | Manual `budget_tokens` | **Adaptive** — auto decides when/how much |
+| Context | Manual management | **Auto-compaction** built in |
+| Prefill | Supported | **Removed** (returns 400 error) |
+
+### Prompting Rules for 4.6
+
+**Remove these from any CLAUDE.md or skill:**
+- `"be thorough"`, `"think carefully"`, `"do not be lazy"` → amplify proactive behavior, waste tokens
+- `"You MUST use [tool]"` → causes overtriggering; use `"Use [tool] when relevant"`
+- `"Use the think tool to plan"` → causes over-planning before acting
+
+**Add these XML blocks to CLAUDE.md:**
+
+```xml
+<parallel_tool_calls>
+If you intend to call multiple tools and there are no dependencies between them,
+make all independent tool calls in parallel.
+</parallel_tool_calls>
+
+<do_not_overengineer>
+Only make changes that are directly requested or clearly necessary. Keep solutions
+simple and focused. Don't add features or improvements beyond what was asked.
+</do_not_overengineer>
+
+<context_window>
+Your context window will be automatically compacted as it approaches its limit.
+Do not stop tasks early due to context concerns.
+</context_window>
+```
+
+### Effort Levels (API)
+
+The `output_config.effort` parameter replaces manual `budget_tokens` for controlling reasoning depth:
+
+| Level | Use For | Notes |
+|-------|---------|-------|
+| `max` | Deepest reasoning, hardest problems | Opus 4.6 only |
+| `high` | Complex coding, agentic tasks (default) | Almost always thinks |
+| `medium` | Balanced workflows | May skip thinking on simple queries |
+| `low` | Simple tasks, high-volume subagents | Minimal thinking |
+
+### New Stop Reasons to Handle
+
+```python
+match response.stop_reason:
+    case "end_turn":    # Normal completion
+    case "max_tokens":  # Hit output limit
+    case "tool_use":    # Tool call
+    case "refusal":     # NEW — Claude refused the request
+    case "model_context_window_exceeded":  # NEW — hit context limit
+    case "compaction":  # NEW — context was compacted (pause mode)
+```
+
+---
+
 ## Research Sources
 
 - [Building Effective Agents](https://www.anthropic.com/research/building-effective-agents)
 - [Claude Code Best Practices](https://www.anthropic.com/engineering/claude-code-best-practices)
+- [Claude 4.6 Migration Guide](CLAUDE_4_6_UPGRADE.md)

@@ -94,6 +94,18 @@ port: 3000
   <rule priority="5">Never delete history - Mark items done, don't remove</rule>
 </rules>
 
+<parallel_tool_calls>
+If you intend to call multiple tools and there are no dependencies between them, make all independent tool calls in parallel. Maximize parallel tool calls for speed and efficiency.
+</parallel_tool_calls>
+
+<do_not_overengineer>
+Only make changes that are directly requested or clearly necessary. Keep solutions simple and focused. Don't add features, refactor code, or make improvements beyond what was asked. Don't add comments, docstrings, or type annotations to code you didn't change.
+</do_not_overengineer>
+
+<context_window>
+Your context window will be automatically compacted as it approaches its limit, allowing you to continue working indefinitely. Do not stop tasks early due to context concerns.
+</context_window>
+
 ---
 
 ## Key Gotchas

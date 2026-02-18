@@ -202,6 +202,7 @@ docs/
 ├── WORKFLOW.md                # Documentation workflow guide
 ├── MCP.md                     # MCP server setup guide
 ├── CLAUDE_CODE_INTERNALS.md   # Session storage, folder migration
+├── CLAUDE_4_6_UPGRADE.md      # Claude 4.6 migration guide + new features
 ├── CLAUDE.md.example          # Template for main instructions
 └── templates/                 # Documentation templates
     ├── CHANGELOG.template.md      # Version history
@@ -314,12 +315,50 @@ Claude Code stores your conversation history locally. Key things to know:
 
 ---
 
+## Claude 4.6 Optimizations
+
+This framework is optimized for **Claude Opus 4.6** (`claude-opus-4-6`), the current flagship model. Key improvements over the original 4.5 design:
+
+| Change | Why |
+|--------|-----|
+| **Parallel tool calls** XML block in CLAUDE.md | 4.6 handles parallel calls better; explicit instruction boosts usage to ~100% |
+| **Do-not-overengineer** XML block | 4.6 is proactive by default and will add unrequested features without this constraint |
+| **Context window** XML block | 4.6 has automatic compaction — tells Claude not to stop early |
+| **Softened tool-use language** | `"You MUST use X"` → `"Use X when relevant"` — 4.6 overtriggers on aggressive imperatives |
+| **No anti-laziness prompts** | `"be thorough"`, `"do not be lazy"` amplify already-proactive behavior, causing runaway tokens |
+| **Adaptive thinking** (API-level) | Replace `thinking: {budget_tokens: N}` with `thinking: {type: "adaptive"}` in API calls |
+
+### Key 4.6 API Changes (if you call the API directly)
+
+```python
+# OLD (deprecated on Opus 4.6 — still works but avoid)
+response = client.beta.messages.create(
+    model="claude-opus-4-5",
+    thinking={"type": "enabled", "budget_tokens": 32000},
+    betas=["interleaved-thinking-2025-05-14"],
+    ...
+)
+
+# NEW (Opus 4.6)
+response = client.messages.create(
+    model="claude-opus-4-6",
+    thinking={"type": "adaptive"},
+    output_config={"effort": "high"},  # max | high | medium | low
+    ...
+)
+```
+
+See `docs/CLAUDE_4_6_UPGRADE.md` for the full migration guide.
+
+---
+
 ## Research Background
 
 This framework builds on research from:
 
 - [Building Effective Agents](https://www.anthropic.com/research/building-effective-agents)
 - [Claude Code Best Practices](https://www.anthropic.com/engineering/claude-code-best-practices)
+- [Claude Opus 4.6 Model Card](https://www.anthropic.com/claude/opus)
 
 Key insight: **Skills prevent mistakes during creation**, while **Agents catch issues during review**. Using both together produces the best results.
 
