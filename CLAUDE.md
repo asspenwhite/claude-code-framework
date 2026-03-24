@@ -66,7 +66,7 @@ Think → Plan → Build → Review → Test → Ship → Reflect
 | Stage | Command | Persona |
 |-------|---------|---------|
 | Think | `/brainstorm` | Jack Ma |
-| Plan | `/ceo-review` → `/eng-review` → `/design-review-plan` | Jobs → Torvalds → Dyson |
+| Plan | `/autoplan` (or `/ceo-review` → `/eng-review` → `/design-review-plan`) | Jobs → Torvalds → Dyson |
 | Build | Skills auto-activate | Sacco, Su, Atrioc |
 | Review | `/code-review`, `/security-audit`, `/design-review` | — |
 | Test | `/qa`, `/user-flow-test`, `/accessibility` | — |

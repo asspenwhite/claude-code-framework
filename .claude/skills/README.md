@@ -108,6 +108,9 @@ Engineering architecture review — lock the execution plan.
 ### plan-review-design → `/design-review-plan` *(James Dyson persona)*
 Design dimension review — rate each dimension 0-10.
 
+### autoplan → `/autoplan`
+Automated review pipeline — chains CEO → Eng → Design with auto-decisions. Saves report to docs/.
+
 ### planner → `/plan`
 Architecture planning and implementation sequencing.
 

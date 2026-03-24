@@ -44,6 +44,7 @@ Load and follow the **Review Mode** section in: .claude/skills/design-review/SKI
 ### Pipeline Commands
 | Command | Skill | Persona | Purpose |
 |---------|-------|---------|---------|
+| `/autoplan` | autoplan | Jobs → Torvalds → Dyson | Full review pipeline, auto-decisions, saves report |
 | `/plan` | planner | — | Architecture planning |
 | `/investigate` | investigation | — | Root cause debugging |
 | `/marketing` | marketing | Atrioc | Content & positioning review |

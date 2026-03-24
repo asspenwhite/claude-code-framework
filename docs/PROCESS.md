@@ -24,7 +24,7 @@ Jack Ma asks 6 forcing questions:
 
 ### Plan — Scope → Architecture → Design
 
-Three review commands run in sequence:
+Three review commands run in sequence. Use **`/autoplan`** to chain all three automatically with auto-decisions, or run them individually:
 
 | Order | Command | Persona | Question |
 |-------|---------|---------|----------|
@@ -32,7 +32,9 @@ Three review commands run in sequence:
 | 2 | `/eng-review` | Linus Torvalds | Is the architecture clean? Will it scale? What breaks first? |
 | 3 | `/design-review-plan` | James Dyson | Rate each design dimension 0-10. What makes it a 10? |
 
-**Output:** Scope decision + architecture plan + design ratings.
+**`/autoplan`** runs all three, auto-decides using 6 principles (user intent → simpler → data → reversible → ships sooner → flag), surfaces only taste decisions for your approval, and saves the full report to `docs/PLAN_REVIEW.md`.
+
+**Output:** Scope decision + architecture plan + design ratings → saved to `docs/PLAN_REVIEW.md`, decisions appended to `docs/DECISIONS.md`, action items to `docs/TODO.md`.
 **Skip when:** Small changes. Use `/plan` for just the architecture without persona reviews.
 
 ### Build — Implementation
