@@ -27,12 +27,22 @@ Think → Plan → Build → Review → Test → Ship → Reflect
 | Stage | Persona | Command |
 |-------|---------|---------|
 | **Think** | Jack Ma | `/brainstorm` |
-| **Plan** | Steve Jobs → Linus Torvalds → James Dyson | `/ceo-review` → `/eng-review` → `/design-review-plan` |
+| **Plan** | Jobs ↔ Torvalds ↔ Dyson ↔ Atrioc | `/autoplan` (roles argue until consensus) |
 | **Build** | Bruno Sacco, Lisa Su, Atrioc | Skills auto-activate |
 | **Review** | — | `/code-review`, `/security-audit`, `/design-review` |
 | **Test** | — | `/qa`, `/user-flow-test`, `/accessibility` |
 | **Ship** | — | `/ship` |
 | **Reflect** | Warren Buffett | `/reflect` |
+
+### Three Tiers (auto-detected)
+
+| Tier | Starting from... | Who argues |
+|------|-----------------|------------|
+| **Greenfield** | Nothing | Ma → Jobs ↔ Torvalds ↔ Dyson ↔ Atrioc |
+| **WIP** | Something half-assed | Jobs ↔ Torvalds ↔ Dyson ↔ Atrioc |
+| **Polish** | Something solid | Torvalds ↔ Dyson |
+
+Complaints flow backwards. Engineering can block CEO scope. Design can reject architecture. Marketing can flag that nobody will understand the product. Max 3 rounds, then user decides. Reports saved to `docs/reports/[role]/`.
 
 ---
 

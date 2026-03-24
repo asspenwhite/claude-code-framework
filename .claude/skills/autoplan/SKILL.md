@@ -1,222 +1,343 @@
 ---
 name: autoplan
-description: Automated review pipeline. Chains CEO → Eng → Design reviews sequentially with auto-decisions. Saves full report to docs/. One command, fully reviewed plan.
-activates_when: auto review, run all reviews, autoplan, review pipeline, full plan review
+description: Deliberation engine. Roles argue, push back, and iterate until consensus. Three tiers based on project state. Saves reports per role to docs/reports/. One command, full team review.
+activates_when: auto review, run all reviews, autoplan, review pipeline, full plan review, deliberate
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash
 ---
 
-# Autoplan - Automated Review Pipeline
+# Autoplan - Deliberation Engine
 
-Run the full Plan stage in one command. Three reviews, auto-decisions, one report saved to docs/.
+Not a linear pipeline. A **boardroom** where the roles argue.
 
-## What It Does
-
-Chains the three Plan reviews sequentially:
-
-```
-/ceo-review (Steve Jobs) → /eng-review (Linus Torvalds) → /design-review-plan (James Dyson)
-```
-
-Each review feeds into the next. Decisions are made automatically using 6 principles. Taste decisions (close calls, borderline scope, conflicting recommendations) are surfaced at a final approval gate — you only answer the hard questions.
-
-## The 6 Decision Principles
-
-When auto-deciding, use these in order:
-
-1. **User intent wins** — If the user's plan clearly states a preference, honor it
-2. **Simpler wins** — Between two approaches, choose the one with fewer moving parts
-3. **Data wins** — If there's evidence (benchmarks, user research, metrics), follow it
-4. **Reversibility wins** — Choose the option that's easier to undo
-5. **Shipping wins** — If both options are close, choose the one that ships sooner
-6. **Flag it** — If none of the above resolve it, surface it as a taste decision for the user
-
-### What Gets Auto-Decided vs Flagged
-
-| Auto-decide | Flag for user |
-|------------|---------------|
-| Scope holds (clear requirements) | Scope expansions or reductions |
-| Architecture choices with clear winner | Two valid architectures (tradeoff) |
-| Design fixes with obvious improvement | Design changes that alter brand/identity |
-| Performance optimizations with data | Performance vs DX tradeoffs |
-| Security hardening (always yes) | Security vs UX tradeoffs |
-| Bug fixes (always yes) | Feature cuts that affect product vision |
+Each role reviews, files complaints against other roles' decisions, and forces rebuttals. The loop continues until consensus or the user breaks the tie. Every round saves a report to `docs/reports/[role]/`.
 
 ---
 
-## Review Mode (/autoplan)
+## Three Tiers
 
-### Input
+Detect automatically from project state, or user specifies.
 
-Reads the plan from one of these sources (in order):
-1. Active plan file (from Claude Code plan mode)
-2. `$ARGUMENTS` passed to the command
-3. Most recent plan-like document in `docs/`
-4. Asks the user what to review
+### Tier 1: Greenfield (nothing exists)
 
-### Pipeline
+**Trigger:** No plan file, no codebase, or user says "new idea" / "starting fresh"
 
-#### Phase 1: CEO Review (Steve Jobs)
+```
+Ma (brainstorm) → Jobs (scope) → Torvalds (architecture) → Dyson (design) → Atrioc (positioning)
+     ↑                ↑                  ↑                      ↑                ↑
+     └────────────────┴──────────────────┴──────────────────────┴────────────────┘
+                              complaints flow backwards
+```
 
-Read and follow `skills/plan-review-ceo/SKILL.md` Review Mode.
+**All roles participate. Everything is open. Maximum deliberation.**
 
-- Apply the one-sentence test
-- Choose scope mode (EXPANSION / SELECTIVE / HOLD / REDUCTION)
-- Challenge premises using Jobs's decision rules
-- Auto-decide scope using the 6 principles
-- Flag taste decisions (scope changes that alter product vision)
+| Order | Role | Reads | Produces | Can Complain To |
+|-------|------|-------|----------|-----------------|
+| 1 | Ma (Brainstorm) | User input | `docs/reports/brainstorm/[date]-discovery.md` | — (first mover) |
+| 2 | Jobs (CEO) | Brainstorm report | `docs/reports/ceo/[date]-scope.md` | Ma ("demand isn't validated") |
+| 3 | Torvalds (Eng) | CEO scope report | `docs/reports/engineering/[date]-architecture.md` | Jobs ("scope is unbuildable"), Ma ("wrong wedge") |
+| 4 | Dyson (Design) | Eng architecture | `docs/reports/design/[date]-dimensions.md` | Torvalds ("architecture kills UX"), Jobs ("vision lost in implementation") |
+| 5 | Atrioc (Marketing) | All above | `docs/reports/marketing/[date]-positioning.md` | Jobs ("users won't understand this"), Dyson ("design doesn't communicate value") |
 
-**Pass forward:** Scope decision, features to cut/amplify, the one-sentence description.
+### Tier 2: Work-in-Progress (something half-assed exists)
 
-#### Phase 2: Engineering Review (Linus Torvalds)
+**Trigger:** Existing plan file, partial codebase, or user says "review this"
 
-Read and follow `skills/plan-review-eng/SKILL.md` Review Mode.
+```
+Jobs (scope) → Torvalds (architecture) → Dyson (design) → Atrioc (positioning)
+     ↑                  ↑                      ↑                ↑
+     └──────────────────┴──────────────────────┴────────────────┘
+                         complaints flow backwards
+```
 
-- Take the CEO-reviewed scope as input
-- Evaluate architecture using Linus's checklist
-- Check data structures, interfaces, complexity, failure modes
-- Auto-decide architecture using the 6 principles
-- Flag taste decisions (two valid architectures with different tradeoffs)
+**Skip brainstorm. Demand is assumed. Focus on shaping what exists.**
 
-**Pass forward:** Architecture verdict, issues found, data flow assessment.
+### Tier 3: Polish (solid, needs refinement)
 
-#### Phase 3: Design Review (James Dyson)
+**Trigger:** Mature codebase, or user says "polish" / "refine" / "almost done"
 
-Read and follow `skills/plan-review-design/SKILL.md` Review Mode.
+```
+Torvalds (architecture) → Dyson (design)
+         ↑                      ↑
+         └──────────────────────┘
+```
 
-- Take the scoped, architected plan as input
-- Rate all 8 design dimensions 0-10
-- Cross-reference AI slop detection blacklist
-- Run the assumption test (find the "fan blades")
-- Auto-decide design fixes using the 6 principles
-- Flag taste decisions (design changes that alter brand identity)
+**No scope changes. Engineering and design only. Tight iteration loop.**
 
-**Pass forward:** Dimension ratings, AI slop grade, priority fixes.
+---
 
-#### Phase 4: Approval Gate
+## The Complaint System
 
-Surface all flagged taste decisions in one batch:
+### How Complaints Work
+
+After each role reviews, they can file **complaints** against previous roles' decisions. A complaint is a specific objection with evidence and a proposed alternative.
 
 ```markdown
-## Decisions That Need You
+## Complaint: [Role] → [Target Role]
 
-| # | From | Decision | Option A | Option B | My Recommendation |
-|---|------|----------|----------|----------|-------------------|
-| 1 | CEO | [question] | [option] | [option] | [recommendation + why] |
-| 2 | Eng | [question] | [option] | [option] | [recommendation + why] |
+**Report cited:** docs/reports/[target]/[file].md
+**Section:** [which decision]
+**Objection:** [what's wrong — specific, not vague]
+**Evidence:** [why this is wrong — data, precedent, or principle]
+**Proposed fix:** [what should change]
+**Severity:** Block (can't proceed) | Push-back (should reconsider) | Note (minor concern)
 ```
 
-User approves/modifies each. Then the final report is generated.
+### Complaint Severity
 
-### Output
+| Severity | What Happens |
+|----------|-------------|
+| **Block** | Deliberation pauses. Target role MUST respond before pipeline continues. |
+| **Push-back** | Target role reviews the objection in next round. Pipeline continues. |
+| **Note** | Logged for the record. No response required. |
 
-Saves a complete review report to `docs/PLAN_REVIEW.md` (or appends date if file exists).
+### Response Types
 
-Also updates:
-- `docs/DECISIONS.md` — Any architectural decisions made during review (append to existing)
-- `docs/TODO.md` — Action items from the review (append to existing)
+When a role receives a complaint, they respond with one of:
 
-### Report Format
+| Response | Meaning |
+|----------|---------|
+| **Accept** | "You're right. Changing my recommendation." Updated report saved. |
+| **Modify** | "Partially right. Here's a compromise." Updated report with reasoning. |
+| **Overrule** | "I hear you, but no. Here's why." Must cite a pivotal decision or principle. |
+| **Escalate** | "We disagree and neither of us should decide. User needs to call this." |
+
+### Deliberation Rounds
+
+```
+Round 1: Sequential reviews (each role reviews and may file complaints)
+Round 2: Rebuttals (each complained-against role responds)
+Round 3: Final (if Blocks remain unresolved → escalate to user)
+
+Max 3 rounds. If still disagreeing after round 3 → user decides everything.
+```
+
+---
+
+## The Deliberation Loop
+
+### Round 1: Initial Reviews
+
+Read each role's full SKILL.md and run their Review Mode:
+
+**Step 1 — Brainstorm (Tier 1 only)**
+- Read `skills/brainstorm/SKILL.md`
+- Run Ma's 6 forcing questions
+- Save: `docs/reports/brainstorm/[date]-[project]-discovery.md`
+
+**Step 2 — CEO Scope**
+- Read `skills/plan-review-ceo/SKILL.md`
+- Read previous reports (brainstorm if Tier 1)
+- Run Jobs Test, choose scope mode, build the no-list
+- File complaints against brainstorm if demand assumptions are weak
+- Save: `docs/reports/ceo/[date]-[project]-scope.md`
+
+**Step 3 — Engineering Architecture**
+- Read `skills/plan-review-eng/SKILL.md`
+- Read CEO scope report
+- Run architecture checklist, data structures audit, failure modes
+- File complaints against CEO if scope is unbuildable / too complex / wrong abstraction level
+- Save: `docs/reports/engineering/[date]-[project]-architecture.md`
+
+**Step 4 — Design Dimensions**
+- Read `skills/plan-review-design/SKILL.md`
+- Read engineering architecture report
+- Rate all 8 dimensions, run AI slop check, assumption test
+- File complaints against engineering if architecture kills UX
+- File complaints against CEO if vision was lost in implementation details
+- Save: `docs/reports/design/[date]-[project]-dimensions.md`
+
+**Step 5 — Marketing Positioning (Tier 1 & 2 only)**
+- Read `skills/marketing/SKILL.md`
+- Read all previous reports
+- Run positioning framework, Bar Test, Cringe Test
+- File complaints against CEO if users won't understand the product
+- File complaints against design if the UI doesn't communicate the value prop
+- Save: `docs/reports/marketing/[date]-[project]-positioning.md`
+
+### Round 2: Rebuttals
+
+For each complaint filed in Round 1:
+
+1. Load the target role's SKILL.md (to stay in character)
+2. Read the complaint
+3. Respond: Accept / Modify / Overrule / Escalate
+4. If Accept or Modify: save updated report as `[date]-[project]-[type]-round2.md`
+5. If Overrule: must cite a pivotal decision or core principle from the persona
+6. If Escalate: add to the user decision queue
+
+**Key rule:** When a role Accepts or Modifies, downstream roles that depend on that decision must re-validate their affected sections. Example: If CEO narrows scope after eng complaint, design must re-check if dimension ratings still apply.
+
+### Round 3: Resolution (if needed)
+
+If any **Block** complaints are still unresolved:
+
+1. Surface all unresolved disagreements to the user
+2. Present both sides with evidence
+3. User decides
+4. Update reports with final decisions
+5. Mark complaints as resolved
+
+### Auto-Decision Principles
+
+For complaints that can be resolved without the user (Push-back and Note severity):
+
+1. **User intent wins** — If the user's original plan clearly states a preference
+2. **Simpler wins** — Between two approaches, fewer moving parts
+3. **Data wins** — Benchmarks, user research, or metrics decide
+4. **Reversibility wins** — Choose the option easier to undo
+5. **Shipping wins** — If both are close, ship sooner
+6. **Escalate** — If none of the above resolve it, ask the user
+
+---
+
+## What Gets Auto-Decided vs Escalated
+
+| Auto-decide | Escalate to user |
+|------------|-----------------|
+| Eng says "add an index" → always yes | CEO vs Eng on scope (vision vs buildability) |
+| Design says "fix spacing" → always yes | Two valid architectures with different tradeoffs |
+| Marketing says "kill this buzzword" → always yes | Feature cuts that change the product's identity |
+| Security hardening → always yes | Performance vs developer experience tradeoffs |
+| Bug fixes → always yes | Design changes that alter brand personality |
+| Obvious simplification → always yes | Marketing positioning that changes target audience |
+
+---
+
+## Common Argument Patterns
+
+Real tensions that surface in deliberation:
+
+### CEO vs Engineering
+```
+Jobs: "Add real-time collaboration"
+Torvalds: "That's 3 months of infrastructure for a V1. Block."
+Resolution: Jobs Modifies → "Add presence indicators only. Defer editing."
+```
+
+### Engineering vs Design
+```
+Torvalds: "Server-side render everything for performance"
+Dyson: "That kills client-side interactivity. The form flow becomes impossible. Block."
+Resolution: Torvalds Modifies → "SSR for content pages, CSR for interactive flows"
+```
+
+### Marketing vs CEO
+```
+Atrioc: "Nobody outside your team understands what 'neural mesh routing' means. Push-back."
+Jobs: "Accept. Rename to 'smart routing.' Lead with the outcome."
+```
+
+### Design vs Marketing
+```
+Dyson: "The hero section needs more whitespace for visual hierarchy"
+Atrioc: "You're pushing the CTA below the fold. Push-back."
+Resolution: Dyson Modifies → "Reduce hero padding by 30%, keep hierarchy with type scale instead"
+```
+
+---
+
+## Report File Format
+
+Every report follows this structure:
 
 ```markdown
-# Plan Review: [Project Name]
+# [Role] Report: [Project Name]
 
-*Generated by autoplan — CEO → Eng → Design pipeline*
-*Date: [date]*
-
----
-
-## Executive Summary
-
-**One-sentence product:** [from CEO review]
-**Scope mode:** [EXPANSION / SELECTIVE / HOLD / REDUCTION]
-**Architecture verdict:** [APPROVE / NEEDS WORK / REJECT]
-**Design score:** [average /10]
-**AI slop grade:** [A-F]
-**Ship-ready:** [Yes / No — what's blocking]
+**Date:** [YYYY-MM-DD]
+**Tier:** [Greenfield / WIP / Polish]
+**Round:** [1 / 2 / 3]
+**Status:** [Initial / Updated after complaint / Final]
 
 ---
 
-## CEO Review (Scope & Vision)
+## Review
 
-### Scope Decision: [mode]
-[Reasoning — what was cut, amplified, or added]
-
-### The No List
-What this product does NOT do:
-1. [cut item and why]
-
-### One-Sentence Test
-- Passes: [yes/no]
-- Final version: [the sentence]
+[Full review content following the role's SKILL.md Review Mode output format]
 
 ---
 
-## Engineering Review (Architecture)
+## Complaints Filed
 
-### Verdict: [APPROVE / NEEDS WORK / REJECT]
-
-### Architecture Assessment
-| Metric | Score |
-|--------|-------|
-| Data structure quality | /10 |
-| Complexity | /10 |
-| Interface quality | /10 |
-| Failure handling | /10 |
-| "Debug at 3am" | /10 |
-
-### Issues
-| Issue | Severity | Area | Fix |
-|-------|----------|------|-----|
-| [issue] | [sev] | [where] | [fix] |
+### Complaint #1 → [Target Role]
+- **Severity:** Block / Push-back / Note
+- **Report cited:** [path]
+- **Objection:** [specific issue]
+- **Evidence:** [why — from persona's principles/decisions]
+- **Proposed fix:** [what should change]
 
 ---
 
-## Design Review (Dimensions)
+## Complaints Received
 
-### Dimension Ratings
-| Dimension | Score | Fix |
-|-----------|-------|-----|
-| Typography | /10 | [fix] |
-| Color | /10 | [fix] |
-| Layout | /10 | [fix] |
-| Spacing | /10 | [fix] |
-| Motion | /10 | [fix] |
-| Hierarchy | /10 | [fix] |
-| Consistency | /10 | [fix] |
-| Responsiveness | /10 | [fix] |
-| **Average** | **/10** | |
-
-### AI Slop Grade: [A-F]
+### From [Role] — Complaint #N
+- **Severity:** [level]
+- **Objection:** [what they said]
+- **Response:** Accept / Modify / Overrule / Escalate
+- **Reasoning:** [why — citing persona's principles]
+- **Changes made:** [what was updated, or why nothing changed]
 
 ---
 
-## Decisions Made
+## Final Verdict
 
-| # | Decision | Reasoning | Auto/Manual |
-|---|----------|-----------|-------------|
-| 1 | [decision] | [why — which principle] | Auto / User |
+[Role's final recommendation after all deliberation]
+```
+
+---
+
+## Final Output
+
+After deliberation completes, generate a summary:
+
+**Saved to:** `docs/reports/[date]-[project]-summary.md`
+
+```markdown
+# Deliberation Summary: [Project Name]
+
+**Date:** [date]
+**Tier:** [Greenfield / WIP / Polish]
+**Rounds:** [1-3]
+**Consensus reached:** [Yes / No — user decided]
+
+## Participants
+| Role | Report | Complaints Filed | Complaints Received |
+|------|--------|-----------------|-------------------|
+| [role] | [link] | [count] | [count] |
+
+## Key Decisions
+| # | Decision | Decided By | Method |
+|---|----------|-----------|--------|
+| 1 | [decision] | [role or user] | [auto / complaint resolved / user escalation] |
+
+## Unresolved Tensions
+[Any disagreements that were overruled rather than resolved — may resurface later]
 
 ## Action Items
-
 - [ ] [action from CEO review]
 - [ ] [action from eng review]
 - [ ] [action from design review]
+- [ ] [action from marketing review]
+
+## One-Sentence Product
+[The final one-sentence description after all reviews]
+```
+
+Also updates:
+- `docs/DECISIONS.md` — Append decisions from the deliberation
+- `docs/TODO.md` — Append action items
 
 ---
-
-*Reviews: CEO (scope) → Engineering (architecture) → Design (dimensions)*
-*Auto-decisions made using 6 principles: user intent → simpler → data → reversible → ships sooner → flag*
-```
 
 ## Checklist
 
 ```
-- [ ] Plan source identified
-- [ ] CEO review completed (scope decision made)
-- [ ] Eng review completed (architecture verdict)
-- [ ] Design review completed (dimension ratings)
-- [ ] Taste decisions surfaced and approved
-- [ ] Report saved to docs/PLAN_REVIEW.md
-- [ ] DECISIONS.md updated with new decisions
-- [ ] TODO.md updated with action items
+- [ ] Tier detected (Greenfield / WIP / Polish)
+- [ ] Round 1: All roles reviewed and filed complaints
+- [ ] Round 2: All complaints responded to (Accept/Modify/Overrule/Escalate)
+- [ ] Round 3: Unresolved Blocks escalated to user (if any)
+- [ ] Reports saved to docs/reports/[role]/ for each round
+- [ ] Summary saved to docs/reports/[date]-[project]-summary.md
+- [ ] DECISIONS.md updated
+- [ ] TODO.md updated
+- [ ] All report files cross-reference each other
 ```

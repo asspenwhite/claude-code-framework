@@ -24,18 +24,39 @@ Jack Ma asks 6 forcing questions:
 
 ### Plan — Scope → Architecture → Design
 
-Three review commands run in sequence. Use **`/autoplan`** to chain all three automatically with auto-decisions, or run them individually:
+Use **`/autoplan`** to run the full deliberation, or run reviews individually.
 
-| Order | Command | Persona | Question |
-|-------|---------|---------|----------|
-| 1 | `/ceo-review` | Steve Jobs | Is this insanely great? Is it the simplest version? |
-| 2 | `/eng-review` | Linus Torvalds | Is the architecture clean? Will it scale? What breaks first? |
-| 3 | `/design-review-plan` | James Dyson | Rate each design dimension 0-10. What makes it a 10? |
+**`/autoplan`** is a **deliberation engine** — roles don't just review sequentially, they argue. Engineering can push back on CEO scope. Design can reject engineering's architecture. Marketing can flag that users won't understand the positioning. Complaints flow backwards, rebuttals are filed, and consensus is reached — or the user breaks the tie.
 
-**`/autoplan`** runs all three, auto-decides using 6 principles (user intent → simpler → data → reversible → ships sooner → flag), surfaces only taste decisions for your approval, and saves the full report to `docs/PLAN_REVIEW.md`.
+### Three Tiers
 
-**Output:** Scope decision + architecture plan + design ratings → saved to `docs/PLAN_REVIEW.md`, decisions appended to `docs/DECISIONS.md`, action items to `docs/TODO.md`.
-**Skip when:** Small changes. Use `/plan` for just the architecture without persona reviews.
+| Tier | State | Roles Involved |
+|------|-------|---------------|
+| **Greenfield** | Nothing exists | Ma → Jobs → Torvalds → Dyson → Atrioc |
+| **WIP** | Half-assed, needs direction | Jobs → Torvalds → Dyson → Atrioc |
+| **Polish** | Solid, needs refinement | Torvalds → Dyson only |
+
+### Deliberation Rounds
+
+```
+Round 1: Each role reviews and files complaints against previous roles
+Round 2: Complained-against roles respond (Accept / Modify / Overrule / Escalate)
+Round 3: Unresolved Blocks go to user (max 3 rounds)
+```
+
+### Individual Commands (run one at a time)
+
+| Command | Persona | Question |
+|---------|---------|----------|
+| `/ceo-review` | Steve Jobs | Is this insanely great? Is it the simplest version? |
+| `/eng-review` | Linus Torvalds | Is the architecture clean? What breaks first? |
+| `/design-review-plan` | James Dyson | Rate each dimension 0-10. What makes it a 10? |
+| `/marketing` | Atrioc | Will users understand this? Does the copy pass the Bar Test? |
+
+**Reports saved to:** `docs/reports/[role]/[date]-[project]-[type].md`
+**Summary saved to:** `docs/reports/[date]-[project]-summary.md`
+**Also updates:** `docs/DECISIONS.md`, `docs/TODO.md`
+**Skip when:** Small changes. Use `/plan` for architecture without deliberation.
 
 ### Build — Implementation
 
@@ -129,11 +150,13 @@ Full audits are available by passing "full" as an argument.
 ## Artifact Flow
 
 ```
-Think     → design-doc.md
-Plan      → reads design-doc → produces plan.md, architecture, design ratings
-Build     → reads plan → produces code (skills auto-activate)
-Review    → reads diff → produces findings + auto-fixes
+Think     → docs/reports/brainstorm/discovery.md
+Plan      → docs/reports/ceo/scope.md ↔ docs/reports/engineering/architecture.md
+            ↔ docs/reports/design/dimensions.md ↔ docs/reports/marketing/positioning.md
+            → docs/reports/[date]-summary.md (after deliberation)
+Build     → reads summary → produces code (skills auto-activate)
+Review    → reads diff → docs/reports/qa/, docs/reports/security/
 Test      → reads findings → produces test results
 Ship      → reads test results → produces PR
-Reflect   → reads session → produces summary + CLAUDE.md suggestions
+Reflect   → docs/reports/retrospective/session-summary.md + CLAUDE.md suggestions
 ```

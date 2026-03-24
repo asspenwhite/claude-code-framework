@@ -109,7 +109,7 @@ Engineering architecture review — lock the execution plan.
 Design dimension review — rate each dimension 0-10.
 
 ### autoplan → `/autoplan`
-Automated review pipeline — chains CEO → Eng → Design with auto-decisions. Saves report to docs/.
+Deliberation engine — roles argue until consensus. Three tiers (Greenfield / WIP / Polish). Complaints flow between roles. Max 3 rounds. Reports saved per role to `docs/reports/`.
 
 ### planner → `/plan`
 Architecture planning and implementation sequencing.
