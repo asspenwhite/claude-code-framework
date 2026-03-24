@@ -36,7 +36,7 @@ One command. Your project gets reviewed by:
 | Performance | Lisa Su | Measures everything — "show me the profile, not your guess." |
 | Retrospective | Warren Buffett | Compounds lessons — "mistakes on page 1, not page 47." |
 
-**They argue.** Engineering can block CEO scope ("unbuildable"). Design can reject architecture ("kills UX"). Marketing can flag that nobody will understand the positioning. Complaints are filed, rebuttals are written, and consensus is reached — or you break the tie.
+**They argue — as separate Claude instances.** Each persona runs in its own context via the Agent tool. Genuine isolation produces genuine disagreement. Engineering blocks CEO scope ("unbuildable"). Design rejects architecture ("kills UX"). Marketing flags that nobody will understand the positioning. Complaints route through a team lead, rebuttals are filed, and consensus is reached — or you break the tie.
 
 ---
 
@@ -46,9 +46,9 @@ The framework auto-detects what you're working with:
 
 | Tier | You have... | Who reviews |
 |------|------------|------------|
-| **Greenfield** | Nothing yet | All 5 departments: Ma → Jobs ↔ Torvalds ↔ Dyson ↔ Atrioc |
-| **WIP** | Something half-finished | 4 departments: Jobs ↔ Torvalds ↔ Dyson ↔ Atrioc |
-| **Polish** | Something solid | 2 departments: Torvalds ↔ Dyson |
+| **Greenfield** | Nothing yet | 5 agents: Ma → Jobs → [Torvalds ∥ Dyson] → Atrioc |
+| **WIP** | Something half-finished | 4 agents: Jobs → [Torvalds ∥ Dyson] → Atrioc |
+| **Polish** | Something solid | 2 agents: [Torvalds ∥ Dyson] |
 
 ---
 
@@ -60,7 +60,7 @@ You don't run these — they just happen:
 |-------|-----------|---------------|
 | You write code | 6 skills auto-activate (code review, security, accessibility, design, docs, performance) | Inline — prevents issues during creation |
 | Something breaks | Incident report generated with root cause, timeline, and prevention plan | `docs/reports/incidents/` |
-| You run `/autoplan` | Full deliberation — roles argue across rounds until consensus | `docs/reports/[role]/` per round |
+| You run `/autoplan` | Swarm deliberation — each persona as a separate agent, genuine isolation | `docs/reports/[role]/` per round |
 | You run `/reflect` | Session retrospective with compounding lessons | `docs/reports/retrospective/` |
 | You edit a linter config | Hook warns before you weaken it | Terminal warning |
 | You type `rm -rf` | Hook warns before destructive commands | Terminal warning |

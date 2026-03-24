@@ -1,17 +1,19 @@
 # Claude Code Skills
 
-Skills are the core building blocks of the framework. Each skill works in **two modes**:
+Skills are the core building blocks of the framework. Each skill works in up to **three modes**:
 
 1. **Auto-activate** — Core rules load automatically when your task matches. Prevention during creation.
 2. **Review mode** — Invoked manually via `/command` for comprehensive audits. Structured output.
+3. **Teammate mode** — When spawned as an isolated Agent during `/autoplan` swarm deliberation. Five deliberation personas (Ma, Jobs, Torvalds, Dyson, Atrioc) include this mode.
 
 ---
 
 ## How Skills Work
 
 ```
-You type code → Skills auto-activate → Core rules apply
+You type code    → Skills auto-activate → Core rules apply
 You type /command → Skill loads Review Mode → Full checklist runs
+/autoplan runs   → Personas spawn as isolated Agents → Teammate Mode activates
 ```
 
 Skills load in 3 levels (progressive disclosure):

@@ -26,22 +26,30 @@ Jack Ma asks 6 forcing questions:
 
 Use **`/autoplan`** to run the full deliberation, or run reviews individually.
 
-**`/autoplan`** is a **deliberation engine** — roles don't just review sequentially, they argue. Engineering can push back on CEO scope. Design can reject engineering's architecture. Marketing can flag that users won't understand the positioning. Complaints flow backwards, rebuttals are filed, and consensus is reached — or the user breaks the tie.
+**`/autoplan`** is a **swarm deliberation engine** — each persona runs as a separate Claude instance via the Agent tool. Genuine isolation produces genuine disagreement. Engineering can block CEO scope. Design can reject engineering's architecture. Marketing can flag that users won't understand the positioning. Complaints route through the team lead, rebuttals are filed by spawning new agents, and consensus is reached — or the user breaks the tie.
+
+### Swarm Architecture
+
+Each persona runs in its own context window with only its SKILL.md loaded. The team lead (main conversation) orchestrates:
+
+```
+Team Lead → spawn agents → collect reports → route complaints → spawn rebuttal agents → resolve
+```
 
 ### Three Tiers
 
-| Tier | State | Roles Involved |
-|------|-------|---------------|
-| **Greenfield** | Nothing exists | Ma → Jobs → Torvalds → Dyson → Atrioc |
-| **WIP** | Half-assed, needs direction | Jobs → Torvalds → Dyson → Atrioc |
-| **Polish** | Solid, needs refinement | Torvalds → Dyson only |
+| Tier | State | Roles Involved | Parallelism |
+|------|-------|---------------|-------------|
+| **Greenfield** | Nothing exists | Ma → Jobs → [Torvalds ∥ Dyson] → Atrioc | Eng + Design parallel |
+| **WIP** | Half-assed, needs direction | Jobs → [Torvalds ∥ Dyson] → Atrioc | Eng + Design parallel |
+| **Polish** | Solid, needs refinement | [Torvalds ∥ Dyson] | Both parallel |
 
 ### Deliberation Rounds
 
 ```
-Round 1: Each role reviews and files complaints against previous roles
-Round 2: Complained-against roles respond (Accept / Modify / Overrule / Escalate)
-Round 3: Unresolved Blocks go to user (max 3 rounds)
+Round 1: Agents spawned per tier (sequential where dependency, parallel where independent)
+Round 2: Rebuttal agents spawned in parallel for all complained-against roles
+Round 3: Unresolved Blocks presented to user (max 3 rounds)
 ```
 
 ### Individual Commands (run one at a time)

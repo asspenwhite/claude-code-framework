@@ -65,8 +65,8 @@ Quick patterns that apply during creation.
 ## Review Mode (/command-name)
 Full checklist for comprehensive audits.
 
-### Output Format
-Structured findings template.
+## Teammate Mode (Swarm Deliberation)
+Instructions for when this persona is spawned as an isolated agent in /autoplan.
 ```
 
 ### Why Unified?
@@ -76,7 +76,15 @@ The old architecture had separate Skills (prevention) and Agents (review). This 
 - Confusion about which to edit
 - Commands pointing to agents instead of skills
 
-Unified skills: one file, two modes, no duplication.
+Unified skills: one file, three modes, no duplication.
+
+### Teammate Mode
+
+Five deliberation personas (Jobs, Torvalds, Dyson, Ma, Atrioc) include a **Teammate Mode** section. This tells the persona how to behave when spawned as an isolated Agent during `/autoplan`:
+- What context to expect from the team lead
+- How to file complaints against other roles
+- How to respond to complaints in Round 2
+- Which pivotal decisions to cite when overruling
 
 ---
 
@@ -141,6 +149,24 @@ Plan:     Steve Jobs (CEO) → Linus Torvalds (eng) → James Dyson (design)
 Build:    Bruno Sacco (frontend/slop) → Lisa Su (performance) → Atrioc (marketing)
 Reflect:  Warren Buffett (retrospective)
 ```
+
+### Swarm Deliberation
+
+During `/autoplan`, 5 deliberation personas (Ma, Jobs, Torvalds, Dyson, Atrioc) run as **separate Claude instances** via the Agent tool. Each gets its own context window loaded only with its persona's SKILL.md and the project context. This isolation is the key innovation:
+
+- **Single-context** (old): One Claude plays all roles → polite consensus, agrees with itself
+- **Swarm** (current): Each persona in its own context → genuine disagreement, real pushback
+
+```
+Team Lead (main context)
+    ├── Agent("ma-brainstorm")      ← own context, own philosophy
+    ├── Agent("jobs-ceo")           ← can't see what Torvalds thinks
+    ├── Agent("torvalds-eng")       ← can't see what Dyson thinks
+    ├── Agent("dyson-design")       ← genuine isolation
+    └── Agent("atrioc-marketing")   ← reads all reports last
+```
+
+Complaints route through the team lead. The agents never communicate directly. This hub-and-spoke model ensures the team lead controls information flow and can present disagreements cleanly to the user.
 
 ---
 
