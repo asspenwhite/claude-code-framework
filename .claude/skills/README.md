@@ -4,7 +4,7 @@ Skills are the core building blocks of the framework. Each skill works in up to 
 
 1. **Auto-activate** — Core rules load automatically when your task matches. Prevention during creation.
 2. **Review mode** — Invoked manually via `/command` for comprehensive audits. Structured output.
-3. **Teammate mode** — When spawned as an isolated Agent during `/autoplan` swarm deliberation. Five deliberation personas (Ma, Jobs, Torvalds, Dyson, Atrioc) include this mode.
+3. **Teammate mode** — When spawned as an isolated Agent during `/framework-launch` swarm deliberation. Five deliberation personas (Ma, Jobs, Torvalds, Dyson, Atrioc) include this mode.
 
 ---
 
@@ -13,7 +13,7 @@ Skills are the core building blocks of the framework. Each skill works in up to 
 ```
 You type code    → Skills auto-activate → Core rules apply
 You type /command → Skill loads Review Mode → Full checklist runs
-/autoplan runs   → Personas spawn as isolated Agents → Teammate Mode activates
+/framework-launch runs   → Personas spawn as isolated Agents → Teammate Mode activates
 ```
 
 Skills load in 3 levels (progressive disclosure):
@@ -110,7 +110,7 @@ Engineering architecture review — lock the execution plan.
 ### plan-review-design → `/design-review-plan` *(James Dyson persona)*
 Design dimension review — rate each dimension 0-10.
 
-### autoplan → `/autoplan`
+### framework-launch → `/framework-launch`
 Deliberation engine — roles argue until consensus. Three tiers (Greenfield / WIP / Polish). Complaints flow between roles. Max 3 rounds. Reports saved per role to `docs/reports/`.
 
 ### planner → `/plan`

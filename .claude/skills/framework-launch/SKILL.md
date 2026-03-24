@@ -1,7 +1,7 @@
 ---
-name: autoplan
+name: framework-launch
 description: Swarm deliberation engine. Each persona runs as a separate Claude instance via Agent tool for genuine isolation. Hub-and-spoke orchestration with complaint routing. Three tiers based on project state.
-activates_when: auto review, run all reviews, autoplan, review pipeline, full plan review, deliberate
+activates_when: auto review, run all reviews, framework launch, review pipeline, full plan review, deliberate
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Agent
 ---
 

@@ -170,14 +170,14 @@ Claude: [Should apply your theme colors, avoid generic AI patterns]
 /security-audit       # Security vulnerability check
 /design-review        # Visual UI review + AI slop grade
 /ceo-review           # Steve Jobs scope review
-/autoplan             # Swarm deliberation — each persona as an isolated agent
+/framework-launch             # Swarm deliberation — each persona as an isolated agent
 /ship                 # PR + release workflow
 ```
 
 ### Test Swarm Deliberation
 
 ```bash
-/autoplan polish      # Quick test — spawns Torvalds + Dyson as parallel agents
+/framework-launch polish      # Quick test — spawns Torvalds + Dyson as parallel agents
 ```
 
 You should see two agents spawned in parallel, each returning an independent review. If one files a complaint against the other, a Round 2 rebuttal agent is spawned automatically.

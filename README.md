@@ -20,7 +20,7 @@ Out of the box, Claude Code:
 This framework gives Claude Code a **full team** — 8 department heads who review, argue, and push back on each other's decisions before anything ships.
 
 ```
-/autoplan
+/framework-launch
 ```
 
 One command. Your project gets reviewed by:
@@ -60,7 +60,7 @@ You don't run these — they just happen:
 |-------|-----------|---------------|
 | You write code | 6 skills auto-activate (code review, security, accessibility, design, docs, performance) | Inline — prevents issues during creation |
 | Something breaks | Incident report generated with root cause, timeline, and prevention plan | `docs/reports/incidents/` |
-| You run `/autoplan` | Swarm deliberation — each persona as a separate agent, genuine isolation | `docs/reports/[role]/` per round |
+| You run `/framework-launch` | Swarm deliberation — each persona as a separate agent, genuine isolation | `docs/reports/[role]/` per round |
 | You run `/reflect` | Session retrospective with compounding lessons | `docs/reports/retrospective/` |
 | You edit a linter config | Hook warns before you weaken it | Terminal warning |
 | You type `rm -rf` | Hook warns before destructive commands | Terminal warning |
@@ -79,7 +79,7 @@ Skip stages for small changes. Typo = Build → Ship. New feature = full pipelin
 | Stage | What happens | Command |
 |-------|-------------|---------|
 | **Think** | Validate demand, find the wedge | `/brainstorm` |
-| **Plan** | Departments argue until consensus | `/autoplan` |
+| **Plan** | Departments argue until consensus | `/framework-launch` |
 | **Build** | Skills auto-activate during coding | Just code |
 | **Review** | Code, security, design audits | `/code-review`, `/security-audit` |
 | **Test** | QA testing, accessibility, E2E flows | `/qa`, `/accessibility` |
@@ -120,7 +120,7 @@ cp .claude/settings.local.json.example .claude/settings.local.json
 ### Deliberation
 | Command | What it does |
 |---------|-------------|
-| `/autoplan` | Full team review — roles argue until consensus |
+| `/framework-launch` | Full team review — roles argue until consensus |
 | `/brainstorm` | Product discovery session |
 | `/ceo-review` | Scope & vision challenge |
 | `/eng-review` | Architecture audit |

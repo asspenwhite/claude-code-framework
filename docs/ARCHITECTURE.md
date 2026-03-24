@@ -66,7 +66,7 @@ Quick patterns that apply during creation.
 Full checklist for comprehensive audits.
 
 ## Teammate Mode (Swarm Deliberation)
-Instructions for when this persona is spawned as an isolated agent in /autoplan.
+Instructions for when this persona is spawned as an isolated agent in /framework-launch.
 ```
 
 ### Why Unified?
@@ -80,7 +80,7 @@ Unified skills: one file, three modes, no duplication.
 
 ### Teammate Mode
 
-Five deliberation personas (Jobs, Torvalds, Dyson, Ma, Atrioc) include a **Teammate Mode** section. This tells the persona how to behave when spawned as an isolated Agent during `/autoplan`:
+Five deliberation personas (Jobs, Torvalds, Dyson, Ma, Atrioc) include a **Teammate Mode** section. This tells the persona how to behave when spawned as an isolated Agent during `/framework-launch`:
 - What context to expect from the team lead
 - How to file complaints against other roles
 - How to respond to complaints in Round 2
@@ -152,7 +152,7 @@ Reflect:  Warren Buffett (retrospective)
 
 ### Swarm Deliberation
 
-During `/autoplan`, 5 deliberation personas (Ma, Jobs, Torvalds, Dyson, Atrioc) run as **separate Claude instances** via the Agent tool. Each gets its own context window loaded only with its persona's SKILL.md and the project context. This isolation is the key innovation:
+During `/framework-launch`, 5 deliberation personas (Ma, Jobs, Torvalds, Dyson, Atrioc) run as **separate Claude instances** via the Agent tool. Each gets its own context window loaded only with its persona's SKILL.md and the project context. This isolation is the key innovation:
 
 - **Single-context** (old): One Claude plays all roles → polite consensus, agrees with itself
 - **Swarm** (current): Each persona in its own context → genuine disagreement, real pushback

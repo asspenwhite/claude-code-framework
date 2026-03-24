@@ -2,7 +2,7 @@ Run the swarm deliberation engine — each persona as an isolated agent.
 
 $ARGUMENTS
 
-Load and follow .claude/skills/autoplan/SKILL.md completely.
+Load and follow .claude/skills/framework-launch/SKILL.md completely.
 
 ## Tier Detection
 

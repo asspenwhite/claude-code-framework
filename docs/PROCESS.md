@@ -24,9 +24,9 @@ Jack Ma asks 6 forcing questions:
 
 ### Plan — Scope → Architecture → Design
 
-Use **`/autoplan`** to run the full deliberation, or run reviews individually.
+Use **`/framework-launch`** to run the full deliberation, or run reviews individually.
 
-**`/autoplan`** is a **swarm deliberation engine** — each persona runs as a separate Claude instance via the Agent tool. Genuine isolation produces genuine disagreement. Engineering can block CEO scope. Design can reject engineering's architecture. Marketing can flag that users won't understand the positioning. Complaints route through the team lead, rebuttals are filed by spawning new agents, and consensus is reached — or the user breaks the tie.
+**`/framework-launch`** is a **swarm deliberation engine** — each persona runs as a separate Claude instance via the Agent tool. Genuine isolation produces genuine disagreement. Engineering can block CEO scope. Design can reject engineering's architecture. Marketing can flag that users won't understand the positioning. Complaints route through the team lead, rebuttals are filed by spawning new agents, and consensus is reached — or the user breaks the tie.
 
 ### Swarm Architecture
 

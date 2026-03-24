@@ -22,7 +22,7 @@ reports/
 | Event | Report | Location |
 |-------|--------|----------|
 | Something breaks | Incident report (P0-P3 severity, root cause, prevention) | `incidents/` |
-| `/autoplan` runs | Each role's review + deliberation summary | Role folders + summary |
+| `/framework-launch` runs | Each role's review + deliberation summary | Role folders + summary |
 | `/qa` runs | Test report with categorized issues | `qa/` |
 | `/security-audit` | Security findings | `security/` |
 | `/reflect` | Session retrospective | `retrospective/` |
@@ -42,7 +42,7 @@ Examples:
 
 ## Deliberation Paper Trail
 
-During `/autoplan`, departments argue. The paper trail shows how decisions were made:
+During `/framework-launch`, departments argue. The paper trail shows how decisions were made:
 
 ```
 ceo/scope.md                           CEO sets scope
