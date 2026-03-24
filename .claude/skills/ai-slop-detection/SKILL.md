@@ -9,7 +9,35 @@ allowed-tools: Read, Write, Edit, Glob, Grep, mcp__playwright__browser_navigate,
 
 *Bruno Sacco persona: "A design must be timeless, not fashionable."*
 
-The Mercedes-Benz chief designer (1975-1999) who believed in restraint, proportion, and elegance that ages gracefully. He designed the W124 E-Class — a car that still looks beautiful 30+ years later. The opposite of disposable design.
+## Philosophy
+
+Bruno Sacco was Chief of Design at Mercedes-Benz from 1975 to 1999. In an industry obsessed with annual model changes and flashy styling, Sacco believed in **visual continuity** — each new model should evolve from the previous one, not revolutionize it. His designs were about proportion, restraint, and functional elegance. The W124 E-Class (1984) still looks beautiful 40+ years later because nothing about it was trendy.
+
+The opposite of Sacco's philosophy? Every AI-generated UI in 2024-2026: purple gradients, Inter font, cookie-cutter cards, zero personality. Fashionable today, disposable tomorrow.
+
+### The Quotes That Matter
+
+> "A Mercedes must always look like a Mercedes." — On visual continuity and brand coherence.
+
+> "The best design is the one you don't notice — until you look at something worse."
+
+> "Proportion is the foundation of beauty. You can forgive almost any detail if the proportions are right."
+
+> "A design must be timeless, not fashionable. What is fashionable today will be ugly tomorrow."
+
+> "Restraint is the hardest discipline in design. Anyone can add. The master knows what to leave out."
+
+### Pivotal Decisions
+
+**The W126 S-Class — restraint over excess (1979)** — The S-Class was Mercedes' flagship. Every competitor was adding chrome, angles, and complexity. Sacco stripped it back. Clean surfaces. Horizontal emphasis. Restrained proportions. Competitors called it boring. It became the most successful luxury sedan in history and defined what "luxury" looked like for a decade. **Lesson: Restraint IS the luxury. When everyone else is adding, the bold move is subtracting.**
+
+**The W124 E-Class — timeless proportions (1984)** — Sacco designed the W124 with proportions so balanced that it still looks modern 40 years later. The secret: he prioritized the relationship between surfaces over any individual detail. No gimmicks, no "design language of the year." Just proportions that feel right regardless of era. **Lesson: Proportion outlasts style. A well-proportioned layout will look good forever. A trendy gradient won't survive the year.**
+
+**Refusing to follow BMW's flame surfacing (1990s-2000s)** — In the late 1990s, BMW hired Chris Bangle, who introduced radical "flame surfacing" — aggressive creases and controversial shapes. The press loved it. BMW sales surged. Every manufacturer copied it. Sacco refused. He said it was fashionable, not timeless. He was right — by 2010, even BMW abandoned the style. Sacco's designs from the same era are still used as references for good design. **Lesson: Don't follow what's trending. Trends die. The designer who resists them is the one still referenced in 20 years.**
+
+**Horizontal calm design language** — Sacco's Mercedes shared a consistent "horizontal calm" — wide, low visual emphasis across the front and rear. This wasn't a trend; it was a biomechanical insight: horizontal lines read as stable, grounded, trustworthy. Vertical lines read as aggressive or unstable. He applied this insight consistently for 24 years. **Lesson: Design decisions should come from human perception principles, not aesthetic trends. Horizontal layouts feel stable. Generous whitespace feels trustworthy. These principles don't expire.**
+
+**Visual continuity across generations** — When Sacco designed a new model, you could always see the previous model in it. The evolution was visible but never jarring. This built trust: Mercedes owners knew the next car would feel like a Mercedes. **Lesson: In UI, consistency between versions is more important than any individual redesign. Users trust systems that evolve, not ones that reinvent themselves every release.**
 
 ## The Blacklist
 
@@ -18,71 +46,77 @@ The Mercedes-Benz chief designer (1975-1999) who believed in restraint, proporti
 ### F-Tier (Obvious AI Slop)
 
 **F1: Generic Sans-Serif Default**
-Using Inter, Roboto, or system fonts as the primary typeface with no thought. Every AI-generated site uses these.
-→ **Fix:** Choose a distinctive typeface that reinforces your brand's personality.
+Using Inter, Roboto, or system fonts as the primary typeface with no thought. Every AI-generated site uses these because they're the default in every framework.
+→ **Fix:** Choose a distinctive typeface that reinforces your brand's personality. Like Sacco's W124: the proportions should be so right that the type itself communicates something.
 
 **F2: Purple Gradient Syndrome**
-Purple-to-blue gradients (#8B5CF6 spectrum) on white backgrounds. The unofficial color of "AI made this."
-→ **Fix:** Develop a custom color palette with meaning. Colors should tell your brand's story.
+Purple-to-blue gradients (#8B5CF6 spectrum) on white backgrounds. The unofficial color of "AI made this." It's the 2024-2026 equivalent of BMW's flame surfacing — trendy now, embarrassing in 3 years.
+→ **Fix:** Develop a custom color palette with meaning. Colors should tell your brand's story, not signal "I used v0.dev."
 
 **F3: "Welcome to" Hero Copy**
-"Welcome to [Product Name]" as the hero headline. Zero personality, zero value proposition.
+"Welcome to [Product Name]" as the hero headline. Zero personality, zero value proposition. Sacco would say: "This is not a design — it is the absence of a design."
 → **Fix:** Lead with what the user gets, not a greeting. One sentence that makes someone care.
 
 ### D-Tier (Noticeable AI)
 
 **D1: Cookie-Cutter Card Grid**
-Three identical cards in a row with icon + title + description. No variation in size, emphasis, or layout.
-→ **Fix:** Create visual hierarchy. One card can be featured. Vary the layout. Break the grid.
+Three identical cards in a row with icon + title + description. No variation in size, emphasis, or layout. Sacco's principle of proportion violated — everything has equal weight, so nothing has weight.
+→ **Fix:** Create visual hierarchy. One card can be featured. Vary the layout. Break the grid. Proportions create emphasis.
 
 **D2: Zero-Customization Component Library**
-Default shadcn/ui, Material UI, or Chakra with no customization. Looks like a template.
-→ **Fix:** Customize at minimum: colors, border radius, font, spacing. Make it yours.
+Default shadcn/ui, Material UI, or Chakra with no customization. Looks like a template because it IS a template. The equivalent of putting Mercedes badges on a Hyundai.
+→ **Fix:** Customize at minimum: colors, border radius, font, spacing. Make it yours. Like Sacco: even when using shared platforms, the design must express a unique identity.
 
 **D3: Generic Blue Buttons**
-Default blue (#3B82F6) buttons everywhere. No personality.
-→ **Fix:** Button colors should reflect your brand. Consider shape, padding, hover states.
+Default blue (#3B82F6) buttons everywhere. No personality. The UI equivalent of using the stock ringtone — functional but says "I didn't care enough to change it."
+→ **Fix:** Button colors should reflect your brand. Consider shape, padding, hover states. Every detail matters — Sacco obsessed over door handle proportions.
 
 ### C-Tier (Generic)
 
 **C1: Stock Illustration Style**
-Flat vector illustrations with no consistent style. Mix of illustration styles.
-→ **Fix:** Commit to one illustration style or use photography. Consistency over variety.
+Flat vector illustrations with no consistent style. Mix of illustration styles from different artists/generators. The visual equivalent of mismatched fonts — it signals "assembled, not designed."
+→ **Fix:** Commit to one illustration style or use photography. Consistency over variety. Sacco's visual continuity principle: everything should look like it belongs together.
 
 **C2: Centered Everything**
-Every section centered, no asymmetry, no editorial layouts. Feels like a template.
-→ **Fix:** Use asymmetric layouts. Left-align text. Create visual tension and flow.
+Every section centered, no asymmetry, no editorial layouts. Feels like a template because centered-everything IS the default template layout. Sacco's horizontal calm disrupted by vertical monotony.
+→ **Fix:** Use asymmetric layouts. Left-align text. Create visual tension and flow. Like Sacco's horizontal emphasis: let the layout have direction.
 
 **C3: Flat Background**
-Pure white or pure black backgrounds with no depth, texture, or visual interest.
-→ **Fix:** Add subtle gradients, noise textures, border treatments, or background patterns.
+Pure white or pure black backgrounds with no depth, texture, or visual interest. The UI equivalent of a blank room with furniture — technically functional, emotionally empty.
+→ **Fix:** Add subtle gradients, noise textures, border treatments, or background patterns. Depth is what makes a design feel crafted.
 
 **C4: No Micro-Interactions**
-Static UI with no hover effects, transitions, or feedback. Feels lifeless.
-→ **Fix:** Add meaningful transitions. Button hover effects. Smooth page transitions. Loading states.
+Static UI with no hover effects, transitions, or feedback. Feels lifeless. A car without the satisfying thunk of a closing door — the details that make something feel premium are all missing.
+→ **Fix:** Add meaningful transitions. Button hover effects. Smooth page transitions. Loading states. These are the "door thunk" of UI design.
 
 ## Rating System
 
-| Grade | Meaning |
-|-------|---------|
-| **A** | Distinctive, timeless design. Would pass the Bruno Sacco test. |
-| **B** | Competent, customized. Has personality but room for refinement. |
-| **C** | Generic. Functional but forgettable. Some AI patterns present. |
-| **D** | Noticeable AI generation. Multiple anti-patterns. Needs work. |
-| **F** | Obvious AI slop. Would immediately be recognized as AI-generated. |
+| Grade | Meaning | Sacco Parallel |
+|-------|---------|----|
+| **A** | Distinctive, timeless design. Would pass the Bruno Sacco test. | The W124 — you'd recognize it in 40 years |
+| **B** | Competent, customized. Has personality but room for refinement. | Good proportions, needs detail work |
+| **C** | Generic. Functional but forgettable. Some AI patterns present. | Template with some customization |
+| **D** | Noticeable AI generation. Multiple anti-patterns. Needs work. | Badges on someone else's car |
+| **F** | Obvious AI slop. Would immediately be recognized as AI-generated. | The flame surfacing of UI design — trendy and disposable |
 
 ## The Bruno Sacco Test
 
 Ask yourself: **"Will this design still look beautiful in 20 years?"**
 
-If the answer relies on current trends (gradients, glassmorphism, specific illustration styles), it's fashionable, not timeless. Timeless design comes from proportion, restraint, and functional elegance.
+If the answer relies on current trends (gradients, glassmorphism, specific illustration styles), it's fashionable, not timeless. Timeless design comes from:
+- **Proportion** — The relationship between elements matters more than individual styling
+- **Restraint** — What you leave out defines the design as much as what you include
+- **Horizontal calm** — Layouts that feel stable, grounded, trustworthy
+- **Visual continuity** — Consistency that builds trust over time
+- **Functional elegance** — Every design choice serves a purpose
 
 ## Checklist
 
 ```
-- [ ] No F-tier anti-patterns
-- [ ] No D-tier anti-patterns
+- [ ] No F-tier anti-patterns (kill these immediately)
+- [ ] No D-tier anti-patterns (fix before shipping)
 - [ ] C-tier items addressed or justified
+- [ ] Proportions feel right (squint test — hierarchy clear?)
 - [ ] Overall grade: ___
-- [ ] Passes the Bruno Sacco test
+- [ ] Passes the Bruno Sacco test (beautiful in 20 years?)
 ```

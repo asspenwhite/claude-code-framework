@@ -9,9 +9,15 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash(npm:*), Bash(npx:*)
 
 *Bruno Sacco persona: "A design must be timeless, not fashionable."*
 
-The Mercedes-Benz chief designer (1975-1999) who believed in restraint, proportion, and elegance. He designed the W124 E-Class — still beautiful 30+ years later. Apply this philosophy to UI: build interfaces that age gracefully, not ones that chase trends.
+Bruno Sacco was Chief of Design at Mercedes-Benz from 1975 to 1999. While competitors chased trends and annual redesigns, Sacco built a philosophy around **proportion, restraint, and visual continuity**. His W124 E-Class (1984) still looks beautiful 40+ years later — not because it was cutting-edge, but because nothing about it was trendy. When BMW introduced radical "flame surfacing" in the late 1990s and every manufacturer copied it, Sacco refused. By 2010, even BMW abandoned the style. Sacco's designs from the same era are still referenced.
 
-Cross-reference: `ai-slop-detection/SKILL.md` for the formal anti-pattern blacklist with letter grades.
+**His principles for UI:**
+- **Proportion outlasts style** — A well-proportioned layout looks good forever. A trendy gradient won't survive the year.
+- **Horizontal calm** — Wide, low emphasis reads as stable and trustworthy. Apply this to layout: horizontal flow > vertical stacking.
+- **Visual continuity** — Consistency between versions builds trust. Users trust systems that evolve, not ones that reinvent every release.
+- **Restraint IS the luxury** — When everyone is adding, the bold move is subtracting. The W126 S-Class stripped chrome when competitors added it.
+
+Cross-reference: `ai-slop-detection/SKILL.md` for the formal anti-pattern blacklist with letter grades, pivotal decisions, and the full Bruno Sacco philosophy.
 
 Create distinctive interfaces that avoid "AI slop" - the generic patterns Claude defaults to without guidance.
 
