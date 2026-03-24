@@ -1,56 +1,61 @@
 # Reports
 
-Your project's institutional memory. Every review, incident, and decision is filed here — like a real company's paper trail.
+Your project's institutional memory. Every review, every incident, every decision — filed and searchable.
 
-## Structure
+## Departments
 
 ```
 reports/
-├── brainstorm/       # Jack Ma — product discovery, demand validation
-├── ceo/              # Steve Jobs — scope decisions, vision, the no-list
-├── engineering/      # Linus Torvalds — architecture verdicts, complexity audits
-├── design/           # James Dyson — dimension ratings, AI slop grades
-├── marketing/        # Atrioc — positioning, copy teardowns, voice audits
-├── incidents/        # Auto-generated when something breaks (P0-P3 severity)
-├── qa/               # QA test reports, bug taxonomies
-├── security/         # Security audit findings
-└── retrospective/    # Warren Buffett — session summaries, compounding lessons
+├── brainstorm/       Product discovery — demand validation, wedge strategy
+├── ceo/              Scope & vision — what to build, what to cut
+├── engineering/      Architecture — data structures, interfaces, failure modes
+├── design/           Design — 8 dimensions rated 0-10, AI slop grades
+├── marketing/        Positioning — copy teardowns, voice audits, landing pages
+├── incidents/        Incidents — auto-generated when something breaks
+├── qa/               QA — test reports with 7-category bug taxonomy
+├── security/         Security — audit findings, vulnerability assessments
+└── retrospective/    Retrospective — session summaries, compounding lessons
 ```
 
-## What Gets Auto-Generated
+## What Gets Filed Automatically
 
-| Event | Report Location | Trigger |
-|-------|----------------|---------|
-| Something breaks | `incidents/` | Investigation skill auto-activates |
-| `/autoplan` runs | Each role's folder + summary | Manual command |
-| `/qa` runs | `qa/` | Manual command |
-| `/security-audit` runs | `security/` | Manual command |
-| `/reflect` runs | `retrospective/` | Manual command |
-| Individual role review | That role's folder | `/ceo-review`, `/eng-review`, etc. |
+| Event | Report | Location |
+|-------|--------|----------|
+| Something breaks | Incident report (P0-P3 severity, root cause, prevention) | `incidents/` |
+| `/autoplan` runs | Each role's review + deliberation summary | Role folders + summary |
+| `/qa` runs | Test report with categorized issues | `qa/` |
+| `/security-audit` | Security findings | `security/` |
+| `/reflect` | Session retrospective | `retrospective/` |
+| Any individual role review | That role's report | Role folder |
 
-## Report Naming
+## File Naming
 
 ```
 [YYYY-MM-DD]-[project-or-feature]-[type].md
 
 Examples:
-  2026-03-23-auth-redesign-scope.md
-  2026-03-23-auth-redesign-architecture.md
-  2026-03-23-auth-redesign-round2-rebuttal.md
+  2026-03-24-auth-redesign-scope.md
+  2026-03-24-auth-redesign-architecture.md
+  2026-03-24-auth-redesign-round2-rebuttal.md
+  2026-03-24-login-crash-incident.md
 ```
 
-## Deliberation
+## Deliberation Paper Trail
 
-Reports reference each other. When engineering disagrees with CEO scope, the engineering report includes a `## Complaints` section citing the CEO report. The CEO writes a rebuttal in a new report. This continues until consensus.
+During `/autoplan`, departments argue. The paper trail shows how decisions were made:
 
 ```
-ceo/scope.md → engineering/architecture.md (complaint: scope too broad)
-                → ceo/scope-round2.md (rebuttal: narrows scope)
-                  → engineering/architecture-round2.md (accepts)
-                    → design/dimensions.md (complaint: layout won't work)
-                      → engineering/architecture-round3.md (adjusts)
+ceo/scope.md                           CEO sets scope
+  → engineering/architecture.md        Eng reviews, files complaint: "scope too broad"
+    → ceo/scope-round2.md             CEO rebuts: narrows scope, cites "350 → 10 products"
+      → engineering/arch-round2.md    Eng accepts narrowed scope
+        → design/dimensions.md        Design reviews, files complaint: "layout won't work"
+          → engineering/arch-round3.md Eng adjusts architecture
+            → [date]-summary.md       Final consensus with all decisions
 ```
 
 ## Reading Reports
 
-Start with the **latest** report in each folder. Earlier reports show the deliberation history — useful for understanding WHY decisions were made, not just WHAT was decided.
+Start with the **latest** report in each folder. Earlier reports show the deliberation history — useful for understanding WHY decisions were made.
+
+Summaries (in the root of `reports/`) aggregate all decisions, unresolved tensions, and action items from a deliberation.
