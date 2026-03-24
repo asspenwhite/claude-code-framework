@@ -1,6 +1,6 @@
 # Reports
 
-Each role saves review reports to its own folder. During `/autoplan`, roles argue with each other — complaints flow between departments until consensus or the user decides.
+Your project's institutional memory. Every review, incident, and decision is filed here — like a real company's paper trail.
 
 ## Structure
 
@@ -11,10 +11,22 @@ reports/
 ├── engineering/      # Linus Torvalds — architecture verdicts, complexity audits
 ├── design/           # James Dyson — dimension ratings, AI slop grades
 ├── marketing/        # Atrioc — positioning, copy teardowns, voice audits
+├── incidents/        # Auto-generated when something breaks (P0-P3 severity)
 ├── qa/               # QA test reports, bug taxonomies
 ├── security/         # Security audit findings
 └── retrospective/    # Warren Buffett — session summaries, compounding lessons
 ```
+
+## What Gets Auto-Generated
+
+| Event | Report Location | Trigger |
+|-------|----------------|---------|
+| Something breaks | `incidents/` | Investigation skill auto-activates |
+| `/autoplan` runs | Each role's folder + summary | Manual command |
+| `/qa` runs | `qa/` | Manual command |
+| `/security-audit` runs | `security/` | Manual command |
+| `/reflect` runs | `retrospective/` | Manual command |
+| Individual role review | That role's folder | `/ceo-review`, `/eng-review`, etc. |
 
 ## Report Naming
 
