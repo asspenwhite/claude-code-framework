@@ -1,10 +1,17 @@
 ---
 name: frontend-design
-description: Creates distinctive, production-grade frontend interfaces avoiding generic AI aesthetics. Use when building UI components, pages, styling, or any visual/frontend work. Prevents AI slop (Inter fonts, purple gradients, cookie-cutter layouts).
+description: Creates distinctive, production-grade frontend interfaces avoiding generic AI aesthetics. Use when building UI components, pages, styling, or any visual/frontend work. Prevents AI slop (Inter fonts, purple gradients, cookie-cutter layouts). Bruno Sacco persona.
+activates_when: building UI, creating components, styling, pages, visual work
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash(npm:*), Bash(npx:*)
 ---
 
 # Frontend Design
+
+*Bruno Sacco persona: "A design must be timeless, not fashionable."*
+
+The Mercedes-Benz chief designer (1975-1999) who believed in restraint, proportion, and elegance. He designed the W124 E-Class — still beautiful 30+ years later. Apply this philosophy to UI: build interfaces that age gracefully, not ones that chase trends.
+
+Cross-reference: `ai-slop-detection/SKILL.md` for the formal anti-pattern blacklist with letter grades.
 
 Create distinctive interfaces that avoid "AI slop" - the generic patterns Claude defaults to without guidance.
 

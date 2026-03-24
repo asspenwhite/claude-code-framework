@@ -29,9 +29,9 @@ Please customize the template for my project:
 1. Update CLAUDE.md with my project specifics
 2. Customize the frontend-design skill with appropriate themes/colors for my brand
 3. Adapt the security skill for my auth/payment patterns
-4. Update all agent files with my file paths
-5. Create initial docs (README, TODO, CHANGELOG, DECISIONS)
-6. Set up the folder structure for my tech stack
+4. Create initial docs (README, TODO, CHANGELOG, DECISIONS)
+5. Set up the folder structure for my tech stack
+6. Enable hooks in settings.local.json
 
 Start by reading the template files in .claude/ and docs/, then customize everything for my project.
 ```
@@ -41,8 +41,6 @@ Start by reading the template files in .claude/ and docs/, then customize everyt
 ## Example: Recipe App
 
 ```
-I'm starting a new project using the Claude Code framework. Here's what I'm building:
-
 **Project Name:** MealPrep Pro
 **Description:** A meal planning app where users can save recipes, generate weekly meal plans, and create shopping lists automatically.
 **Tech Stack:** Next.js 14, Supabase, Tailwind, shadcn/ui
@@ -52,8 +50,6 @@ I'm starting a new project using the Claude Code framework. Here's what I'm buil
 2. Weekly meal planner with drag-and-drop
 3. Auto-generated shopping lists
 4. User accounts with saved favorites
-
-Please customize the template for my project...
 ```
 
 ---
@@ -61,8 +57,6 @@ Please customize the template for my project...
 ## Example: SaaS App
 
 ```
-I'm starting a new project using the Claude Code framework. Here's what I'm building:
-
 **Project Name:** TaskFlow
 **Description:** A project management tool for small teams with Kanban boards, time tracking, and client invoicing.
 **Tech Stack:** Next.js 14, Supabase, Stripe subscriptions, Tailwind
@@ -72,80 +66,73 @@ I'm starting a new project using the Claude Code framework. Here's what I'm buil
 2. Time tracking per task
 3. Client portal for approvals
 4. Automated invoicing via Stripe
-
-Please customize the template for my project...
-```
-
----
-
-## Example: E-commerce
-
-```
-I'm starting a new project using the Claude Code framework. Here's what I'm building:
-
-**Project Name:** Artisan Market
-**Description:** A marketplace for handmade goods where artisans can set up shops and sell directly to customers.
-**Tech Stack:** Next.js 14, Supabase, Stripe Connect (multi-vendor), Tailwind
-**Target Users:** Craft makers, handmade goods buyers
-**Key Features:**
-1. Multi-vendor marketplace
-2. Seller dashboard with analytics
-3. Review and rating system
-4. Secure checkout with Stripe Connect
-
-Please customize the template for my project...
 ```
 
 ---
 
 ## What Claude Will Do
 
-After you provide your project details, Claude will:
-
 ### 1. Customize CLAUDE.md
-- Add your project name and description
-- Set up your tech stack specifics
-- Define your key directories
-- Add your critical rules
+- Add your project name, description, stack
+- Set up key directories and quick reference
+- Configure pipeline and hooks sections
 
 ### 2. Adapt Skills
-- **frontend-design**: Pick colors/themes that match your brand
+- **frontend-design**: Pick colors/themes matching your brand
 - **security**: Configure for your auth and payment patterns
+- **code-review**: Add project-specific patterns
 
-### 3. Update Agents
-- Replace placeholder paths with your actual file structure
-- Add project-specific checks
-- Remove irrelevant sections
+### 3. Create Documentation
+- `docs/README.md` — Project overview
+- `docs/TODO.md` — Initial task list
+- `docs/CHANGELOG.md` — Ready for tracking
+- `docs/DECISIONS.md` — Ready for logging
 
-### 4. Create Documentation
-- `docs/README.md` - Your project overview
-- `docs/TODO.md` - Initial task list based on features
-- `docs/CHANGELOG.md` - Ready for tracking
-- `docs/DECISIONS.md` - Ready for logging
-- `docs/API.md` - Template for your endpoints
-- `docs/SCHEMA.md` - Template for your database
+### 4. Enable Hooks
+- Copy `settings.local.json.example` → `settings.local.json`
+- Configure safety, config protection, and auto-formatting
 
 ### 5. Initialize Project Structure
 - Create folders for your tech stack
 - Set up initial config files
-- Add placeholder components
 
 ---
 
-## After Initialization
+## Pipeline Commands
 
-Once Claude customizes the template:
+Once set up, use the pipeline for features:
 
-1. **Review the changes** - Make sure everything looks right
-2. **Install dependencies** - `npm install` or equivalent
-3. **Set up services** - Supabase, Stripe, etc.
-4. **Start building** - The template is now tailored to your project
+```bash
+# Brainstorm a new feature (Jack Ma)
+/brainstorm
+
+# Review the plan (Steve Jobs → Linus Torvalds → James Dyson)
+/ceo-review
+/eng-review
+/design-review-plan
+
+# Debug a problem
+/investigate
+
+# Review copy and positioning (Atrioc)
+/marketing
+
+# Test and QA
+/qa
+
+# Ship it
+/ship
+
+# What did we learn? (Warren Buffett)
+/reflect
+```
 
 ---
 
 ## Tips
 
-- **Be specific** about your features - more detail = better customization
+- **Be specific** about your features — more detail = better customization
 - **Mention your brand** if you have colors/style preferences
-- **List your pages** if you know them - helps structure agents
-- **Include auth requirements** - affects security skill significantly
+- **List your pages** if you know them — helps structure skills
+- **Include auth requirements** — affects security skill significantly
+- **Enable hooks** for runtime safety from day one

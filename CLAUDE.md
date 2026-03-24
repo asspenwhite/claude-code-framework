@@ -1,10 +1,3 @@
----
-name: Project Name
-type: project-type
-stack: Your Stack Here
-port: 3000
----
-
 # Project Name - AI Instructions
 
 **Brief project description.** One or two sentences max.
@@ -27,7 +20,7 @@ port: 3000
 
 **Level 1 - This file** (summary)
 **Level 2 - docs/** (detail)
-**Level 3 - .claude/** (skills/agents)
+**Level 3 - .claude/** (skills, hooks)
 
 | Priority | Doc | When to Read |
 |----------|-----|--------------|
@@ -51,36 +44,115 @@ port: 3000
 
 ---
 
+## Hooks (Runtime Safety)
+
+| Hook | Event | Purpose |
+|------|-------|---------|
+| `config-protect.sh` | PreToolUse (Write/Edit) | Warns before weakening linter configs |
+| `safety-check.sh` | PreToolUse (Bash) | Warns before destructive commands |
+| `quality-gate.sh` | PostToolUse (Write/Edit) | Auto-formats saved files |
+
+→ `docs/HOOKS.md` for hook system details
+→ `docs/SAFETY.md` for safety modes (careful/freeze/guard)
+
+---
+
+## Pipeline
+
+```
+Think → Plan → Build → Review → Test → Ship → Reflect
+```
+
+| Stage | Command | Persona |
+|-------|---------|---------|
+| Think | `/brainstorm` | Jack Ma |
+| Plan | `/ceo-review` → `/eng-review` → `/design-review-plan` | Jobs → Torvalds → Dyson |
+| Build | Skills auto-activate | Sacco, Su, Atrioc |
+| Review | `/code-review`, `/security-audit`, `/design-review` | — |
+| Test | `/qa`, `/user-flow-test`, `/accessibility` | — |
+| Ship | `/ship` | — |
+| Reflect | `/reflect` | Buffett |
+
+→ `docs/PROCESS.md` for full pipeline documentation
+
+---
+
 ## Skills (Auto-loaded)
 
 ### Core Skills
 | Skill | Activates When |
 |-------|----------------|
-| `docs-safety` | Modifying TODO.md, CHANGELOG.md, any docs |
 | `code-review` | Writing or modifying code files |
-| `design-review` | Building UI, styling, visual work |
 | `security-audit` | Auth, API routes, user data |
+| `design-review` | Building UI, styling, visual work |
+| `docs-safety` | Modifying TODO.md, CHANGELOG.md, any docs |
+| `accessibility` | Building UI, forms, interactive elements |
+| `user-flow-test` | Auth flows, checkout, multi-step processes |
 
 ### Feature Skills
-| Skill | Activates When |
-|-------|----------------|
-| `frontend-design` | UI components, styling |
-| `security` | Auth flows, payments |
+| Skill | Persona | Activates When |
+|-------|---------|----------------|
+| `frontend-design` | Bruno Sacco | UI components, styling |
+| `ai-slop-detection` | Bruno Sacco | Building UI (co-activates with frontend-design) |
+| `performance` | Lisa Su | Performance optimization, bundle size |
+| `marketing` | Atrioc | Writing copy, landing pages, positioning |
+| `security` | — | Auth flows, payments |
+| `tdd` | — | Writing tests, test-first workflows |
+
+### Pipeline Skills
+| Skill | Persona | Command |
+|-------|---------|---------|
+| `brainstorm` | Jack Ma | `/brainstorm` |
+| `plan-review-ceo` | Steve Jobs | `/ceo-review` |
+| `plan-review-eng` | Linus Torvalds | `/eng-review` |
+| `plan-review-design` | James Dyson | `/design-review-plan` |
+| `planner` | — | `/plan` |
+| `investigation` | — | `/investigate` |
+| `qa` | — | `/qa` |
+| `shipping` | — | `/ship` |
+| `reflect` | Warren Buffett | `/reflect` |
 
 → `.claude/skills/` for full skill files
 
 ---
 
-## Agents (Manual `/command`)
+## Commands
 
-| Agent | Command | Use For |
-|-------|---------|---------|
-| design-review | `/design-review` | UI audit |
-| security-audit | `/security-audit` | Security check |
-| code-review | `/code-review` | Code quality |
-| docs-update | `/docs-update` | Sync docs |
+### Review Commands
+| Command | Purpose |
+|---------|---------|
+| `/code-review` | Code quality with Fix-First policy |
+| `/security-audit` | Security vulnerability check |
+| `/design-review` | Visual UI review + AI slop grade |
+| `/accessibility` | WCAG 2.1 AA compliance |
+| `/user-flow-test` | End-to-end journey testing |
+| `/docs-update` | Documentation sync |
 
-→ `.claude/agents/` for full agent instructions
+### Planning Commands
+| Command | Persona | Purpose |
+|---------|---------|---------|
+| `/brainstorm` | Jack Ma | Product discovery |
+| `/ceo-review` | Steve Jobs | Scope review |
+| `/eng-review` | Linus Torvalds | Architecture review |
+| `/design-review-plan` | James Dyson | Design critique |
+
+### Pipeline Commands
+| Command | Purpose |
+|---------|---------|
+| `/plan` | Architecture planning |
+| `/investigate` | Root cause debugging |
+| `/marketing` | Content & positioning review |
+| `/qa` | Quality assurance testing |
+| `/ship` | PR + release workflow |
+| `/reflect` | Session retrospective |
+
+### Safety Commands
+| Command | Purpose |
+|---------|---------|
+| `/careful` | Toggle destructive command warnings |
+| `/freeze <dir>` | Restrict edits to one directory |
+| `/guard <dir>` | Both careful + freeze |
+| `/unfreeze` | Clear all safety modes |
 
 ---
 
@@ -105,6 +177,10 @@ Only make changes that are directly requested or clearly necessary. Keep solutio
 <context_window>
 Your context window will be automatically compacted as it approaches its limit, allowing you to continue working indefinitely. Do not stop tasks early due to context concerns.
 </context_window>
+
+<strategic_compaction>
+Compact at phase transitions (Think→Plan, Plan→Build, Build→Review, etc.), not at 95% capacity. Preserve: decisions made, current file list, blockers, next steps. Never compact mid-implementation.
+</strategic_compaction>
 
 ---
 

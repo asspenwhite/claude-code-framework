@@ -2,7 +2,7 @@ Update project documentation to reflect recent code changes.
 
 $ARGUMENTS
 
-Load and follow the instructions in: .claude/agents/docs-update-agent.md
+Load and follow the **Review Mode** section in: .claude/skills/docs-safety/SKILL.md
 
 Update these files as needed:
 - CHANGELOG.md - Log changes

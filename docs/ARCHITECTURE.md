@@ -1,396 +1,196 @@
-# Claude Code Architecture
+# Architecture
 
-Understanding the Skills + Agents + Commands system.
-
----
-
-## The Core Problem
-
-Without configuration, Claude Code:
-- Uses generic patterns ("AI slop" - Inter fonts, purple gradients)
-- Misses security issues until review
-- Doesn't know your project's specific rules
-- Can't use project-specific tools effectively
-
-This template solves these problems with a three-layer architecture.
+The framework uses a **3-layer unified architecture** with a **7-stage pipeline**.
 
 ---
 
-## The Three Layers
-
-### 1. Skills (Auto-Activate During Creation)
-
-**When:** Claude is writing new code
-**Purpose:** Prevent mistakes before they happen
-
-Skills are domain knowledge that Claude loads automatically when relevant. When you ask Claude to create a UI component, the `frontend-design` skill activates and guides the output.
-
-```
-You: Create a pricing section
-Claude: [Loads frontend-design skill]
-        [Uses your color palette, not generic purple]
-        [Applies your typography, not Inter]
-        [Creates distinctive design, not AI slop]
-```
-
-**Key Insight:** Skills work during **creation**. They make the first output better.
-
-### 2. Agents (Manual Invoke for Review)
-
-**When:** You want to check existing code
-**Purpose:** Catch issues that slipped through
-
-Agents are specialized reviewers you invoke manually. They have detailed checklists and know what to look for.
-
-```bash
-claude /security-audit
-# Agent reviews all security-critical code
-# Checks for specific anti-patterns
-# Reports findings with file:line references
-```
-
-**Key Insight:** Agents work during **review**. They catch what creation missed.
-
-### 3. Commands (Human Interface)
-
-**When:** You want to run an agent
-**Purpose:** Simple way to invoke complex workflows
-
-Commands are the `/slash-command` interface to agents. They're just triggers.
-
-```bash
-claude /code-review      # Runs code-review-agent
-claude /design-review    # Runs design-review-agent
-claude /security-audit   # Runs security-audit-agent
-```
-
----
-
-## Progressive Disclosure
-
-Skills use 3-level loading to save tokens:
+## Three Layers
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│ Level 1: Metadata (~100 tokens)                              │
-│ Loaded at startup for ALL skills                             │
-│ Just name + description from frontmatter                     │
+│ Layer 1: Hooks (Runtime Safety)                              │
+│                                                              │
+│ Shell scripts triggered by Claude Code events.               │
+│ PreToolUse, PostToolUse — block, warn, or auto-fix.         │
+│                                                              │
+│ config-protect.sh → safety-check.sh → quality-gate.sh       │
 └─────────────────────────────────────────────────────────────┘
-                              ↓
-                    [Task becomes relevant]
-                              ↓
+                              │
+                              ▼
 ┌─────────────────────────────────────────────────────────────┐
-│ Level 2: SKILL.md Body (<500 lines)                          │
-│ Loaded when skill matches current task                       │
-│ Core rules, quick reference, file pointers                   │
+│ Layer 2: Skills (Prevention + Review)                        │
+│                                                              │
+│ 22 unified skills. Each works in two modes:                  │
+│ • Auto-activate: Core rules load when task matches           │
+│ • Review mode: Full audit via /command invocation             │
+│                                                              │
+│ 8 personas shape judgment (Jobs, Torvalds, Sacco, etc.)     │
 └─────────────────────────────────────────────────────────────┘
-                              ↓
-                    [Specific info needed]
-                              ↓
+                              │
+                              ▼
 ┌─────────────────────────────────────────────────────────────┐
-│ Level 3: Reference Files (unlimited)                         │
-│ Loaded only when Claude needs specific details               │
-│ TYPOGRAPHY.md, PATTERNS.md, CHECKLIST.md, etc.              │
+│ Layer 3: Commands (Slash Interface)                          │
+│                                                              │
+│ /command files that invoke skills in Review Mode.            │
+│ Human-readable triggers for complex workflows.               │
+│                                                              │
+│ /ship, /investigate, /ceo-review, /qa, /reflect, etc.       │
 └─────────────────────────────────────────────────────────────┘
-```
-
-### Why This Matters
-
-**Without progressive disclosure:**
-- All skill content loaded every time
-- Wastes tokens on irrelevant info
-- Context window fills up quickly
-
-**With progressive disclosure:**
-- Only load what's needed
-- 50-80% token savings
-- More room for your actual code
-
----
-
-## File Structure
-
-```
-.claude/
-├── skills/                         # Domain knowledge
-│   ├── frontend-design/
-│   │   ├── SKILL.md               # Core rules (Level 2)
-│   │   ├── TYPOGRAPHY.md          # Reference (Level 3)
-│   │   ├── THEMES.md              # Reference (Level 3)
-│   │   ├── MOTION.md              # Reference (Level 3)
-│   │   └── EXAMPLES.md            # Reference (Level 3)
-│   │
-│   └── security/
-│       ├── SKILL.md               # Core rules (Level 2)
-│       ├── PATTERNS.md            # Reference (Level 3)
-│       ├── CHECKLIST.md           # Reference (Level 3)
-│       ├── FILES.md               # Reference (Level 3)
-│       └── scripts/
-│           └── validate.py        # Runs without loading
-│
-├── agents/                         # Review workflows
-│   ├── security-audit-agent.md
-│   ├── code-review-agent.md
-│   ├── design-review-agent.md
-│   ├── accessibility-agent.md
-│   ├── user-flow-test-agent.md
-│   └── docs-update-agent.md
-│
-└── commands/                       # Slash command triggers
-    ├── security-audit.md
-    ├── code-review.md
-    ├── design-review.md
-    ├── accessibility.md
-    ├── user-flow-test.md
-    └── docs-update.md
 ```
 
 ---
 
-## SKILL.md Format
+## Unified Skills (No Agents)
+
+Every skill is a single `SKILL.md` file that handles both prevention and review:
 
 ```markdown
 ---
 name: skill-name
-description: One-line description of when this skill applies
+description: When this skill should activate
+activates_when: specific triggers
 allowed-tools: Read, Write, Edit, Glob, Grep
 ---
 
 # Skill Name
 
-Brief overview of what this skill does.
-
-## Core Rules
-
-The most important rules that ALWAYS apply.
-
-## Quick Reference
-
-| Situation | Do This |
-|-----------|---------|
-| Example 1 | Action 1 |
-| Example 2 | Action 2 |
-
-## Reference Files
-
-| Need | File |
-|------|------|
-| Detailed patterns | [PATTERNS.md](PATTERNS.md) |
-| Checklist | [CHECKLIST.md](CHECKLIST.md) |
-```
-
-**Guidelines:**
-- Keep SKILL.md under 500 lines (ideally ~60)
-- Put details in reference files
-- Use tables for quick scanning
-- Link to reference files, don't inline everything
-
----
-
-## Agent File Format
-
-```markdown
-# Agent Name
-
-## Philosophy
-
-One-line guiding principle.
-
-## When to Use
-
-- Scenario 1
-- Scenario 2
+## Core Rules (auto-activate)
+Quick patterns that apply during creation.
 
 ## Checklist
+- [ ] Verifiable completion criteria
 
-### Category 1
-- [ ] Check item 1
-- [ ] Check item 2
+---
 
-### Category 2
-- [ ] Check item 3
-- [ ] Check item 4
+## Review Mode (/command-name)
+Full checklist for comprehensive audits.
 
-## Tools to Use
+### Output Format
+Structured findings template.
+```
 
-- Tool 1 for X
-- Tool 2 for Y
+### Why Unified?
 
-## Output Format
+The old architecture had separate Skills (prevention) and Agents (review). This created:
+- Duplicate content between skill and agent files
+- Confusion about which to edit
+- Commands pointing to agents instead of skills
 
-How to report findings.
+Unified skills: one file, two modes, no duplication.
+
+---
+
+## Progressive Disclosure
+
+Skills load in 3 levels to save tokens:
+
+| Level | What Loads | When |
+|-------|-----------|------|
+| **1. Metadata** (~100 tokens) | Name, description, activates_when | Always (startup) |
+| **2. SKILL.md body** (<500 lines) | Core rules, checklist, review mode | When task matches |
+| **3. Reference files** (unlimited) | TYPOGRAPHY.md, PATTERNS.md, etc. | When specifically needed |
+
+50-80% token savings vs loading everything upfront.
+
+---
+
+## Pipeline
+
+7 stages. Skip stages for small changes.
+
+```
+Think → Plan → Build → Review → Test → Ship → Reflect
+```
+
+| Stage | Skills | Personas |
+|-------|--------|----------|
+| **Think** | brainstorm | Jack Ma |
+| **Plan** | plan-review-ceo, plan-review-eng, plan-review-design | Jobs, Torvalds, Dyson |
+| **Build** | code-review, security-audit, frontend-design, ai-slop-detection, performance, marketing, tdd, accessibility | Sacco, Su, Atrioc |
+| **Review** | code-review, security-audit, design-review | — |
+| **Test** | qa, user-flow-test, accessibility | — |
+| **Ship** | shipping | — |
+| **Reflect** | reflect | Buffett |
+
+See [PROCESS.md](PROCESS.md) for full pipeline documentation.
+
+---
+
+## Hooks
+
+Shell scripts that run on Claude Code events. Exit codes: 0=allow, 1=block, 2=warn.
+
+| Hook | Event | Purpose |
+|------|-------|---------|
+| `config-protect.sh` | PreToolUse (Write/Edit) | Warns before weakening linter configs |
+| `safety-check.sh` | PreToolUse (Bash) | Warns before destructive commands |
+| `quality-gate.sh` | PostToolUse (Write/Edit) | Auto-formats saved files |
+| `diff-scope.sh` | Utility | Lists changed files vs base branch |
+
+See [HOOKS.md](HOOKS.md) for all 7 hook events and writing custom hooks.
+
+---
+
+## Persona System
+
+8 legendary figures voice key skills. The persona shapes the skill's philosophy, judgment calls, and tone — not as roleplay, but as a decision-making framework.
+
+```
+Think:    Jack Ma (brainstorm)
+Plan:     Steve Jobs (CEO) → Linus Torvalds (eng) → James Dyson (design)
+Build:    Bruno Sacco (frontend/slop) → Lisa Su (performance) → Atrioc (marketing)
+Reflect:  Warren Buffett (retrospective)
 ```
 
 ---
 
-## Command File Format
+## Contexts
 
-```markdown
-# /command-name
+Three modes activated by task type. See [CONTEXTS.md](CONTEXTS.md).
 
-Brief description.
-
-## Instructions
-
-1. Read the agent config at `.claude/agents/agent-name.md`
-2. Follow the checklist
-3. Report findings
-
-## Quick Check vs Full Audit
-
-- **Quick:** Focus on changed files only
-- **Full:** Review entire codebase
-```
+| Context | Behavior | Priority Skills |
+|---------|----------|----------------|
+| **Dev** | Build first, minimal questions, proactive changes | code-review, frontend-design, security |
+| **Research** | Read first, understand before acting, conservative | investigation, planner |
+| **Review** | Quality focus, checklist-driven, report findings | qa, security-audit, design-review |
 
 ---
 
-## When to Use What
+## Safety Modes
 
-| Situation | Use |
-|-----------|-----|
-| Writing new UI code | Skills auto-activate |
-| Writing new API routes | Skills auto-activate |
-| Before committing | `/code-review` |
-| Security concerns | `/security-audit` |
-| UI looks wrong | `/design-review` |
-| Accessibility check | `/accessibility` |
-| Testing user flows | `/user-flow-test` |
-| Updating docs | `/docs-update` |
+Three modes enforced by `safety-check.sh` hook:
 
----
+| Mode | Command | Behavior |
+|------|---------|----------|
+| **Careful** | `/careful` | Warns before destructive commands |
+| **Freeze** | `/freeze <dir>` | Blocks edits outside directory |
+| **Guard** | `/guard <dir>` | Both careful + freeze |
 
-## Best Practices
-
-### Skills
-- Keep SKILL.md focused on rules, not examples
-- Use reference files for detailed patterns
-- Include a pre-completion checklist
-- Update skills when you learn new patterns
-
-### Agents
-- Make checklists specific and actionable
-- Include file paths to check
-- Define output format clearly
-- Test agents on known issues
-
-### Commands
-- Keep command files short
-- Point to agent for details
-- Include quick vs full options
+See [SAFETY.md](SAFETY.md) for configuration.
 
 ---
 
-## Token-Efficient File Formats
+## Strategic Compaction
 
-Different file formats have different token costs. Choose wisely:
+Compact context at **phase transitions**, not at 95% capacity.
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│ YAML     → Most efficient (schemas, configs, APIs)          │
-│            Indentation-based, minimal syntax overhead        │
-└─────────────────────────────────────────────────────────────┘
-┌─────────────────────────────────────────────────────────────┐
-│ Markdown → Good for docs (headings aid navigation)          │
-│            ## headings let models skip to relevant sections  │
-└─────────────────────────────────────────────────────────────┘
-┌─────────────────────────────────────────────────────────────┐
-│ XML      → Claude-optimized (constraints, rules)             │
-│            Anthropic fine-tuned to recognize tags as         │
-│            containers and separators                         │
-└─────────────────────────────────────────────────────────────┘
-┌─────────────────────────────────────────────────────────────┐
-│ JSON     → Least efficient (avoid for large files)          │
-│            Braces and quotes add ~30% token overhead         │
-└─────────────────────────────────────────────────────────────┘
-```
+- Compact between Think→Plan, Plan→Build, Build→Review, etc.
+- Preserve: decisions made, current file list, blockers, next steps
+- Never compact mid-implementation
 
-### Recommended File Structure
-
-```
-docs/
-├── CLAUDE.md          # Markdown - AI instructions
-├── TODO.md            # Markdown - Task tracking
-├── CHANGELOG.md       # Markdown - Version history
-├── schema.yaml        # YAML - Database schema
-├── api.yaml           # YAML - API specification
-├── FILE_FORMATS.md    # Markdown - Format guidelines
-└── templates/
-    ├── schema.template.yaml
-    └── api.template.yaml
-```
-
-See `docs/FILE_FORMATS.md` for detailed guidelines and conversion examples.
+See [STRATEGIC_COMPACTION.md](STRATEGIC_COMPACTION.md).
 
 ---
 
-## Claude 4.6 Behavior Changes
+## File Formats
 
-Claude Opus 4.6 behaves differently from 4.5 in ways that affect how you write CLAUDE.md, skills, and agents.
+Choose formats for token efficiency:
 
-### What Changed
+| Format | Best For | Token Cost |
+|--------|----------|-----------|
+| **YAML** | Schemas, configs, APIs | Most efficient |
+| **Markdown** | Docs, skills, plans | Good (headings aid navigation) |
+| **XML** | Constraints, rules | Claude-optimized |
+| **JSON** | Settings only | Least efficient (~30% overhead) |
 
-| Behavior | 4.5 | 4.6 |
-|----------|-----|-----|
-| Proactiveness | Moderate | **High** — will add features you didn't ask for |
-| Tool triggering | Under-triggered | **Over-triggers** on aggressive imperatives |
-| Parallel tool calls | ~60% | **~100%** with explicit XML instruction |
-| Thinking | Manual `budget_tokens` | **Adaptive** — auto decides when/how much |
-| Context | Manual management | **Auto-compaction** built in |
-| Prefill | Supported | **Removed** (returns 400 error) |
-
-### Prompting Rules for 4.6
-
-**Remove these from any CLAUDE.md or skill:**
-- `"be thorough"`, `"think carefully"`, `"do not be lazy"` → amplify proactive behavior, waste tokens
-- `"You MUST use [tool]"` → causes overtriggering; use `"Use [tool] when relevant"`
-- `"Use the think tool to plan"` → causes over-planning before acting
-
-**Add these XML blocks to CLAUDE.md:**
-
-```xml
-<parallel_tool_calls>
-If you intend to call multiple tools and there are no dependencies between them,
-make all independent tool calls in parallel.
-</parallel_tool_calls>
-
-<do_not_overengineer>
-Only make changes that are directly requested or clearly necessary. Keep solutions
-simple and focused. Don't add features or improvements beyond what was asked.
-</do_not_overengineer>
-
-<context_window>
-Your context window will be automatically compacted as it approaches its limit.
-Do not stop tasks early due to context concerns.
-</context_window>
-```
-
-### Effort Levels (API)
-
-The `output_config.effort` parameter replaces manual `budget_tokens` for controlling reasoning depth:
-
-| Level | Use For | Notes |
-|-------|---------|-------|
-| `max` | Deepest reasoning, hardest problems | Opus 4.6 only |
-| `high` | Complex coding, agentic tasks (default) | Almost always thinks |
-| `medium` | Balanced workflows | May skip thinking on simple queries |
-| `low` | Simple tasks, high-volume subagents | Minimal thinking |
-
-### New Stop Reasons to Handle
-
-```python
-match response.stop_reason:
-    case "end_turn":    # Normal completion
-    case "max_tokens":  # Hit output limit
-    case "tool_use":    # Tool call
-    case "refusal":     # NEW — Claude refused the request
-    case "model_context_window_exceeded":  # NEW — hit context limit
-    case "compaction":  # NEW — context was compacted (pause mode)
-```
-
----
-
-## Research Sources
-
-- [Building Effective Agents](https://www.anthropic.com/research/building-effective-agents)
-- [Claude Code Best Practices](https://www.anthropic.com/engineering/claude-code-best-practices)
-- [Claude 4.6 Migration Guide](CLAUDE_4_6_UPGRADE.md)
+See [FILE_FORMATS.md](FILE_FORMATS.md).

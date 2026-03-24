@@ -30,123 +30,100 @@ cd my-project
 **Option C: Add to Existing Project**
 
 ```bash
-# From your existing project folder
+cd /path/to/your/existing-project
 git clone --depth 1 https://github.com/asspenwhite/claude-code-framework.git temp
-cp -r temp/.claude ./
-cp -r temp/docs ./
+cp -r temp/.claude temp/docs ./
 rm -rf temp
 ```
 
 ---
 
-## Step 2: Create Your CLAUDE.md
+## Step 2: Enable Hooks
 
-Copy the example and customize:
+Copy the example settings to activate runtime hooks:
 
 ```bash
-cp claude-code-framework/docs/CLAUDE.md.example your-project/CLAUDE.md
+cp .claude/settings.local.json.example .claude/settings.local.json
 ```
 
-Edit `CLAUDE.md` to include:
+This enables:
+- **config-protect** — Warns before weakening linter configs
+- **safety-check** — Warns before destructive commands (`rm -rf`, `DROP TABLE`, force-push)
+- **quality-gate** — Auto-formats files after save (if formatter is installed)
 
-1. **Project Overview** - What your app does, tech stack
-2. **Key Directories** - Where important files live
-3. **Critical Rules** - Security patterns, coding standards
-4. **Links to Docs** - Point to detailed documentation
+Make hook scripts executable:
 
-Keep it under 200 lines. Move detailed docs to separate files.
+```bash
+chmod +x .claude/hooks/*.sh
+```
+
+See [docs/HOOKS.md](docs/HOOKS.md) for customization.
 
 ---
 
-## Step 3: Configure MCP Servers (Recommended)
+## Step 3: Create Your CLAUDE.md
 
-MCP servers give Claude real-time access to tools and documentation.
+The template `CLAUDE.md` is ready to customize. Edit it to include:
 
-### Essential MCP Servers
+1. **Project Overview** — What your app does, tech stack
+2. **Key Directories** — Where important files live
+3. **Critical Rules** — Security patterns, coding standards
+4. **Quick Reference** — Ports, URLs, stack details
+
+Keep it under 200 lines. Detailed docs go in `docs/`.
+
+---
+
+## Step 4: Configure MCP Servers (Recommended)
 
 ```bash
-# Playwright - Browser automation for visual testing
+# Playwright — Browser automation for visual testing
 claude mcp add playwright -- npx @anthropic/mcp-playwright
 
-# shadcn/ui - Component library source code
-claude mcp add shadcn -- npx -y @anthropic-ai/shadcn-mcp@latest
-
-# Context7 - Up-to-date library documentation
+# Context7 — Up-to-date library documentation
 claude mcp add context7 -- npx -y @anthropic-ai/context7-mcp@latest
+
+# shadcn/ui — Component library source code
+claude mcp add shadcn -- npx -y @anthropic-ai/shadcn-mcp@latest
 ```
 
-### Project-Specific MCP Servers
+Project-specific:
 
 ```bash
-# Supabase - If using Supabase
+# Supabase
 claude mcp add supabase -- npx -y @anthropic-ai/supabase-mcp@latest
 
-# Stripe - If processing payments
+# Stripe
 claude mcp add --transport http stripe https://mcp.stripe.com/
 ```
 
-### Verify Installation
-
-```bash
-claude /mcp
-```
+Verify: `claude /mcp`
 
 ---
 
-## Step 4: Customize Skills
+## Step 5: Customize Skills
 
-### Frontend Design Skill
+### Core Skills (customize for your domain)
 
-Located at `.claude/skills/frontend-design/`
+| Skill | What to Customize |
+|-------|-------------------|
+| `frontend-design/THEMES.md` | Your brand colors and palettes |
+| `frontend-design/TYPOGRAPHY.md` | Your font choices |
+| `security/PATTERNS.md` | Your auth/payment patterns |
+| `security/FILES.md` | Your security-critical files |
 
-**Files to customize:**
+### Pipeline Skills (use as-is or extend)
 
-| File | What to Change |
-|------|----------------|
-| `THEMES.md` | Add your brand colors, remove unused palettes |
-| `TYPOGRAPHY.md` | Add your font choices if different |
-| `EXAMPLES.md` | Add project-specific before/after examples |
-
-### Security Skill
-
-Located at `.claude/skills/security/`
-
-**Files to customize:**
-
-| File | What to Change |
-|------|----------------|
-| `SKILL.md` | Update rules for your auth/payment system |
-| `PATTERNS.md` | Add your secure code patterns |
-| `FILES.md` | List your security-critical files |
-| `CHECKLIST.md` | Adapt pre-commit checklist |
-
----
-
-## Step 5: Customize Agents
-
-Agents live in `.claude/agents/`. For each agent:
-
-1. **Update file paths** - Replace `[your-path]` placeholders
-2. **Add project checks** - Include your specific anti-patterns
-3. **Remove irrelevant sections** - Keep only what applies
-
-### Example: Security Audit Agent
-
-Edit `.claude/agents/security-audit-agent.md`:
-
-```markdown
-## Files to Check
-
-- `src/lib/auth.ts` - Your auth utilities
-- `src/app/api/webhook/route.ts` - Your webhook handlers
-- `src/middleware.ts` - Your middleware
-```
+The 22 skills work out of the box. Customize by:
+- Adding project-specific checks to checklists
+- Updating file paths for your project structure
+- Adding new reference files for domain knowledge
 
 ---
 
 ## Step 6: Configure Permissions (Optional)
 
-Create `.claude/settings.local.json` to control tool access:
+Create or edit `.claude/settings.local.json`:
 
 ```json
 {
@@ -155,11 +132,19 @@ Create `.claude/settings.local.json` to control tool access:
       "Bash(npm:*)",
       "Bash(npx:*)",
       "Bash(git:*)",
-      "mcp__playwright__*",
-      "mcp__shadcn__*"
+      "mcp__playwright__*"
     ],
     "deny": [
-      "Bash(rm -rf:*)"
+      "Bash(rm -rf /)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      { "matcher": "Write|Edit", "hooks": [{ "type": "command", "command": ".claude/hooks/config-protect.sh" }] },
+      { "matcher": "Bash", "hooks": [{ "type": "command", "command": ".claude/hooks/safety-check.sh" }] }
+    ],
+    "PostToolUse": [
+      { "matcher": "Write|Edit", "hooks": [{ "type": "command", "command": ".claude/hooks/quality-gate.sh" }] }
     ]
   }
 }
@@ -171,48 +156,50 @@ Create `.claude/settings.local.json` to control tool access:
 
 ### Test Skills
 
-Start working on UI - the frontend-design skill should auto-activate:
+Start working on UI — the frontend-design skill should auto-activate:
 
 ```
 You: Create a hero section for the homepage
-Claude: [Should apply your theme colors, avoid generic patterns]
+Claude: [Should apply your theme colors, avoid generic AI patterns]
 ```
 
-### Test Agents
-
-Run a command:
+### Test Commands
 
 ```bash
-claude /security-audit
-claude /code-review
-claude /design-review
+/code-review          # Fix-First code review
+/security-audit       # Security vulnerability check
+/design-review        # Visual UI review + AI slop grade
+/ceo-review           # Steve Jobs scope review
+/ship                 # PR + release workflow
 ```
+
+### Test Hooks
+
+If hooks are enabled, try editing an `.eslintrc` file — you should see a warning from config-protect.
 
 ---
 
 ## Troubleshooting
 
 ### Skills Not Activating
-
 - Check that `.claude/skills/*/SKILL.md` exists
-- Verify SKILL.md has correct frontmatter format
-- Skills activate based on task relevance - try being more specific
+- Verify SKILL.md has correct frontmatter (name, description, activates_when)
+- Skills activate based on task relevance — try being more specific
 
 ### Commands Not Found
-
 - Verify `.claude/commands/*.md` files exist
 - Command name = filename without `.md`
 - Restart Claude Code after adding commands
 
+### Hooks Not Running
+- Verify scripts are executable: `chmod +x .claude/hooks/*.sh`
+- Check `settings.local.json` has hooks configuration
+- See [docs/HOOKS.md](docs/HOOKS.md) for debugging
+
 ### MCP Servers Not Working
-
 ```bash
-# Check status
-claude /mcp
-
-# Re-authenticate if needed
-claude mcp auth supabase
-claude mcp auth stripe
+claude /mcp           # Check status
+claude mcp auth NAME  # Re-authenticate
 ```
 
 ---
@@ -221,26 +208,21 @@ claude mcp auth stripe
 
 ```
 your-project/
-├── CLAUDE.md                 # Main AI instructions
+├── CLAUDE.md                    # Main AI instructions (customized)
 ├── .claude/
-│   ├── settings.local.json   # Permissions (optional)
-│   ├── skills/
-│   │   ├── frontend-design/
-│   │   └── security/
-│   ├── agents/
-│   └── commands/
-├── docs/                     # Your project docs
-│   ├── API.md
-│   ├── SCHEMA.md
-│   └── ...
-└── src/                      # Your code
+│   ├── settings.local.json      # Permissions + hooks config
+│   ├── hooks/                   # Runtime safety scripts
+│   ├── skills/                  # 22 unified skills
+│   └── commands/                # Slash command triggers
+├── docs/                        # Project documentation
+└── src/                         # Your code
 ```
 
 ---
 
 ## Next Steps
 
-1. Read [ARCHITECTURE.md](docs/ARCHITECTURE.md) to understand how everything works
-2. Customize skills for your domain
-3. Update agents with your file paths
-4. Start coding!
+1. Read [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — understand the 3-layer system
+2. Read [docs/PROCESS.md](docs/PROCESS.md) — understand the 7-stage pipeline
+3. Customize skills for your domain
+4. Start building!

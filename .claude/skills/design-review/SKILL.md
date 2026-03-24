@@ -1,12 +1,13 @@
 ---
 name: design-review
 description: UI quality and consistency patterns. Auto-activates when building UI components, styling, or visual work.
-allowed-tools: Read, Write, Edit, Glob, Grep, mcp__playwright__browser_snapshot, mcp__playwright__browser_navigate
+activates_when: building UI, styling, components, visual work, CSS, Tailwind
+allowed-tools: Read, Write, Edit, Glob, Grep, mcp__playwright__browser_snapshot, mcp__playwright__browser_navigate, mcp__playwright__browser_take_screenshot
 ---
 
 # Design Review - UI Quality Patterns
 
-Apply these patterns when building or reviewing UI.
+"Live Environment First" — always test with real browsers, not just code review.
 
 ## Consistency
 
@@ -54,6 +55,10 @@ Apply these patterns when building or reviewing UI.
 ✗ No inconsistent button styles
 ```
 
+## AI Slop Detection
+
+Cross-reference `ai-slop-detection` skill (Bruno Sacco's blacklist) for formal anti-pattern grading. Include letter grade (A-F) in review output.
+
 ## Playwright Verification
 
 When building UI, verify with Playwright:
@@ -73,4 +78,91 @@ When building UI, verify with Playwright:
 - [ ] Responsive at all breakpoints
 - [ ] Interactions work correctly
 - [ ] Loading states present
+- [ ] AI slop grade: ___
+```
+
+---
+
+## Review Mode (/design-review)
+
+**Philosophy:** "Live Environment First" — always test with real browsers, not just code review.
+
+### When to Invoke
+
+- After UI/UX changes
+- Before releasing new features
+- When visual issues are reported
+- During design system updates
+
+### Audit Checklist
+
+#### Visual Consistency
+- [ ] Colors match design system
+- [ ] Typography follows hierarchy
+- [ ] Spacing is consistent
+- [ ] Icons are properly sized
+
+#### Responsive Design
+- [ ] Desktop (1920px) looks correct
+- [ ] Tablet (768px) adapts properly
+- [ ] Mobile (375px) is usable
+- [ ] No horizontal scroll on mobile
+
+#### Interactive Elements
+- [ ] Hover states work
+- [ ] Focus states visible
+- [ ] Buttons look clickable
+- [ ] Links are distinguishable
+
+#### Loading States
+- [ ] Skeleton loaders present
+- [ ] Loading spinners appropriate
+- [ ] No layout shift on load
+
+#### Error States
+- [ ] Error messages clear
+- [ ] Form validation visible
+- [ ] Empty states designed
+
+#### AI Slop Grade
+- [ ] Rate A-F using ai-slop-detection blacklist
+- [ ] No F-tier anti-patterns (Inter font, purple gradients, "Welcome to" hero)
+- [ ] No D-tier anti-patterns (cookie-cutter grids, default shadcn)
+
+### Tools
+
+1. **Playwright MCP** for live testing
+   - `browser_navigate` — Open pages
+   - `browser_resize` — Test responsive (1920, 768, 375)
+   - `browser_take_screenshot` — Capture evidence
+   - `browser_console_messages` — Check for errors
+
+### Severity Levels
+
+- **Critical:** Broken functionality, unusable
+- **High:** Major visual issues, poor UX
+- **Medium:** Inconsistencies, minor visual bugs
+- **Low:** Nitpicks, polish items
+
+### Output Format
+
+```markdown
+## Design Review Results
+
+### Page: [Page Name]
+**AI Slop Grade:** [A-F]
+
+#### Desktop (1920px)
+[Screenshot] — Findings
+
+#### Mobile (375px)
+[Screenshot] — Findings
+
+### Issues
+| Issue | Severity | Location | Fix |
+|-------|----------|----------|-----|
+
+### Summary
+- Critical: X | High: X | Medium: X | Low: X
+- AI Slop Grade: [A-F]
 ```

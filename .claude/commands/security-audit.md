@@ -2,7 +2,7 @@ Perform a security audit on the specified files, routes, or the entire applicati
 
 $ARGUMENTS
 
-Load and follow the instructions in: .claude/agents/security-audit-agent.md
+Load and follow the **Review Mode** section in: .claude/skills/security-audit/SKILL.md
 
 Focus on:
 - Authentication and authorization

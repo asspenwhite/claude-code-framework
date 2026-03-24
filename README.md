@@ -1,180 +1,77 @@
 # Claude Code Framework
 
-A complete AI-guided development framework for [Claude Code](https://docs.anthropic.com/en/docs/claude-code) that makes AI-assisted coding significantly better.
+A complete AI-guided development framework for [Claude Code](https://docs.anthropic.com/en/docs/claude-code). Skills, hooks, personas, and a 7-stage pipeline — zero dependencies, pure markdown + shell scripts.
 
 [![Use this template](https://img.shields.io/badge/Use%20this%20template-238636?style=for-the-badge&logo=github&logoColor=white)](https://github.com/asspenwhite/claude-code-framework/generate)
 
 ---
 
-## What is Claude Code?
+## What This Framework Does
 
-**Claude Code** is Anthropic's official command-line tool that lets you code with Claude AI directly in your terminal. Instead of copying/pasting code from a chat window, Claude Code can:
+Without configuration, Claude Code uses generic patterns, misses security issues, and doesn't know your project's rules. This framework fixes that with three layers:
 
-- Read and write files in your project
-- Run terminal commands
-- Browse the web for documentation
-- Test your app in a real browser
+```
+Hooks (runtime safety — block destructive commands, protect configs, auto-format)
+  └── Skills (prevention + review — 22 skills, 8 legendary personas)
+       └── Commands (slash interface — /ship, /investigate, /ceo-review, etc.)
+```
 
-**This template** configures Claude Code with best practices so it writes better code and catches more issues.
+### The Pipeline
+
+Every feature flows through 7 stages. Skip stages for small changes (typo = Build → Ship).
+
+```
+Think → Plan → Build → Review → Test → Ship → Reflect
+```
+
+| Stage | Persona | Command |
+|-------|---------|---------|
+| **Think** | Jack Ma | `/brainstorm` |
+| **Plan** | Steve Jobs → Linus Torvalds → James Dyson | `/ceo-review` → `/eng-review` → `/design-review-plan` |
+| **Build** | Bruno Sacco, Lisa Su, Atrioc | Skills auto-activate |
+| **Review** | — | `/code-review`, `/security-audit`, `/design-review` |
+| **Test** | — | `/qa`, `/user-flow-test`, `/accessibility` |
+| **Ship** | — | `/ship` |
+| **Reflect** | Warren Buffett | `/reflect` |
 
 ---
 
 ## Prerequisites
 
-Before using this template, you need:
-
-### 1. Node.js (Required)
-
-You need Node.js to install Claude Code. Download and install it first:
-
-[Download Node.js](https://nodejs.org/) (LTS version recommended)
-
-Verify it's installed:
-
-```bash
-node --version
-npm --version
-```
-
-### 2. Claude Code CLI (Required)
-
-Install Claude Code globally:
-
-```bash
-npm install -g @anthropic-ai/claude-code
-```
-
-Then authenticate:
-
-```bash
-claude auth
-```
-
-
-### 3. Git (Required)
-
-You need Git to clone repositories. Check if you have it:
-
-```bash
-git --version
-```
-
-> Don't have Git? [Download it here](https://git-scm.com/downloads)
-
-### 4. A Code Editor (Optional)
-
-I built this entire framework using just Claude Code in the terminal - no editor needed. But if you prefer one: VS Code, Cursor, Sublime, etc. all work.
-
----
-
-## What This Framework Provides
-
-Instead of basic Claude Code, this framework provides:
-
-| Feature | What It Does |
-|---------|--------------|
-| **Skills** | Auto-activate when relevant to prevent common mistakes (bad UI patterns, security issues) |
-| **Agents** | Manual review workflows that catch issues before you ship |
-| **Commands** | Simple `/slash-commands` to run agents (like `/security-audit`) |
-| **Docs Workflow** | Auto-maintains CHANGELOG, TODO, and architecture docs |
+1. **Node.js** — [Download](https://nodejs.org/) (LTS)
+2. **Claude Code** — `npm install -g @anthropic-ai/claude-code` then `claude auth`
+3. **Git** — [Download](https://git-scm.com/downloads)
 
 ---
 
 ## Quick Start
 
-### Option A: New Project (Recommended)
+### New Project
 
-**Step 1:** Click the green **"Use this template"** button at the top of this page → **"Create a new repository"**
+1. Click **"Use this template"** → **"Create a new repository"**
+2. Clone your new repo: `git clone https://github.com/YOU/your-repo.git`
+3. `cd your-repo && claude`
+4. Paste the setup prompt from [QUICKSTART.md](QUICKSTART.md)
 
-> This creates a new repo in YOUR GitHub account with all the template files already copied.
-
-**Step 2:** Name your repository (e.g., `my-awesome-app`) and click **"Create repository"**
-
-**Step 3:** Clone YOUR new repository to your computer:
-
-```bash
-# Replace YOUR-USERNAME and your-repo-name with your actual values
-git clone https://github.com/YOUR-USERNAME/your-repo-name.git
-
-# Example:
-git clone https://github.com/johndoe/my-awesome-app.git
-```
-
-**Step 4:** Open a terminal IN your project folder:
+### Existing Project
 
 ```bash
-cd my-awesome-app    # <- Use YOUR folder name
-```
-
-**Step 5:** Start Claude Code:
-
-```bash
-claude
-```
-
-**Step 6:** Paste this prompt (fill in your details):
-
-```
-Customize this template for my project:
-
-**Project Name:** [Your app name]
-**Description:** [What it does in 1-2 sentences]
-**Tech Stack:** [e.g., Next.js 14, Supabase, Stripe, Tailwind]
-**Key Features:**
-1. [Feature 1]
-2. [Feature 2]
-3. [Feature 3]
-
-Update CLAUDE.md, customize the skills and agents for my project, and create initial docs.
-```
-
-Claude reads the template files and customizes everything for your project.
-
----
-
-### Option B: Add to Existing Project
-
-If you already have a project and want to add the Claude Code configuration:
-
-```bash
-# Navigate to your existing project
-cd /path/to/your/existing-project
-
-# Download just the .claude folder and docs
+cd /path/to/your/project
 git clone --depth 1 https://github.com/asspenwhite/claude-code-framework.git temp-template
-cp -r temp-template/.claude ./
-cp -r temp-template/docs ./
-cp temp-template/QUICKSTART.md ./
+cp -r temp-template/.claude temp-template/docs temp-template/QUICKSTART.md ./
 rm -rf temp-template
-
-# Start Claude Code
 claude
 ```
 
-Then paste the customization prompt above.
+### Enable Hooks (Recommended)
 
----
-
-### After Setup: Install MCP Servers (Optional but Recommended)
-
-**What are MCP Servers?** They're plugins that give Claude Code extra abilities - like controlling a browser, accessing component libraries, or reading documentation.
-
-Run these in your project folder:
+Copy the example settings to activate safety hooks:
 
 ```bash
-# Playwright - Lets Claude control a browser to test your app visually
-claude mcp add playwright -- npx @anthropic/mcp-playwright
-
-# shadcn/ui - Gives Claude access to the shadcn component library
-claude mcp add shadcn -- npx -y @anthropic-ai/shadcn-mcp@latest
-
-# Context7 - Gives Claude up-to-date docs for popular libraries
-claude mcp add context7 -- npx -y @anthropic-ai/context7-mcp@latest
+cp .claude/settings.local.json.example .claude/settings.local.json
 ```
 
----
-
-See [QUICKSTART.md](QUICKSTART.md) for more example prompts.
+See [docs/HOOKS.md](docs/HOOKS.md) for configuration details.
 
 ---
 
@@ -182,203 +79,167 @@ See [QUICKSTART.md](QUICKSTART.md) for more example prompts.
 
 ```
 .claude/
-├── skills/                    # Auto-activate during creation
-│   ├── frontend-design/       # Prevents "AI slop" (generic fonts, purple gradients)
-│   └── security/              # Enforces secure patterns
+├── hooks/                         # Runtime safety (Phase 2)
+│   ├── config-protect.sh          # Warns before weakening linter configs
+│   ├── safety-check.sh            # Warns before destructive commands
+│   ├── quality-gate.sh            # Auto-formats saved files
+│   └── diff-scope.sh              # Lists changed files vs base branch
 │
-├── agents/                    # Manual review workflows
-│   ├── design-review-agent.md
-│   ├── security-audit-agent.md
-│   ├── code-review-agent.md
-│   ├── accessibility-agent.md
-│   ├── user-flow-test-agent.md
-│   └── docs-update-agent.md
+├── skills/                        # 22 unified skills (auto-activate + review mode)
+│   ├── _preamble/                 # Always-active common behaviors
+│   ├── code-review/               # Fix-First policy (auto-fix safe issues)
+│   ├── security-audit/            # Security patterns + OWASP checks
+│   ├── design-review/             # Visual QA + AI slop grading
+│   ├── frontend-design/           # Bruno Sacco — timeless UI patterns
+│   ├── ai-slop-detection/         # Bruno Sacco — 10 anti-pattern blacklist
+│   ├── marketing/                 # Atrioc — content strategy & positioning
+│   ├── brainstorm/                # Jack Ma — product discovery
+│   ├── plan-review-ceo/           # Steve Jobs — scope & vision
+│   ├── plan-review-eng/           # Linus Torvalds — architecture
+│   ├── plan-review-design/        # James Dyson — design dimensions
+│   ├── performance/               # Lisa Su — every cycle counts
+│   ├── reflect/                   # Warren Buffett — session retrospective
+│   ├── investigation/             # Root cause debugging
+│   ├── tdd/                       # Test-driven development
+│   ├── planner/                   # Architecture planning
+│   ├── qa/                        # 7-category QA testing
+│   ├── shipping/                  # PR + release workflow
+│   ├── accessibility/             # WCAG 2.1 AA compliance
+│   ├── user-flow-test/            # E2E journey testing
+│   ├── docs-safety/               # Documentation integrity
+│   └── security/                  # Deep security patterns
 │
-└── commands/                  # Human-readable agent triggers
-    └── [matching .md files]
+└── commands/                      # Slash commands → skill review modes
+    ├── brainstorm.md              # /brainstorm — Jack Ma product discovery
+    ├── ceo-review.md              # /ceo-review — Steve Jobs scope review
+    ├── eng-review.md              # /eng-review — Linus Torvalds architecture
+    ├── design-review-plan.md      # /design-review-plan — James Dyson design
+    ├── marketing.md               # /marketing — Atrioc content review
+    ├── plan.md                    # /plan — architecture planning
+    ├── investigate.md             # /investigate — root cause debugging
+    ├── qa.md                      # /qa — quality assurance
+    ├── ship.md                    # /ship — PR + release
+    ├── reflect.md                 # /reflect — Warren Buffett retrospective
+    ├── code-review.md             # /code-review — Fix-First code review
+    ├── security-audit.md          # /security-audit — security check
+    ├── design-review.md           # /design-review — visual QA
+    ├── accessibility.md           # /accessibility — WCAG audit
+    ├── user-flow-test.md          # /user-flow-test — E2E testing
+    ├── docs-update.md             # /docs-update — sync docs
+    ├── careful.md                 # /careful — destructive command warnings
+    ├── freeze.md                  # /freeze — restrict edits to directory
+    ├── guard.md                   # /guard — maximum safety mode
+    └── unfreeze.md                # /unfreeze — clear safety modes
 
 docs/
-├── ARCHITECTURE.md            # How Skills/Agents/Commands work
-├── WORKFLOW.md                # Documentation workflow guide
-├── MCP.md                     # MCP server setup guide
-├── CLAUDE_CODE_INTERNALS.md   # Session storage, folder migration
-├── CLAUDE_4_6_UPGRADE.md      # Claude 4.6 migration guide + new features
-├── CLAUDE.md.example          # Template for main instructions
-└── templates/                 # Documentation templates
-    ├── CHANGELOG.template.md      # Version history
-    ├── TODO.template.md           # Task tracking
-    ├── DECISIONS.template.md      # Architectural decisions
-    ├── LOGIC_AUDIT.template.md    # User flows & edge cases
-    ├── API.template.md            # API documentation
-    ├── SCHEMA.template.md         # Database schema
-    └── PROJECT_README.template.md # Project overview
+├── ARCHITECTURE.md                # 3-layer unified architecture
+├── PROCESS.md                     # 7-stage pipeline
+├── HOOKS.md                       # Hook system documentation
+├── SAFETY.md                      # Safety modes (careful/freeze/guard)
+├── CONTEXTS.md                    # Dev/Research/Review modes
+├── STRATEGIC_COMPACTION.md        # Smart context management
+├── WORKFLOW.md                    # Documentation workflow
+├── MCP.md                         # MCP server setup
+├── FILE_FORMATS.md                # Token-efficient file formats
+├── CLAUDE_CODE_INTERNALS.md       # Session storage internals
+├── CLAUDE_4_6_UPGRADE.md          # Claude 4.6 migration guide
+├── CLAUDE.md.example              # CLAUDE.md template
+└── templates/                     # Document templates
 ```
 
 ---
 
-## Architecture Overview
+## Key Features
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                        CLAUDE.md                             │
-│                   (Project-specific rules)                   │
-└─────────────────────────────────────────────────────────────┘
-                              │
-        ┌─────────────────────┼─────────────────────┐
-        ▼                     ▼                     ▼
-┌──────────────┐      ┌──────────────┐      ┌──────────────┐
-│    Skills    │      │    Agents    │      │   Commands   │
-│ (Auto-load)  │      │   (Manual)   │      │   (Manual)   │
-│              │      │              │      │              │
-│ Prevents     │      │ Catches      │      │ /security    │
-│ mistakes     │      │ issues       │      │ /code-review │
-│ during       │      │ during       │      │ /design      │
-│ creation     │      │ review       │      │              │
-└──────────────┘      └──────────────┘      └──────────────┘
-```
+### Unified Skills (No Separate Agents)
 
-### Progressive Disclosure
+Each skill works in **two modes**:
+1. **Auto-activate** — Core rules load when your task matches. Prevention during creation.
+2. **Review mode** — Invoke via `/command` for full audit. Structured output.
 
-Skills use 3-level loading to save tokens:
+### 8 Legendary Personas
 
-1. **Level 1:** Metadata only (~100 tokens) - loaded at startup
-2. **Level 2:** SKILL.md body (<500 lines) - when task is relevant
-3. **Level 3:** Reference files - only when specifically needed
+Skills are voiced by figures whose philosophy shapes judgment calls:
 
----
+| Persona | Skill | Philosophy |
+|---------|-------|------------|
+| **Steve Jobs** | CEO Review | Obsessive product vision, radical simplification |
+| **Linus Torvalds** | Eng Review | Zero tolerance for complexity theater |
+| **James Dyson** | Design Review | 5,127 prototypes — relentless iteration |
+| **Bruno Sacco** | Frontend + AI Slop | Timeless, not fashionable |
+| **Jack Ma** | Brainstorm | "If not now, when?" — customer obsession |
+| **Lisa Su** | Performance | Every cycle counts — measure everything |
+| **Atrioc** | Marketing | Kill the corporate speak — applied empathy |
+| **Warren Buffett** | Reflect | Compounding lessons — honest retrospectives |
 
-## Customizing for Your Project
+### Fix-First Code Review
 
-### Skills
+- **AUTO-FIX**: dead code, unused imports, console.log, magic numbers
+- **ASK**: security implications, design decisions, >20 line changes
 
-Edit the skills to match your domain:
+### AI Slop Detection
 
-- `frontend-design/` - Already universal, customize color palettes in THEMES.md
-- `security/` - Adapt patterns for your auth/payment system
+10 named anti-patterns graded F through C. If your UI has these, it looks AI-generated:
+- F: Inter/Roboto fonts, purple gradients, "Welcome to" heroes
+- D: Cookie-cutter card grids, unstyled shadcn, generic blue buttons
+- C: Stock illustrations, centered everything, flat backgrounds
 
-### Agents
+### Runtime Hooks
 
-Modify agents for your workflows:
+Shell scripts that run on Claude Code events:
+- **config-protect** — Warns before weakening linter configs
+- **safety-check** — Warns before `rm -rf`, `DROP TABLE`, force-push
+- **quality-gate** — Auto-formats files after save
 
-- Update file paths to match your project structure
-- Add project-specific checks to checklists
-- Remove irrelevant sections
+### Safety Modes
 
-### CLAUDE.md
-
-This is your main configuration. Include:
-
-- Project overview and tech stack
-- Key directories and file locations
-- Critical rules (security, patterns to follow)
-- Links to detailed docs
+| Command | Mode | Purpose |
+|---------|------|---------|
+| `/careful` | Warn | Warns before destructive commands |
+| `/freeze <dir>` | Restrict | Blocks edits outside directory |
+| `/guard <dir>` | Both | Maximum safety |
+| `/unfreeze` | Clear | Remove all restrictions |
 
 ---
 
-## Documentation Workflow
+## Documentation
 
-This template includes a complete **docs-as-code** workflow with templates for every doc your project needs:
-
-| Document | Purpose | When to Update |
-|----------|---------|----------------|
-| **CHANGELOG.md** | Version history | After every change |
-| **TODO.md** | Tasks by priority with file paths | When adding/completing tasks |
-| **DECISIONS.md** | Architectural decisions with context | When making tech choices |
-| **LOGIC_AUDIT.md** | User states, page logic, edge cases | When changing user flows |
-| **API.md** | Routes, requests, responses | When changing API |
-| **SCHEMA.md** | Database tables, RLS, queries | When changing database |
-
-All templates are in `docs/templates/` - Claude will customize them for your project.
-
-### How It Works
-
-1. **Claude updates docs automatically** - Every code change updates CHANGELOG
-2. **Decisions are logged** - Tech choices are documented with reasoning
-3. **TODOs stay current** - Tasks marked complete as work finishes
-4. **Run `/docs-update`** - Syncs all docs after a coding session
-
-See [docs/WORKFLOW.md](docs/WORKFLOW.md) for the full guide.
+| Doc | When to Read |
+|-----|-------------|
+| [QUICKSTART.md](QUICKSTART.md) | First-time setup prompts |
+| [SETUP.md](SETUP.md) | Step-by-step configuration |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | How the 3-layer system works |
+| [docs/PROCESS.md](docs/PROCESS.md) | 7-stage pipeline details |
+| [docs/HOOKS.md](docs/HOOKS.md) | Hook system + custom hooks |
+| [docs/SAFETY.md](docs/SAFETY.md) | Safety modes explained |
 
 ---
 
-## Session Management
+## Claude 4.6 Optimized
 
-Claude Code stores your conversation history locally. Key things to know:
+This framework is built for **Claude Opus 4.6**. Key optimizations:
 
-| Command | Purpose |
-|---------|---------|
-| `claude --resume` | Pick from recent sessions for current folder |
-| `claude --continue` | Continue most recent session (any project) |
-| `claude` | Start fresh session |
+- Parallel tool calls via XML instruction block
+- Anti-overengineering constraint
+- Auto-compaction awareness
+- Softened imperatives (avoids overtriggering)
+- Adaptive thinking (replaces manual budget_tokens)
 
-**Moving or renaming project folders?** Your session history won't automatically follow. See [docs/CLAUDE_CODE_INTERNALS.md](docs/CLAUDE_CODE_INTERNALS.md) for how to migrate sessions to a new folder path.
-
----
-
-## Claude 4.6 Optimizations
-
-This framework is optimized for **Claude Opus 4.6** (`claude-opus-4-6`), the current flagship model. Key improvements over the original 4.5 design:
-
-| Change | Why |
-|--------|-----|
-| **Parallel tool calls** XML block in CLAUDE.md | 4.6 handles parallel calls better; explicit instruction boosts usage to ~100% |
-| **Do-not-overengineer** XML block | 4.6 is proactive by default and will add unrequested features without this constraint |
-| **Context window** XML block | 4.6 has automatic compaction — tells Claude not to stop early |
-| **Softened tool-use language** | `"You MUST use X"` → `"Use X when relevant"` — 4.6 overtriggers on aggressive imperatives |
-| **No anti-laziness prompts** | `"be thorough"`, `"do not be lazy"` amplify already-proactive behavior, causing runaway tokens |
-| **Adaptive thinking** (API-level) | Replace `thinking: {budget_tokens: N}` with `thinking: {type: "adaptive"}` in API calls |
-
-### Key 4.6 API Changes (if you call the API directly)
-
-```python
-# OLD (deprecated on Opus 4.6 — still works but avoid)
-response = client.beta.messages.create(
-    model="claude-opus-4-5",
-    thinking={"type": "enabled", "budget_tokens": 32000},
-    betas=["interleaved-thinking-2025-05-14"],
-    ...
-)
-
-# NEW (Opus 4.6)
-response = client.messages.create(
-    model="claude-opus-4-6",
-    thinking={"type": "adaptive"},
-    output_config={"effort": "high"},  # max | high | medium | low
-    ...
-)
-```
-
-See `docs/CLAUDE_4_6_UPGRADE.md` for the full migration guide.
+See [docs/CLAUDE_4_6_UPGRADE.md](docs/CLAUDE_4_6_UPGRADE.md) for migration details.
 
 ---
 
 ## Research Background
 
-This framework builds on research from:
-
+Built on:
 - [Building Effective Agents](https://www.anthropic.com/research/building-effective-agents)
 - [Claude Code Best Practices](https://www.anthropic.com/engineering/claude-code-best-practices)
-- [Claude Opus 4.6 Model Card](https://www.anthropic.com/claude/opus)
-
-Key insight: **Skills prevent mistakes during creation**, while **Agents catch issues during review**. Using both together produces the best results.
-
----
-
-## Built With
-
-This framework was built using [Claude Code](https://www.npmjs.com/package/@anthropic-ai/claude-code), Anthropic's official CLI for AI-assisted development.
-
-```bash
-npm install -g @anthropic-ai/claude-code
-```
 
 ---
 
 ## License
 
-MIT - Use this however you want.
-
----
+MIT — Use this however you want.
 
 ## Contributing
 

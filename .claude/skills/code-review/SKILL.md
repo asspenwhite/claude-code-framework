@@ -1,12 +1,13 @@
 ---
 name: code-review
 description: Code quality patterns for TypeScript and React. Auto-activates when writing or modifying code files.
+activates_when: writing code, editing functions, creating components, refactoring
 allowed-tools: Read, Write, Edit, Glob, Grep
 ---
 
 # Code Review - Quality Patterns
 
-Apply these patterns when writing or reviewing code.
+"Simple, Secure, Maintainable" — catch bugs and enforce patterns before they ship.
 
 ## TypeScript
 
@@ -73,4 +74,102 @@ Apply these patterns when writing or reviewing code.
 - [ ] No console.log left behind
 - [ ] Performance considered
 - [ ] Security checked
+```
+
+---
+
+## Review Mode (/code-review)
+
+**Philosophy:** "Simple, Secure, Maintainable" — catch bugs and enforce patterns before they ship.
+
+### When to Invoke
+
+- Before merging PRs
+- After significant changes
+- During refactoring
+- When onboarding new patterns
+
+### Diff-Aware
+
+When invoked, scope to branch diff by default. Run `.claude/hooks/diff-scope.sh` to get changed files. Review only those files unless full audit requested.
+
+### Fix-First Policy
+
+Don't just list findings — act on them.
+
+**AUTO-FIX** (do it, don't ask):
+- Dead code removal
+- Unused imports
+- `console.log` removal
+- Magic numbers → named constants
+- Stale/outdated comments
+- N+1 queries → batch queries
+- Missing error handling on awaits
+
+**ASK** (report to user, don't auto-fix):
+- Security implications
+- Race conditions
+- Design decisions
+- Changes > 20 lines
+- Breaking API changes
+- Enum completeness changes
+
+**Suppressions** (do NOT flag):
+- Test files (`*.test.*`, `*.spec.*`) — relaxed rules
+- Generated code — don't touch
+- Intentional patterns marked with `// eslint-disable` or `// @ts-ignore` with explanation
+
+### Full Checklist
+
+#### Error Handling
+- [ ] Async operations have try/catch
+- [ ] Errors logged appropriately
+- [ ] User sees helpful error messages
+- [ ] Errors don't expose sensitive info
+
+#### TypeScript
+- [ ] No `any` types (except justified cases)
+- [ ] Proper type definitions
+- [ ] Null checks where needed
+- [ ] Consistent interfaces
+
+#### React Patterns
+- [ ] No unnecessary re-renders
+- [ ] Proper key props on lists
+- [ ] useEffect dependencies correct
+- [ ] Loading/error states handled
+
+#### Code Quality
+- [ ] No commented-out code
+- [ ] No console.logs in production
+- [ ] Functions do one thing
+- [ ] Names are descriptive
+
+#### Security Basics
+- [ ] No hardcoded secrets
+- [ ] Input validation present
+- [ ] Auth checks in place
+- [ ] Data properly sanitized
+
+### Tools
+
+1. **Grep** for patterns — `any` types, console.log, hardcoded secrets
+2. **Read** changed files
+3. **TypeScript** compiler output
+
+### Output Format
+
+```markdown
+## Code Review Results
+
+### Auto-Fixed
+| File | Fix | Lines |
+|------|-----|-------|
+
+### Needs Discussion
+| File | Issue | Severity | Question |
+|------|-------|----------|----------|
+
+### Summary
+- Auto-fixed: X | Needs discussion: X | Passing: X
 ```

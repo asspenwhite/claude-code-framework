@@ -1,25 +1,29 @@
 # Claude Code Skills
 
-Skills are domain knowledge that auto-activate when Claude is working on relevant tasks.
+Skills are the core building blocks of the framework. Each skill works in **two modes**:
 
-## Skills vs Agents
+1. **Auto-activate** — Core rules load automatically when your task matches. Prevention during creation.
+2. **Review mode** — Invoked manually via `/command` for comprehensive audits. Structured output.
 
-| Aspect | Skills | Agents |
-|--------|--------|--------|
-| **Activation** | Automatic (task detection) | Manual (`/command`) |
-| **Purpose** | Prevention during work | Review after work |
-| **Scope** | Rules that always apply | Comprehensive audits |
-| **Use when** | Building/coding | Ready for review |
+---
 
-**Use skills for ongoing protection, agents for thorough reviews.**
+## How Skills Work
+
+```
+You type code → Skills auto-activate → Core rules apply
+You type /command → Skill loads Review Mode → Full checklist runs
+```
+
+Skills load in 3 levels (progressive disclosure):
+1. **Metadata** (~100 tokens) — Always loaded (name, description, activates_when)
+2. **SKILL.md body** — When task matches activation trigger
+3. **Reference files** — Only when specifically needed (PATTERNS.md, CHECKLIST.md, etc.)
 
 ---
 
 ## Core Skills (Always Active)
 
-These skills provide guardrails that apply during everyday work.
-
-### docs-safety
+### docs-safety → `/docs-update`
 **Activates when:** Modifying TODO.md, CHANGELOG.md, or docs/ files
 
 Prevents documentation mistakes:
@@ -27,111 +31,146 @@ Prevents documentation mistakes:
 - Add to existing sections (no parallel structures)
 - Ask before flagging real data as placeholder
 
-### code-review
+### code-review → `/code-review`
 **Activates when:** Writing or modifying code files
 
-Enforces code quality patterns:
-- TypeScript types and error handling
-- React best practices
-- Performance and security basics
+Enforces code quality with **Fix-First policy**:
+- AUTO-FIX safe issues (dead code, console.log, unused imports)
+- ASK about risky changes (security, design decisions)
 
-### design-review
+### design-review → `/design-review`
 **Activates when:** Building UI components, styling, visual work
 
-Ensures UI quality:
+Ensures UI quality with AI slop detection:
 - Consistency with design system
-- Accessibility requirements
 - Responsive design patterns
+- Letter grade (A-F) using Bruno Sacco's blacklist
 
-### security-audit
+### security-audit → `/security-audit`
 **Activates when:** Auth, API routes, database queries, user data
 
 Enforces security patterns:
-- Server-side validation
+- Server-side validation always
 - Input sanitization
 - Secrets management
+
+### accessibility → `/accessibility`
+**Activates when:** Building UI, forms, interactive elements
+
+WCAG 2.1 AA compliance:
+- Color contrast 4.5:1
+- Keyboard navigation
+- Screen reader compatibility
+
+### user-flow-test → `/user-flow-test`
+**Activates when:** Building auth flows, checkout, multi-step processes
+
+End-to-end journey integrity:
+- Flow completeness
+- Error recovery
+- Session persistence
 
 ---
 
 ## Feature Skills
 
-These skills provide domain-specific knowledge.
+### frontend-design *(Bruno Sacco persona)*
+**Activates when:** UI components, pages, styling
 
-### frontend-design
-
-Prevents "AI slop" - the generic patterns Claude defaults to.
-
-**Activates when:** Building UI components, pages, styling
-
-**Prevents:**
-- Generic fonts (Inter/Roboto)
-- Default color schemes
-- Cookie-cutter layouts
+Prevents "AI slop" — the generic patterns Claude defaults to:
+- No Inter/Roboto, purple gradients, cookie-cutter layouts
+- Timeless, not fashionable
 
 ### security
+**Activates when:** Auth flows, payments
 
-Deep security patterns for auth, payments, and data protection.
-
-**Activates when:** Working on auth, payment, API routes
-
-**Reference Files:**
-- `PATTERNS.md` - Code patterns
-- `CHECKLIST.md` - Pre-commit checklist
-- `FILES.md` - Critical files
+Deep security patterns with reference files:
+- `PATTERNS.md` — Code patterns
+- `CHECKLIST.md` — Pre-commit checklist
+- `FILES.md` — Critical files
 
 ---
 
-## How Skills Work
+## Pipeline Skills
 
-1. **Auto-activation**: Skills load automatically based on task relevance
-2. **Progressive disclosure**: Only loads what's needed to save tokens
-3. **Creation-time guidance**: Prevents mistakes before they happen
+### _preamble (always active)
+Common behaviors injected into every session.
 
-Skills load in 3 levels:
-1. **Metadata** (~100 tokens) - Always loaded
-2. **SKILL.md body** - When task matches
-3. **Reference files** - Only when needed
+### brainstorm → `/brainstorm` *(Jack Ma persona)*
+Product discovery and idea validation.
+
+### plan-review-ceo → `/ceo-review` *(Steve Jobs persona)*
+CEO/founder scope review — find the 10-star experience.
+
+### plan-review-eng → `/eng-review` *(Linus Torvalds persona)*
+Engineering architecture review — lock the execution plan.
+
+### plan-review-design → `/design-review-plan` *(James Dyson persona)*
+Design dimension review — rate each dimension 0-10.
+
+### planner → `/plan`
+Architecture planning and implementation sequencing.
+
+### investigation → `/investigate`
+Root cause debugging — no fixes without confirmed cause.
+
+### tdd
+Test-driven development patterns — Red → Green → Refactor.
+
+### performance *(Lisa Su persona)*
+Performance optimization — every cycle counts.
+
+### ai-slop-detection *(Bruno Sacco persona)*
+Formal AI design anti-pattern blacklist with letter grades.
+
+### marketing → `/marketing` *(Atrioc persona)*
+Content strategy, positioning, and go-to-market — kill the corporate speak.
+
+### qa → `/qa`
+Quality assurance with 7-category issue taxonomy.
+
+### shipping → `/ship`
+PR creation, version bumping, changelog updates.
+
+### reflect → `/reflect` *(Warren Buffett persona)*
+Session retrospective — compound your lessons.
 
 ---
 
 ## Creating Custom Skills
 
-### File Structure
-
-```
-.claude/skills/your-skill/
-├── SKILL.md           # Core rules (keep under 500 lines)
-├── PATTERNS.md        # Detailed code patterns
-├── CHECKLIST.md       # Pre-completion checklist
-└── scripts/           # Validation scripts (optional)
-```
-
-### SKILL.md Format
+### Dual-Mode SKILL.md Format
 
 ```markdown
 ---
 name: skill-name
 description: When this skill should activate. Be specific.
+activates_when: specific triggers
 allowed-tools: Read, Write, Edit, Glob, Grep
 ---
 
 # Skill Name
 
-Brief overview.
+## Core Rules (auto-activate)
+Quick patterns that apply during creation.
 
-## Core Rules
-
-The most important rules that ALWAYS apply.
-
-## Checklist Before Completing
-
+## Checklist
 - [ ] Rule 1 followed
 - [ ] Rule 2 followed
+
+---
+
+## Review Mode (/command-name)
+Full checklist for comprehensive audits.
+
+### Output Format
+Structured findings template.
 ```
 
 ### Guidelines
 
-- **SKILL.md under 500 lines** - Ideally 50-100
-- **Put details in reference files** - Load on demand
-- **Use tables for quick scanning** - Not prose
-- **Include a checklist** - Verifiable completion criteria
+- **SKILL.md under 500 lines** — Ideally 50-120
+- **Put details in reference files** — Load on demand
+- **Use tables for quick scanning** — Not prose
+- **Include a checklist** — Verifiable completion criteria
+- **Add Review Mode** if the skill should be invocable via /command

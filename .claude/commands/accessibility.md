@@ -2,7 +2,7 @@ Check accessibility and WCAG 2.1 AA compliance for the specified page or compone
 
 $ARGUMENTS
 
-Load and follow the instructions in: .claude/agents/accessibility-agent.md
+Load and follow the **Review Mode** section in: .claude/skills/accessibility/SKILL.md
 
 Focus on:
 - Color contrast ratios

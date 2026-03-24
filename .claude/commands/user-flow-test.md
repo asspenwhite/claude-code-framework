@@ -2,7 +2,7 @@ Test user flows end-to-end using browser automation.
 
 $ARGUMENTS
 
-Load and follow the instructions in: .claude/agents/user-flow-test-agent.md
+Load and follow the **Review Mode** section in: .claude/skills/user-flow-test/SKILL.md
 
 Focus on:
 - Authentication flows
