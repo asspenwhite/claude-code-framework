@@ -104,3 +104,22 @@ Full shipping workflow with quality gates.
 - URL: [PR URL]
 - Title: [PR title]
 ```
+
+---
+
+## Quality Gate Retry Loop
+
+If a quality gate fails, fix and recheck. Max 3 cycles before escalating.
+
+```
+Cycle 1: Run gates (build → typecheck → lint → test) → all pass? Ship. Any fail? →
+Cycle 2: Fix the failure → rerun ALL gates → all pass? Ship. Any fail? →
+Cycle 3: Fix → rerun ALL gates → all pass? Ship. Any fail? →
+STOP: Escalate to user. "Quality gates still failing after 3 attempts. Here's what's broken and what I've tried."
+```
+
+**Rules:**
+- Always rerun ALL gates after a fix, not just the one that failed — fixes can introduce regressions
+- Each attempt must try a different approach
+- Never ship with a known failing gate
+- Never disable or weaken a gate to make it pass

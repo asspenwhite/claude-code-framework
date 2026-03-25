@@ -6,6 +6,31 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). This p
 
 ---
 
+## [3.1.0] - 2026-03-24
+
+### Added
+- **Session memory persistence** — 3 shell hooks (session-start, pre-compact, session-end) save/load session state across compactions and restarts
+- **llms.txt pattern** — preamble skill checks `{domain}/llms.txt` before reading full library docs (token savings)
+- **Verification retry loops** — code-review and shipping skills retry fixes up to 3 cycles with different approaches before escalating
+- **Iterative subagent retrieval** — investigation and planner skills evaluate Agent returns and follow up, max 3 cycles
+- **MCP → CLI philosophy** — documented zero-dependency principle in ARCHITECTURE.md (why framework uses built-in tools over MCP)
+- **System prompt injection guide** — SETUP.md explains how Claude Code loads instructions and how to customize effectively
+- **Auto mode documented in README** — interactive vs auto comparison table
+- **Doc contributions table in README** — shows which docs each persona updates
+- **Context7 MCP integration** — 6 skills now reference Context7 for up-to-date library docs instead of guessing APIs
+
+### Changed
+- `_preamble/SKILL.md` — external docs section now prioritizes Context7 → llms.txt → full docs
+- `code-review/SKILL.md` — added Context7 to allowed-tools, added verification retry loop (3-cycle max)
+- `plan-review-eng/SKILL.md` — added Context7 for library verification in build-vs-buy decisions
+- `planner/SKILL.md` — added Context7 to allowed-tools, added iterative research loop
+- `tdd/SKILL.md` — added Context7 for verifying test framework APIs
+- `frontend-design/SKILL.md` — added Context7 for component library doc lookups
+- `shipping/SKILL.md` — added quality gate retry loop (3-cycle max)
+- `investigation/SKILL.md` — added iterative research loop for subagent dispatching
+- `settings.local.json.example` — added SessionStart, PreCompact, Stop hook entries
+- `docs/ARCHITECTURE.md` — "Zero-Dependency Core, MCP Where It Matters" section (Playwright + Context7 are recommended, not required)
+
 ## [3.0.0] - 2026-03-24
 
 ### Added
@@ -67,6 +92,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). This p
 
 | Version | Date | Highlights |
 |---------|------|------------|
+| 3.1.0 | 2026-03-24 | Session persistence, Context7 MCP integration, retry loops, llms.txt, system prompt injection guide |
 | 3.0.0 | 2026-03-24 | Interactive interviews, 8 personas in deliberation, anti-sycophancy, action plans, fire mechanic |
 | 2.0.0 | 2026-03-24 | Swarm deliberation, genuine agent isolation, complaint system, global install |
 | 1.0.0 | 2026-03-23 | Initial release — 8 personas, 23 skills, 21 commands, 7-stage pipeline |

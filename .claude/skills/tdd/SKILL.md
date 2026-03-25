@@ -2,7 +2,7 @@
 name: tdd
 description: Test-driven development patterns. Auto-activates when writing tests or implementing test-first workflows.
 activates_when: writing tests, test-driven development, test failures, adding test coverage
-allowed-tools: Read, Write, Edit, Glob, Grep, Bash
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash, mcp__context7__resolve-library-id, mcp__context7__query-docs
 ---
 
 # TDD - Test-Driven Development
@@ -58,6 +58,16 @@ describe("UserAuth", () => {
 - **Unit:** Pure functions, business logic, utilities
 - **Integration:** API routes, database queries, component rendering
 - **E2E:** Critical user flows only (auth, checkout, core journey)
+
+### Library Docs
+
+Before writing tests, verify testing framework APIs with Context7 MCP:
+
+```
+✓ Use Context7 to check test runner APIs (Jest, Vitest, Playwright, etc.)
+✓ Verify matcher syntax — don't guess from memory, check current docs
+✓ Check framework-specific setup/teardown patterns
+```
 
 ## Checklist
 

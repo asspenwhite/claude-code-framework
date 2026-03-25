@@ -2,7 +2,7 @@
 name: plan-review-eng
 description: Engineering architecture review. Locks the execution plan with brutal honesty about complexity, abstraction, and scalability. Linus Torvalds persona.
 activates_when: reviewing architecture, planning implementation, evaluating technical approach
-allowed-tools: Read, Write, Edit, Glob, Grep
+allowed-tools: Read, Write, Edit, Glob, Grep, mcp__context7__resolve-library-id, mcp__context7__query-docs
 ---
 
 # Engineering Review - Architecture Lock
@@ -122,6 +122,16 @@ For every architectural decision, ask:
 - [ ] Stateless where possible
 - [ ] No single points of failure in critical paths
 - [ ] Horizontal scaling path exists (even if not needed yet)
+
+### Library Verification
+
+Before evaluating build-vs-buy decisions or recommending a library:
+
+```
+✓ Use Context7 MCP to check current library docs — don't guess from memory
+✓ Verify the API actually does what you think it does
+✓ Check version-specific capabilities — "it supports X" means nothing without a version
+```
 
 ### Diagram Requirements
 

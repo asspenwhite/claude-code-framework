@@ -53,3 +53,24 @@ These rules apply to every session, every task.
 ✓ Read artifacts from previous stages
 ✓ Produce artifacts for the next stage
 ```
+
+## External Docs (Context7 + llms.txt)
+
+When you need library documentation, use this priority order:
+
+```
+✓ Context7 MCP first — resolve-library-id → query-docs for up-to-date, token-efficient docs
+✓ llms.txt fallback — check {docs-domain}/llms.txt if Context7 doesn't have the library
+✓ Full docs last resort — only scrape full documentation if neither source has what you need
+✗ Don't guess library APIs from training data — verify with Context7 or docs first
+```
+
+### Context7 MCP
+
+Use `mcp__context7__resolve-library-id` to find the library, then `mcp__context7__query-docs` to get current docs. This is faster and more accurate than reading full documentation sites.
+
+**When to use:** Before recommending a library API, verifying a function signature, checking if a feature exists, or evaluating library capabilities for build-vs-buy decisions.
+
+### llms.txt Fallback
+
+Many documentation sites provide `/llms.txt` — a clean, condensed version of their docs designed for LLM context windows. Use this when Context7 doesn't have the library.

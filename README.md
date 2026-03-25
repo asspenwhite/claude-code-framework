@@ -2,7 +2,7 @@
 
 Make Claude Code build like a team, not a solo dev.
 
-[![Version](https://img.shields.io/badge/version-3.0.0-blue?style=for-the-badge)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-3.1.0-blue?style=for-the-badge)](CHANGELOG.md)
 [![Use this template](https://img.shields.io/badge/Use%20this%20template-238636?style=for-the-badge&logo=github&logoColor=white)](https://github.com/asspenwhite/claude-code-framework/generate)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
 
@@ -55,6 +55,36 @@ The framework auto-detects what you're working with:
 | **Polish** | Something solid | 5 agents: [Torvalds ∥ Dyson ∥ Su] → Sacco → Buffett |
 
 Add `auto` to skip interviews: `/framework-launch auto polish`
+
+### Interactive vs Auto Mode
+
+**Interactive (default):** Each persona interviews you with domain-specific questions before reviewing. You check in after each batch, react to findings, and steer the conversation. This is the boardroom — you're a co-founder, not a spectator.
+
+**Auto:** `/framework-launch auto` skips interviews entirely. Personas review based on code and context alone. Faster, but you lose the ability to front-load priorities and constraints.
+
+| Mode | Command | Best For |
+|------|---------|----------|
+| Interactive | `/framework-launch polish` | Deep reviews, new features, architecture decisions |
+| Auto | `/framework-launch auto polish` | Quick sanity checks, CI integration, familiar codebases |
+
+---
+
+## Doc Contributions
+
+Each persona doesn't just review — they contribute to project documentation:
+
+| Persona | Docs They Update |
+|---------|-----------------|
+| Jack Ma | `MARKET.md`, `TODO.md`, `CONSTRAINTS.md` |
+| Steve Jobs | `DECISIONS.md`, `TODO.md`, `CONSTRAINTS.md` |
+| Linus Torvalds | `ARCHITECTURE.md`, `TODO.md`, `CONSTRAINTS.md` |
+| James Dyson | `DESIGN.md`, `TODO.md` |
+| Lisa Su | `PERFORMANCE.md`, `TODO.md`, `CONSTRAINTS.md` |
+| Atrioc | `README.md`, `TODO.md`, `MARKETING.md` |
+| Bruno Sacco | `DESIGN.md`, `TODO.md` |
+| Warren Buffett | `DECISIONS.md`, `TODO.md`, `LESSONS.md`, `CLAUDE.md` |
+
+After deliberation, the team lead consolidates doc contributions into a prioritized action plan that Claude can execute immediately.
 
 ---
 

@@ -2,7 +2,7 @@
 name: code-review
 description: Code quality patterns for TypeScript and React. Auto-activates when writing or modifying code files.
 activates_when: writing code, editing functions, creating components, refactoring
-allowed-tools: Read, Write, Edit, Glob, Grep
+allowed-tools: Read, Write, Edit, Glob, Grep, mcp__context7__resolve-library-id, mcp__context7__query-docs
 ---
 
 # Code Review - Quality Patterns
@@ -173,3 +173,22 @@ Don't just list findings — act on them.
 ### Summary
 - Auto-fixed: X | Needs discussion: X | Passing: X
 ```
+
+---
+
+## Verification Retry Loop
+
+After applying fixes, verify they actually work. Max 3 cycles before escalating to user.
+
+```
+Cycle 1: Apply fix → run check (build/lint/test) → pass? Done. Fail? →
+Cycle 2: Analyze failure → apply refined fix → run check → pass? Done. Fail? →
+Cycle 3: Analyze again → apply fix → run check → pass? Done. Fail? →
+STOP: Escalate to user. "I've tried 3 fixes and the check still fails. Here's what I tried and what's still breaking."
+```
+
+**Rules:**
+- Each cycle must try a DIFFERENT approach, not the same fix again
+- Log what was tried and why it failed
+- After 3 failures, your mental model of the problem is wrong — stop digging (Buffett principle)
+- Never silently skip a failing check

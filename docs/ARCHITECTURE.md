@@ -220,6 +220,34 @@ See [STRATEGIC_COMPACTION.md](STRATEGIC_COMPACTION.md).
 
 ---
 
+## Zero-Dependency Core, MCP Where It Matters
+
+The framework core (skills, commands, hooks) is **pure markdown + shell scripts** — no npm packages, no build steps. But it recommends two MCP servers that provide capabilities Claude's built-in tools can't match:
+
+| MCP Server | Why It's Worth It |
+|-----------|-------------------|
+| **Playwright** | Visual testing, browser snapshots, E2E flows — no built-in equivalent |
+| **Context7** | Up-to-date library docs without scraping full sites — saves massive tokens |
+
+These are **recommended, not required**. Every skill works without them. But they make visual QA (`/design-review`) and library lookups dramatically better.
+
+### Why Not More MCP?
+
+Framework-level orchestration should not depend on running processes. If the framework itself required custom MCP servers, every user would need to install and maintain them before they could use a single skill.
+
+| Framework Could Use MCP For | Uses Instead |
+|-----------------------------|-----------------------|
+| Custom search server | `Grep` + `Glob` (built-in) |
+| File watcher | Shell hooks (`PreToolUse`, `PostToolUse`) |
+| Custom linting | Skills with auto-activation |
+| Orchestration | Agent tool + markdown prompts |
+
+### The Principle
+
+**If it can be a markdown file read by Claude, don't make it a running process.** Skills are static instructions. Hooks are shell scripts. Commands are markdown files. The only processes worth running are ones that give capabilities Claude literally cannot do with built-in tools (rendering a browser, fetching live docs).
+
+---
+
 ## File Formats
 
 Choose formats for token efficiency:

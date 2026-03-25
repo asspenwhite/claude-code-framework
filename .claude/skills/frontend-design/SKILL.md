@@ -2,7 +2,7 @@
 name: frontend-design
 description: Creates distinctive, production-grade frontend interfaces avoiding generic AI aesthetics. Use when building UI components, pages, styling, or any visual/frontend work. Prevents AI slop (Inter fonts, purple gradients, cookie-cutter layouts). Bruno Sacco persona.
 activates_when: building UI, creating components, styling, pages, visual work
-allowed-tools: Read, Write, Edit, Glob, Grep, Bash(npm:*), Bash(npx:*)
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash(npm:*), Bash(npx:*), mcp__context7__resolve-library-id, mcp__context7__query-docs
 ---
 
 # Frontend Design

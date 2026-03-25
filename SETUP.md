@@ -214,6 +214,45 @@ If hooks are enabled, try editing an `.eslintrc` file — you should see a warni
 
 ---
 
+## System Prompt Injection
+
+The framework works by injecting instructions into Claude's system prompt through `.claude/` files. Understanding how this works helps you customize effectively.
+
+### How Claude Code Loads Instructions
+
+```
+1. CLAUDE.md                    ← Project root instructions (always loaded)
+2. ~/.claude/CLAUDE.md          ← Global instructions (always loaded)
+3. .claude/skills/*/SKILL.md    ← Loaded when task matches activates_when
+4. .claude/commands/*.md        ← Loaded when user types /command
+5. .claude/hooks/*.sh           ← Executed on tool events (PreToolUse, PostToolUse)
+```
+
+### What This Means
+
+Every skill, command, and hook is **injected into Claude's active context** when triggered. The framework doesn't run code — it shapes Claude's behavior by putting the right instructions in front of it at the right time.
+
+### Progressive Disclosure Saves Tokens
+
+Not everything loads at once:
+
+| Level | What Loads | When | Token Cost |
+|-------|-----------|------|-----------|
+| **Metadata** | Name, description, `activates_when` | Always (startup) | ~100 tokens per skill |
+| **SKILL.md body** | Core rules, checklists, review mode | When task matches trigger | ~500-2000 tokens |
+| **Reference files** | TYPOGRAPHY.md, PATTERNS.md, etc. | When skill explicitly reads them | Unlimited |
+
+This is why skills have an `activates_when` field — it controls when the full skill body gets injected. A well-written `activates_when` keeps your context window lean.
+
+### Customization Tips
+
+- **CLAUDE.md** is your highest-priority injection point. Keep it under 200 lines.
+- **Skills** auto-activate based on task relevance. Add project-specific checks to existing skill checklists rather than creating new skills.
+- **Hooks** run shell scripts, not prompts. They return exit codes (0=allow, 1=block, 2=warn) that Claude sees as feedback.
+- **Commands** are full prompts loaded on demand. They can reference skills, include templates, and orchestrate multi-step workflows.
+
+---
+
 ## Troubleshooting
 
 ### Skills Not Activating

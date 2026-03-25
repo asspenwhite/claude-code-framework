@@ -2,7 +2,7 @@
 name: planner
 description: Architecture planning and implementation sequencing. Auto-activates when planning features, migrations, or multi-file changes.
 activates_when: planning features, architecture decisions, multi-file changes, migrations, implementation strategy
-allowed-tools: Read, Write, Edit, Glob, Grep, Bash
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash, mcp__context7__resolve-library-id, mcp__context7__query-docs
 ---
 
 # Planner - Architecture Planning
@@ -97,3 +97,21 @@ Structured architecture plan with open questions.
 2. [Second change — what and why]
 3. [Verify — how to confirm it works]
 ```
+
+---
+
+## Iterative Research Loop
+
+When spawning subagents (via Agent tool) for research during planning, evaluate returns before building on them.
+
+```
+Cycle 1: Dispatch Agent with query + planning objective → evaluate → sufficient? Use it. Incomplete? →
+Cycle 2: Targeted follow-up → evaluate → sufficient? Use it. →
+Cycle 3: Final follow-up → accept.
+Max 3 cycles.
+```
+
+**Rules:**
+- Pass the planning objective, not just the query — "I need to know X because I'm deciding between architecture A and B"
+- Evaluate: does the return help make the architectural decision, or is it just raw information?
+- Don't plan around incomplete data — either get the data or document it as a risk

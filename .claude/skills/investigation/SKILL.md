@@ -227,3 +227,22 @@ Use this lighter format while actively debugging:
 ```
 
 The full incident report is generated from this at the end, with prevention items and lessons learned added.
+
+---
+
+## Iterative Research Loop
+
+When spawning subagents (via Agent tool) for research or data gathering, evaluate what they return. Don't accept the first summary blindly.
+
+```
+Cycle 1: Dispatch Agent with query + objective → evaluate return → sufficient? Done. Incomplete? →
+Cycle 2: Ask targeted follow-up (what's missing, what needs clarification) → evaluate → sufficient? Done. →
+Cycle 3: Final follow-up → evaluate → accept whatever comes back.
+Max 3 cycles. Accept after 3 regardless.
+```
+
+**Rules:**
+- Always pass BOTH the specific query AND the broader objective to the subagent — they lack your context
+- Evaluate every return: does it answer the actual question, or just the literal query?
+- Follow-up questions should be specific: "What error code?" not "Tell me more"
+- After 3 cycles, accept and work with what you have — diminishing returns
