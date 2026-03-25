@@ -54,18 +54,19 @@ The framework auto-detects what you're working with:
 | **WIP** | Something half-finished | 7 agents: Jobs → [Torvalds ∥ Dyson ∥ Su] → [Atrioc ∥ Sacco] → Buffett |
 | **Polish** | Something solid | 5 agents: [Torvalds ∥ Dyson ∥ Su] → Sacco → Buffett |
 
-Add `auto` to skip interviews: `/framework-launch auto polish`
+Combine modifiers: `/framework-launch auto polish`, `/framework-launch auto incremental`
 
-### Interactive vs Auto Mode
+### Three Run Modes
 
-**Interactive (default):** Each persona interviews you with domain-specific questions before reviewing. You check in after each batch, react to findings, and steer the conversation. This is the boardroom — you're a co-founder, not a spectator.
+| Mode | Command | What Happens |
+|------|---------|-------------|
+| **Interactive** | `/framework-launch polish` | Interviews you before each batch, you check in after findings |
+| **Auto** | `/framework-launch auto polish` | Skips interviews, personas review from code + context only |
+| **Incremental** | `/framework-launch incremental` | All personas run, but each reads their previous report — focuses on what changed, what improved, what's still broken |
 
-**Auto:** `/framework-launch auto` skips interviews entirely. Personas review based on code and context alone. Faster, but you lose the ability to front-load priorities and constraints.
+**Interactive** is the boardroom — you're a co-founder. **Auto** is the quick sanity check. **Incremental** is the follow-up meeting where everyone knows the history.
 
-| Mode | Command | Best For |
-|------|---------|----------|
-| Interactive | `/framework-launch polish` | Deep reviews, new features, architecture decisions |
-| Auto | `/framework-launch auto polish` | Quick sanity checks, CI integration, familiar codebases |
+Every persona scores on a **1-10 scale** across their domain dimensions, so you can track improvement between runs.
 
 ---
 

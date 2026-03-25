@@ -172,6 +172,17 @@ Full content and positioning review.
 |------|---------|--------------|---------|
 | [quote] | [why it fails] | [which principle it violates] | [fixed version] |
 
+### Marketing Scorecard
+| Dimension | Score (1-10) | Notes |
+|-----------|:---:|-------|
+| **Audience clarity** | [1-10] | [do you know exactly who this is for?] |
+| **Positioning** | [1-10] | [is it clear what you are and aren't?] |
+| **Copy quality** | [1-10] | [bar test — would you say this out loud?] |
+| **CTA strength** | [1-10] | [one clear action with obvious value?] |
+| **Identity fit** | [1-10] | [marketing TO the community, not ABOUT them?] |
+| **Shareability** | [1-10] | [screenshot test — would someone share this?] |
+| **Average** | [X/10] | |
+
 ### Voice Tests
 - Bar Test: Pass/Fail — [which sentences fail]
 - Cringe Test: Pass/Fail — [which sentences are corporate]
@@ -180,6 +191,7 @@ Full content and positioning review.
 
 ### Verdict
 - Overall: [Ship / Needs Work / Rewrite]
+- Marketing grade: [A-F — A=ready to ship, B=minor fixes, C=major rework, D=confused positioning, F=start over]
 - Biggest problem: [the one thing that would improve this most]
 - Atrioc's take: [one paragraph — direct, anti-cringe, written like he'd say it on stream]
 ```

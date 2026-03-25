@@ -15,7 +15,7 @@ The **team lead** (you, the main conversation) orchestrates: interviewing the us
 
 ---
 
-## Two Modes
+## Modes
 
 ### Interactive Mode (Default)
 
@@ -35,6 +35,40 @@ Skips user interviews. Agents run without user input — useful for quick review
 ```
 /framework-launch auto         → Auto mode, tier auto-detected
 /framework-launch auto polish  → Auto mode, Tier 3
+```
+
+### Incremental Mode
+
+Runs all personas for the detected tier, but **feeds previous reports as context**. Each persona sees what they said last time and what changed since then. This is a real follow-up, not a fresh start.
+
+```
+/framework-launch incremental        → Interactive, reads previous reports
+/framework-launch auto incremental   → Auto, reads previous reports
+```
+
+**How it works:**
+1. Check `docs/reports/` for the most recent deliberation summary and per-persona reports
+2. Include each persona's previous report in their agent prompt under `## Your Previous Report`
+3. Include the previous action plan under `## Previous Action Plan` so they can see what was done
+4. Each persona is instructed: "You reviewed this project before. Focus on **what changed**, **what improved**, and **what's still broken**. Don't repeat findings that were already fixed. Raise new issues and re-raise old issues that were ignored."
+
+**Agent prompt addition for incremental mode:**
+```
+## Your Previous Report
+[paste their last report for this project]
+
+## Previous Action Plan
+[paste the last action plan — mark which items were completed]
+
+## Previous Summary
+[paste the last deliberation summary — decisions, unresolved tensions]
+
+INSTRUCTIONS: You reviewed this project before. Your previous report is above.
+- Focus on what CHANGED since your last review
+- Don't repeat findings that were already addressed
+- Re-raise issues that were flagged but NOT fixed
+- Score relative to last time: improved, same, or regressed
+- Note any new issues that emerged from changes made since last review
 ```
 
 ---

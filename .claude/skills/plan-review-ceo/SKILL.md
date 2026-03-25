@@ -105,6 +105,19 @@ Choose one before starting:
 
 ### Scope Mode: [EXPANSION / SELECTIVE / HOLD / REDUCTION]
 
+### Jobs Scorecard
+| Dimension | Score (1-10) | Notes |
+|-----------|:---:|-------|
+| **Focus** | [1-10] | [does it do ONE thing insanely well?] |
+| **Simplicity** | [1-10] | [could your grandmother understand it?] |
+| **Taste** | [1-10] | [back of the fence — are the hidden parts beautiful?] |
+| **Stage-worthy** | [1-10] | [would you demo this at a keynote?] |
+| **No-list clarity** | [1-10] | [is what you're NOT building crystal clear?] |
+| **10-star potential** | [1-10] | [how close to jaw-dropping?] |
+| **Average** | [X/10] | |
+
+**Product verdict:** [Insanely great / Has potential / Mediocre / Kill it]
+
 ### The One-Sentence Test
 - Can it pass? [yes/no]
 - Current attempt: [their sentence]

@@ -114,6 +114,19 @@ Lighter framework for things built for learning, fun, or community:
 ```markdown
 ## Product Discovery: [Idea Name]
 
+### Demand Scorecard
+| Dimension | Score (1-10) | Evidence |
+|-----------|:---:|----------|
+| **Pain severity** | [1-10] | [how bad is the problem?] |
+| **Desperation level** | [1-10] | [would they use a broken V1?] |
+| **Willingness to pay** | [1-10] | [evidence of budget/switching cost] |
+| **Market timing** | [1-10] | [why now, not 2 years ago?] |
+| **Wedge clarity** | [1-10] | [how focused is the entry point?] |
+| **Moat potential** | [1-10] | [102-year test — does this compound?] |
+| **Average** | [X/10] | |
+
+**Demand verdict:** [Strong / Moderate / Weak / No demand]
+
 ### Demand Assessment
 - Pain: [specific customer pain — observed, not assumed]
 - Status quo: [current solution and why people tolerate it]

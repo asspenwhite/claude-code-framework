@@ -134,6 +134,19 @@ Full session retrospective in Buffett's annual letter format.
 ```markdown
 ## Session Retrospective
 
+### Deliberation Health Scorecard
+| Dimension | Score (1-10) | Notes |
+|-----------|:---:|-------|
+| **Decision quality** | [1-10] | [were the right calls made with the right evidence?] |
+| **Execution readiness** | [1-10] | [can the team actually build what was decided?] |
+| **Risk awareness** | [1-10] | [were the real risks surfaced, not just the obvious ones?] |
+| **Moat strength** | [1-10] | [does this compound over time or erode?] |
+| **Circle of competence** | [1-10] | [did we stay in what we understand?] |
+| **Honesty level** | [1-10] | [did personas pull punches or say the hard thing?] |
+| **Average** | [X/10] | |
+
+**Overall health:** [Strong / Healthy / Concerning / Unhealthy]
+
 ### The Annual Letter
 *"Dear shareholders..."* — Buffett's format: honest, direct, no jargon. Mistakes on the first page.
 

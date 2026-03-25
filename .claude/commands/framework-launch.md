@@ -6,8 +6,9 @@ Load and follow .claude/skills/framework-launch/SKILL.md completely.
 
 ## Mode Detection
 
-- **No `auto` in $ARGUMENTS** → Interactive mode (default): interview the user before each batch
+- **No `auto` or `incremental` in $ARGUMENTS** → Interactive mode (default): interview the user before each batch
 - **`auto` in $ARGUMENTS** → Auto mode: skip interviews, agents review with context only
+- **`incremental` in $ARGUMENTS** → Incremental mode: run all personas for tier, but feed each their previous report from `docs/reports/`. Instruct them to focus on what changed, don't repeat fixed issues, re-raise ignored issues. Can combine with `auto`: `/framework-launch auto incremental`
 
 ## Tier Detection
 
@@ -18,8 +19,8 @@ Detect automatically or from $ARGUMENTS:
 
 ## Process
 
-1. Detect tier and mode from project state or $ARGUMENTS
-2. Gather context: read key project files, prepare context brief
+1. Detect tier, mode, and incremental flag from project state or $ARGUMENTS
+2. Gather context: read key project files, prepare context brief. **If incremental:** also read `docs/reports/` for the most recent summary, action plan, and per-persona reports
 3. **Interview the user** (interactive mode): present each batch's questions before spawning agents
 4. **Spawn agents** per tier dependency chain:
    - Use Agent tool with `subagent_type: "general-purpose"`
