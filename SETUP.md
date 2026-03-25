@@ -14,27 +14,49 @@ Step-by-step instructions for setting up Claude Code with this template.
 
 ---
 
-## Step 1: Get the Template
+## Step 1: Install the Framework
 
-**Option A: Use GitHub's Template Feature (Recommended)**
+### Option A: Global Install (Recommended)
 
-Click "Use this template" on GitHub to create your own copy.
-
-**Option B: Clone Directly**
+Install skills and commands globally so they work in **every project**, regardless of which directory you start Claude from.
 
 ```bash
-git clone https://github.com/asspenwhite/claude-code-framework.git my-project
-cd my-project
+# Clone the framework
+git clone https://github.com/asspenwhite/claude-code-framework.git
+cd claude-code-framework
+
+# Install globally
+cp -r .claude/skills/* ~/.claude/skills/
+rm -f ~/.claude/skills/README.md
+
+cp .claude/commands/*.md ~/.claude/commands/
+rm -f ~/.claude/commands/README.md
 ```
 
-**Option C: Add to Existing Project**
+Now start Claude from **any directory** — all 23 skills and 21 commands are available everywhere.
 
 ```bash
-cd /path/to/your/existing-project
+cd ~/Projects
+claude
+/framework-launch polish   # works in any project
+```
+
+**Workspace pattern:** If you keep all projects in one folder (e.g., `~/Projects/`), start Claude from that folder and navigate to child projects. The global skills follow you everywhere.
+
+### Option B: Project-Local Install
+
+Install into a single project only. Skills are only available in that project.
+
+```bash
+cd /path/to/your/project
 git clone --depth 1 https://github.com/asspenwhite/claude-code-framework.git temp
 cp -r temp/.claude temp/docs ./
 rm -rf temp
 ```
+
+### Option C: GitHub Template
+
+Click "Use this template" on GitHub to create a new repo with the framework pre-installed.
 
 ---
 
@@ -215,13 +237,32 @@ claude mcp auth NAME  # Re-authenticate
 
 ## Directory Structure After Setup
 
+### Global Install (Option A)
+```
+~/.claude/
+├── skills/                      # 23 skills — available in ALL projects
+│   ├── framework-launch/SKILL.md
+│   ├── plan-review-ceo/SKILL.md
+│   ├── ...
+└── commands/                    # 21 commands — available in ALL projects
+    ├── framework-launch.md
+    ├── ceo-review.md
+    └── ...
+
+~/Projects/                      # Your workspace — start claude here
+├── project-a/                   # Skills available here
+├── project-b/                   # Skills available here
+└── project-c/                   # Skills available here
+```
+
+### Project-Local Install (Option B/C)
 ```
 your-project/
 ├── CLAUDE.md                    # Main AI instructions (customized)
 ├── .claude/
 │   ├── settings.local.json      # Permissions + hooks config
 │   ├── hooks/                   # Runtime safety scripts
-│   ├── skills/                  # 22 unified skills
+│   ├── skills/                  # 23 skills — this project only
 │   └── commands/                # Slash command triggers
 ├── docs/                        # Project documentation
 └── src/                         # Your code

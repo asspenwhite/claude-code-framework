@@ -90,14 +90,19 @@ Skip stages for small changes. Typo = Build → Ship. New feature = full pipelin
 
 ## Quick Start
 
-### New Project
+### Global Install (works in every project)
 
-1. Click **"Use this template"** → Create your repo
-2. `git clone https://github.com/YOU/your-repo.git`
-3. `cd your-repo && claude`
-4. Paste the setup prompt from [QUICKSTART.md](QUICKSTART.md)
+```bash
+git clone https://github.com/asspenwhite/claude-code-framework.git
+cd claude-code-framework
+cp -r .claude/skills/* ~/.claude/skills/
+cp .claude/commands/*.md ~/.claude/commands/
+rm -f ~/.claude/skills/README.md ~/.claude/commands/README.md
+```
 
-### Existing Project
+Start Claude from your projects folder — all skills and commands are available in every child project.
+
+### Project-Local Install (single project only)
 
 ```bash
 cd your-project
