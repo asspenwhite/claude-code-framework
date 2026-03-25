@@ -36,20 +36,30 @@ Each persona runs in its own context window with only its SKILL.md loaded. The t
 Team Lead → spawn agents → collect reports → route complaints → spawn rebuttal agents → resolve
 ```
 
+### Two Modes
+
+- **Interactive** (default): Each persona interviews the user with domain-specific questions before reviewing. User checks in after each batch.
+- **Auto** (`/framework-launch auto`): Skips interviews. Agents review with context only.
+
 ### Three Tiers
 
 | Tier | State | Roles Involved | Parallelism |
 |------|-------|---------------|-------------|
-| **Greenfield** | Nothing exists | Ma → Jobs → [Torvalds ∥ Dyson] → Atrioc | Eng + Design parallel |
-| **WIP** | Half-assed, needs direction | Jobs → [Torvalds ∥ Dyson] → Atrioc | Eng + Design parallel |
-| **Polish** | Solid, needs refinement | [Torvalds ∥ Dyson] | Both parallel |
+| **Greenfield** | Nothing exists | Ma → Jobs → [Torvalds ∥ Dyson ∥ Su] → [Atrioc ∥ Sacco] → Buffett | 8 agents, 3 parallel batches |
+| **WIP** | Half-assed, needs direction | Jobs → [Torvalds ∥ Dyson ∥ Su] → [Atrioc ∥ Sacco] → Buffett | 7 agents, 3 parallel batches |
+| **Polish** | Solid, needs refinement | [Torvalds ∥ Dyson ∥ Su] → Sacco → Buffett | 5 agents, 1 parallel batch |
 
 ### Deliberation Rounds
 
 ```
+User Interview: Domain-specific questions before each batch (interactive mode)
 Round 1: Agents spawned per tier (sequential where dependency, parallel where independent)
+User Check-in: Key findings shown after each batch, user reacts
 Round 2: Rebuttal agents spawned in parallel for all complained-against roles
 Round 3: Unresolved Blocks presented to user (max 3 rounds)
+Doc Updates: Each persona contributes to project docs (DECISIONS, TODO, ARCHITECTURE, etc.)
+Action Plan: Consolidated tasks Claude can execute immediately
+Fire Review: Jobs's persona replacement recommendations (if any), pending user approval
 ```
 
 ### Individual Commands (run one at a time)
@@ -63,7 +73,8 @@ Round 3: Unresolved Blocks presented to user (max 3 rounds)
 
 **Reports saved to:** `docs/reports/[role]/[date]-[project]-[type].md`
 **Summary saved to:** `docs/reports/[date]-[project]-summary.md`
-**Also updates:** `docs/DECISIONS.md`, `docs/TODO.md`
+**Action plan:** `docs/reports/[date]-[project]-action-plan.md` — prioritized tasks Claude can execute
+**Also updates:** `docs/DECISIONS.md`, `docs/TODO.md`, `docs/ARCHITECTURE.md`, `docs/DESIGN.md`, `docs/PERFORMANCE.md`, `docs/MARKETING.md`, `docs/LESSONS.md`, `docs/CONSTRAINTS.md`
 **Skip when:** Small changes. Use `/plan` for architecture without deliberation.
 
 ### Build — Implementation

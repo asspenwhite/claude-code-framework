@@ -2,7 +2,9 @@
 
 Make Claude Code build like a team, not a solo dev.
 
+[![Version](https://img.shields.io/badge/version-3.0.0-blue?style=for-the-badge)](CHANGELOG.md)
 [![Use this template](https://img.shields.io/badge/Use%20this%20template-238636?style=for-the-badge&logo=github&logoColor=white)](https://github.com/asspenwhite/claude-code-framework/generate)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
 
 ---
 
@@ -36,7 +38,9 @@ One command. Your project gets reviewed by:
 | Performance | Lisa Su | Measures everything — "show me the profile, not your guess." |
 | Retrospective | Warren Buffett | Compounds lessons — "mistakes on page 1, not page 47." |
 
-**They argue — as separate Claude instances.** Each persona runs in its own context via the Agent tool. Genuine isolation produces genuine disagreement. Engineering blocks CEO scope ("unbuildable"). Design rejects architecture ("kills UX"). Marketing flags that nobody will understand the positioning. Complaints route through a team lead, rebuttals are filed, and consensus is reached — or you break the tie.
+**They argue — as separate Claude instances.** Each persona runs in its own context via the Agent tool. Genuine isolation produces genuine disagreement. No sugar coating — every persona is instructed to be brutally honest. Engineering blocks CEO scope ("unbuildable"). Design rejects architecture ("kills UX"). Marketing flags that nobody will understand the positioning. The CEO can even fire a persona and recommend a replacement. Complaints route through a team lead, rebuttals are filed, and consensus is reached — or you break the tie.
+
+**You're in the boardroom.** Each persona interviews you with domain-specific questions before reviewing. You check in after each batch, react to findings, and make the final calls. You're a co-founder, not a report recipient.
 
 ---
 
@@ -46,9 +50,11 @@ The framework auto-detects what you're working with:
 
 | Tier | You have... | Who reviews |
 |------|------------|------------|
-| **Greenfield** | Nothing yet | 5 agents: Ma → Jobs → [Torvalds ∥ Dyson] → Atrioc |
-| **WIP** | Something half-finished | 4 agents: Jobs → [Torvalds ∥ Dyson] → Atrioc |
-| **Polish** | Something solid | 2 agents: [Torvalds ∥ Dyson] |
+| **Greenfield** | Nothing yet | 8 agents: Ma → Jobs → [Torvalds ∥ Dyson ∥ Su] → [Atrioc ∥ Sacco] → Buffett |
+| **WIP** | Something half-finished | 7 agents: Jobs → [Torvalds ∥ Dyson ∥ Su] → [Atrioc ∥ Sacco] → Buffett |
+| **Polish** | Something solid | 5 agents: [Torvalds ∥ Dyson ∥ Su] → Sacco → Buffett |
+
+Add `auto` to skip interviews: `/framework-launch auto polish`
 
 ---
 
@@ -93,14 +99,17 @@ Skip stages for small changes. Typo = Build → Ship. New feature = full pipelin
 ### Global Install (works in every project)
 
 ```bash
+# Clone into your projects folder (or wherever you keep repos)
 git clone https://github.com/asspenwhite/claude-code-framework.git
 cd claude-code-framework
+
+# Install globally — works from ANY directory after this
 cp -r .claude/skills/* ~/.claude/skills/
 cp .claude/commands/*.md ~/.claude/commands/
 rm -f ~/.claude/skills/README.md ~/.claude/commands/README.md
 ```
 
-Start Claude from your projects folder — all skills and commands are available in every child project.
+Start Claude from your projects folder (`~/Projects/`, `~/code/`, wherever) — all skills and commands are available in every child project. One install, works everywhere.
 
 ### Project-Local Install (single project only)
 
@@ -197,12 +206,20 @@ Optimized prompting for the latest model — parallel tool calls, anti-overengin
 |-----|---------------|
 | [QUICKSTART.md](QUICKSTART.md) | First-time setup prompts |
 | [SETUP.md](SETUP.md) | Step-by-step configuration |
+| [CHANGELOG.md](CHANGELOG.md) | Version history |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | How the 3-layer system works |
 | [docs/PROCESS.md](docs/PROCESS.md) | 7-stage pipeline details |
 | [docs/HOOKS.md](docs/HOOKS.md) | Hook system + writing custom hooks |
 | [docs/SAFETY.md](docs/SAFETY.md) | Safety modes explained |
 
 ---
+
+## Acknowledgments
+
+This framework takes a different approach (team simulation vs toolbox) but exists in the same Claude Code ecosystem as other great projects:
+
+- **[everything-claude-code](https://github.com/affaan-m/everything-claude-code)** by [@affaanmustafa](https://github.com/affaan-m) — Comprehensive Claude Code toolkit with 125+ skills, continuous learning, session persistence, and multi-language support. If you want breadth across languages and frameworks, start there. Their [longform guide](https://cogsec.substack.com) on token economics, memory persistence, and verification patterns is essential reading for any Claude Code user.
+- **[gstack](https://github.com/gstack)** — Production-grade CLI framework with browser automation, deploy pipelines, and post-ship monitoring. Several features in our [gap analysis](docs/GSTACK_GAPS.md) are inspired by what gstack ships.
 
 ## License
 

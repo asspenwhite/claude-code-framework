@@ -1,0 +1,25 @@
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Claude Code local settings (user-specific)
+.claude/settings.local.json
+
+# Reports (generated per-project, not framework source)
+docs/reports/
+
+# Node (if installed locally)
+node_modules/
+
+# Environment
+.env
+.env.local
+.env.*.local

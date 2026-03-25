@@ -21,11 +21,11 @@ Step-by-step instructions for setting up Claude Code with this template.
 Install skills and commands globally so they work in **every project**, regardless of which directory you start Claude from.
 
 ```bash
-# Clone the framework
+# Clone the framework (into your projects folder or wherever you keep repos)
 git clone https://github.com/asspenwhite/claude-code-framework.git
 cd claude-code-framework
 
-# Install globally
+# Install globally — copies to ~/.claude/ which works from ANY directory
 cp -r .claude/skills/* ~/.claude/skills/
 rm -f ~/.claude/skills/README.md
 
@@ -36,12 +36,16 @@ rm -f ~/.claude/commands/README.md
 Now start Claude from **any directory** — all 23 skills and 21 commands are available everywhere.
 
 ```bash
-cd ~/Projects
+cd ~/Projects        # or wherever your projects live
 claude
 /framework-launch polish   # works in any project
 ```
 
-**Workspace pattern:** If you keep all projects in one folder (e.g., `~/Projects/`), start Claude from that folder and navigate to child projects. The global skills follow you everywhere.
+**How it works:** `~/.claude/skills/` is Claude Code's **personal/global** skills directory. Skills installed here are discovered in every project, every directory. You don't need to copy skills into each project.
+
+**Choose your own projects folder.** The framework doesn't care where your projects live. `~/Projects/`, `~/code/`, `C:\Users\You\Documents\Projects\` — whatever you use. Just clone the framework repo somewhere, run the copy commands above, and you're done. Start Claude from your projects folder and navigate to child projects from there.
+
+**Why global over project-local?** Project-local installs mean you need to copy the framework into every project. If you have 10 projects, that's 10 copies of 23 skills. Global install: one copy, works everywhere. The framework repo stays as the source — pull updates and re-run the copy commands.
 
 ### Option B: Project-Local Install
 

@@ -80,11 +80,14 @@ Unified skills: one file, three modes, no duplication.
 
 ### Teammate Mode
 
-Five deliberation personas (Jobs, Torvalds, Dyson, Ma, Atrioc) include a **Teammate Mode** section. This tells the persona how to behave when spawned as an isolated Agent during `/framework-launch`:
+All eight deliberation personas (Jobs, Torvalds, Dyson, Ma, Atrioc, Su, Sacco, Buffett) include a **Teammate Mode** section. This tells the persona how to behave when spawned as an isolated Agent during `/framework-launch`:
+- **User Interview Questions** — Domain-specific questions to ask the user before reviewing
 - What context to expect from the team lead
 - How to file complaints against other roles
 - How to respond to complaints in Round 2
 - Which pivotal decisions to cite when overruling
+- **Doc Contributions** — What project docs to create/update from findings
+- **Anti-sycophancy** — Every persona is instructed to be brutally honest, no sugar coating
 
 ---
 
@@ -152,19 +155,28 @@ Reflect:  Warren Buffett (retrospective)
 
 ### Swarm Deliberation
 
-During `/framework-launch`, 5 deliberation personas (Ma, Jobs, Torvalds, Dyson, Atrioc) run as **separate Claude instances** via the Agent tool. Each gets its own context window loaded only with its persona's SKILL.md and the project context. This isolation is the key innovation:
+During `/framework-launch`, all 8 personas run as **separate Claude instances** via the Agent tool. Each gets its own context window loaded only with its persona's SKILL.md and the project context. This isolation is the key innovation:
 
 - **Single-context** (old): One Claude plays all roles → polite consensus, agrees with itself
-- **Swarm** (current): Each persona in its own context → genuine disagreement, real pushback
+- **Swarm** (current): Each persona in its own context → genuine disagreement, real pushback, no sugar coating
 
 ```
 Team Lead (main context)
     ├── Agent("ma-brainstorm")      ← own context, own philosophy
-    ├── Agent("jobs-ceo")           ← can't see what Torvalds thinks
+    ├── Agent("jobs-ceo")           ← can fire personas (pending user approval)
     ├── Agent("torvalds-eng")       ← can't see what Dyson thinks
     ├── Agent("dyson-design")       ← genuine isolation
-    └── Agent("atrioc-marketing")   ← reads all reports last
+    ├── Agent("su-performance")     ← measures everything
+    ├── Agent("atrioc-marketing")   ← reads all reports
+    ├── Agent("sacco-slop")         ← catches AI slop
+    └── Agent("buffett-retro")      ← closes deliberation, compounds lessons
 ```
+
+**Interactive by default.** Each persona interviews the user with domain-specific questions before reviewing. The user checks in after each batch, reacts to findings, and makes final calls. Use `auto` mode to skip interviews.
+
+**Brutally honest.** Every persona is instructed: no forced positives, no "but" sandwiches, no grading on a curve. If the product is mediocre, they say it's mediocre.
+
+**Action plan output.** The deliberation produces a consolidated action plan with prioritized tasks that Claude can execute immediately in subsequent conversations.
 
 Complaints route through the team lead. The agents never communicate directly. This hub-and-spoke model ensures the team lead controls information flow and can present disagreements cleanly to the user.
 

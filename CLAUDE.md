@@ -66,7 +66,7 @@ Think → Plan → Build → Review → Test → Ship → Reflect
 | Stage | Command | Persona |
 |-------|---------|---------|
 | Think | `/brainstorm` | Jack Ma |
-| Plan | `/framework-launch` (swarm: each persona as isolated agent) | Jobs ↔ Torvalds ↔ Dyson ↔ Atrioc |
+| Plan | `/framework-launch` (swarm: 8 personas as isolated agents, interactive interviews) | Ma ↔ Jobs ↔ Torvalds ↔ Dyson ↔ Su ↔ Atrioc ↔ Sacco ↔ Buffett |
 | Build | Skills auto-activate | Sacco, Su, Atrioc |
 | Review | `/code-review`, `/security-audit`, `/design-review` | — |
 | Test | `/qa`, `/user-flow-test`, `/accessibility` | — |
