@@ -189,13 +189,42 @@ The team lead will only ask questions where the answer ISN'T already in the proj
 - **Previous reports** — From roles earlier in the chain (Jobs's scope if Tier 1/2)
 - **File paths** — Key project files to read for context
 
+### Stack Recommendation (Greenfield Only)
+
+For new projects, recommend a stack based on **what Claude Code works best with** — frameworks with strong TypeScript types, good documentation, and well-understood patterns that Claude can generate reliably.
+
+**Claude Code's optimal stack (2026):**
+
+| Layer | Recommended | Why Claude Excels With It |
+|-------|------------|--------------------------|
+| **Frontend** | Next.js (App Router) | Best-documented React framework, Claude generates correct RSC/client patterns |
+| **Styling** | Tailwind CSS | Claude generates Tailwind faster and more accurately than raw CSS |
+| **Components** | shadcn/ui (Radix primitives) | Copy-paste components Claude can customize — not a black-box library |
+| **Language** | TypeScript (strict) | Type errors catch Claude's mistakes at compile time, not runtime |
+| **Backend** | Next.js API routes or FastAPI | Next.js for fullstack, FastAPI when Python is needed — both have excellent docs |
+| **Database** | Supabase (Postgres + RLS) or SQLite | Supabase for production apps, SQLite for tools/local-first. Claude knows both well. |
+| **ORM** | Drizzle or Prisma | Drizzle for type-safe SQL, Prisma for quick prototyping. Both generate correct queries. |
+| **Auth** | Supabase Auth or NextAuth | Supabase if already using Supabase DB. NextAuth otherwise. Well-documented patterns. |
+| **Deployment** | Docker + Vercel/Cloudflare | Docker for self-hosted, Vercel for zero-config. Claude generates correct Dockerfiles. |
+| **Testing** | Vitest + Playwright | Vitest for unit/integration, Playwright MCP for E2E. Claude generates both fluently. |
+
+**Anti-recommendations (Claude struggles with):**
+- Angular (complex dependency injection, Claude frequently generates incorrect patterns)
+- Vue 3 Composition API (less training data, more hallucinated APIs)
+- Svelte 5 runes (too new, Claude makes mistakes with `$state` and `$derived`)
+- MongoDB (schema-less = Claude can't catch type errors, generates inconsistent documents)
+- GraphQL (over-engineering for most projects, Claude generates resolvers with bugs)
+
+**Only recommend a stack if the project has no existing codebase.** For WIP/Polish tiers, work with what exists.
+
 ### Your Task
 1. Read `.claude/skills/plan-review-eng/SKILL.md` (this file) for your full philosophy
 2. Read the project files — especially code, configs, data models
 3. Conduct your Review Mode process (architecture checklist, data structures, failure modes)
-4. **Be honest.** If the architecture is over-engineered, say so. If it's under-engineered, say so. Don't soften it.
-5. File complaints against other roles if their decisions create engineering problems
-6. Return your output in the exact format specified in the prompt
+4. **For Greenfield:** Include a stack recommendation from the table above, customized to the project's needs
+5. **Be honest.** If the architecture is over-engineered, say so. If it's under-engineered, say so. Don't soften it.
+6. File complaints against other roles if their decisions create engineering problems
+7. Return your output in the exact format specified in the prompt
 
 ### Doc Contributions
 After your review, recommend updates to project documentation:

@@ -770,6 +770,41 @@ If any **Block** complaints are still unresolved (Overruled or Escalated):
 - Mark items from this deliberation with the date
 - Use the exemplar pattern: bayareatrafficschool's DECISIONS.md format (context/decision/reasoning)
 
+### Step 9.5: Verify and Update CLAUDE.md
+
+The project's `CLAUDE.md` is the entry point for every future Claude session. It MUST reference the docs that now exist. After Step 9 creates/updates living docs, verify CLAUDE.md and fix it:
+
+1. **Read the project's CLAUDE.md** (root level or app/ level — wherever it lives)
+
+2. **Check the Documentation table** — does it list all docs that now exist? Compare against what's actually in `docs/`:
+   ```
+   Required docs that CLAUDE.md should reference (if they exist):
+   - docs/DECISIONS.md     → "Before making scope changes"
+   - docs/TODO.md          → "Before starting new work"
+   - docs/ARCHITECTURE.md  → "Before modifying code structure"
+   - docs/CONSTRAINTS.md   → "Before proposing ANY solution"
+   - docs/DESIGN.md        → "Before building UI"
+   - docs/PERFORMANCE.md   → "Before optimizing"
+   - docs/MARKETING.md     → "Before writing copy"
+   - docs/LESSONS.md       → "After completing work"
+   - docs/DELIBERATION_LOG.md → "To see project review history"
+   ```
+
+3. **Add missing references** — if ARCHITECTURE.md exists but CLAUDE.md doesn't mention it, add it to the documentation table with the correct priority level:
+   - `🔴` (read before ANY work): CONSTRAINTS.md, ARCHITECTURE.md
+   - `🟡` (read when relevant): DECISIONS.md, DESIGN.md, PERFORMANCE.md, TODO.md
+   - `🟢` (read for context): MARKETING.md, LESSONS.md, DELIBERATION_LOG.md
+
+4. **Update the Status line** at the bottom of CLAUDE.md to reflect current project state based on this run's findings
+
+5. **Update the Quick Reference** section if stack, port, or key info changed during deliberation
+
+**Rules:**
+- Do NOT overwrite custom sections the user added to CLAUDE.md
+- Only ADD or UPDATE the documentation references table and status line
+- Keep CLAUDE.md lean — under 150 lines. If it's getting long, move detail into docs/ and link to it
+- If the project has no CLAUDE.md at all, create one using the template from `docs/CLAUDE.md.example` (if it exists in the framework) with all the living docs pre-referenced
+
 ### Step 10: Generate Action Plan
 
 The most important output. After Buffett closes, generate a **consolidated action plan** that Claude can execute immediately in subsequent conversations.
@@ -994,6 +1029,7 @@ Jobs: "FIRE Atrioc. This is a developer tool. Marketing positioning is premature
 - [ ] Step 8: Unresolved Blocks escalated to user (if any)
 - [ ] Step 8.5: CHECKPOINT — complaint ledger + session state saved to disk
 - [ ] Step 9: Living docs ACTUALLY UPDATED (DECISIONS, TODO, ARCHITECTURE, etc.)
+- [ ] Step 9.5: CLAUDE.md verified — references all existing docs, status updated
 - [ ] Step 10: Action plan saved to docs/reports/[date]-[project]-action-plan.md
 - [ ] Step 11: Summary saved to docs/reports/[date]-[project]-summary.md
 - [ ] Step 12: Deliberation log updated with this run's row
