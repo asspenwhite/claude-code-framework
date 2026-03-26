@@ -146,13 +146,14 @@ Think → Plan → Build → Review → Test → Ship → Reflect
 | `/ship` | PR + release workflow |
 | `/reflect` | Session retrospective |
 
-### Safety Commands
+### Safety & Maintenance Commands
 | Command | Purpose |
 |---------|---------|
 | `/careful` | Toggle destructive command warnings |
 | `/freeze <dir>` | Restrict edits to one directory |
 | `/guard <dir>` | Both careful + freeze |
 | `/unfreeze` | Clear all safety modes |
+| `/update-framework` | Sync global install from source repo or GitHub |
 
 ---
 

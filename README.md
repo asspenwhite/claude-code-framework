@@ -127,32 +127,50 @@ Skip stages for small changes. Typo = Build → Ship. New feature = full pipelin
 
 ## Quick Start
 
-### Global Install (works in every project)
+### Install (recommended)
 
 ```bash
-# Clone into your projects folder (or wherever you keep repos)
+# 1. Clone the framework into your projects folder
+cd ~/Projects  # or wherever you keep repos
 git clone https://github.com/asspenwhite/claude-code-framework.git
-cd claude-code-framework
 
-# Install globally — works from ANY directory after this
+# 2. Copy skills and commands to your global Claude config
+cd claude-code-framework
 cp -r .claude/skills/* ~/.claude/skills/
 cp .claude/commands/*.md ~/.claude/commands/
 rm -f ~/.claude/skills/README.md ~/.claude/commands/README.md
 ```
 
-Start Claude from your projects folder (`~/Projects/`, `~/code/`, wherever) — all skills and commands are available in every child project. One install, works everywhere.
+That's it. Every project you open with Claude now has the full framework — all 8 personas, all commands, all auto-activating skills.
 
-### Project-Local Install (single project only)
+The `claude-code-framework/` folder is your **source repo**. When updates ship, pull them and re-copy:
+
+```bash
+cd ~/Projects/claude-code-framework
+git pull
+# Then from any Claude session:
+/update-framework
+```
+
+Or do it manually:
+```bash
+cp -r .claude/skills/* ~/.claude/skills/
+cp .claude/commands/*.md ~/.claude/commands/
+rm -f ~/.claude/skills/README.md ~/.claude/commands/README.md
+```
+
+### Alternative: Project-Local Install
+
+If you only want the framework in a single project (not globally):
 
 ```bash
 cd your-project
 git clone --depth 1 https://github.com/asspenwhite/claude-code-framework.git temp
 cp -r temp/.claude temp/docs temp/QUICKSTART.md ./
 rm -rf temp
-claude
 ```
 
-### Enable Hooks
+### Enable Hooks (optional)
 
 ```bash
 cp .claude/settings.local.json.example .claude/settings.local.json
@@ -190,13 +208,14 @@ cp .claude/settings.local.json.example .claude/settings.local.json
 | `/ship` | Quality gates → version bump → PR |
 | `/reflect` | Session retrospective |
 
-### Safety
+### Safety & Maintenance
 | Command | What it does |
 |---------|-------------|
 | `/careful` | Warn before destructive commands |
 | `/freeze <dir>` | Restrict edits to one directory |
 | `/guard <dir>` | Both careful + freeze |
 | `/unfreeze` | Clear restrictions |
+| `/update-framework` | Pull latest framework from GitHub |
 
 ---
 

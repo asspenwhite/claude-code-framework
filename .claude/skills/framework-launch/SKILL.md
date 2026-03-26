@@ -229,70 +229,60 @@ Prepare a **context brief** — a concise summary (under 500 words) of the proje
 
 ### Step 1: User Interviews (Interactive Mode Only)
 
-For each batch of personas about to review, present their interview questions to the user. Questions are defined in each persona's SKILL.md under "User Interview Questions."
+**Questions are generated per-project, not hardcoded.** The team lead reads the project context (README, CLAUDE.md, existing reports, code structure) and generates 2-3 questions per persona that are specific to THIS project. Never ask something already answered in the docs.
 
-**Batch the questions by phase.** Don't ask 24 questions upfront — ask each batch right before those personas run:
+**How to generate questions:**
 
-#### Phase 1: Ma (Tier 1 only)
+1. Read the context brief from Step 0
+2. For each persona about to review, identify **what that persona needs to know that ISN'T already documented**
+3. Generate 2-3 questions that reference specific things in the project — file names, decisions, features, code patterns
+4. Skip any question where the answer is already in the docs. If everything a persona needs is already documented, say "No questions — [Persona] has enough context from the docs" and move on.
+
+**Question generation rules:**
+- Questions MUST reference something specific in the project ("Your README says X — is that still accurate?" not "What does your product do?")
+- Questions MUST target gaps ("I see no error handling strategy in ARCHITECTURE.md — what's the plan?" not "What's the hardest technical problem?")
+- Questions MUST be things the persona can't figure out from reading the code ("Why did you choose Postgres over SQLite?" not "What database are you using?")
+- If a previous persona's interview already answered something, don't re-ask it
+- Fewer questions is better than generic questions. 1 sharp question > 3 vague ones.
+
+**Batch the questions by phase.** Don't ask all questions upfront — ask each batch right before those personas run.
+
+**Each persona's SKILL.md contains "Question Philosophy"** — the TYPES of things they care about, not the literal questions. Use the philosophy to guide question generation:
+
+| Persona | Question Philosophy | What They Need To Know |
+|---------|-------------------|----------------------|
+| Ma | Demand reality, status quo, desperate users | Who actually wants this and what are they doing without it |
+| Jobs | Focus, simplicity, the no-list | What's in, what's out, and whether the vision is sharp |
+| Torvalds | Architecture decisions, failure modes, complexity | Why things were built the way they were, where it'll break |
+| Dyson | First 30 seconds, core interaction, iteration count | What the user experiences and whether it's been tested |
+| Su | Performance targets, heaviest operations, measurements | What's slow, what matters, what's been measured |
+| Atrioc | Audience, positioning, competitive frame | Who's buying, how it's different, whether the copy is honest |
+| Sacco | Brand personality, visual language, anti-patterns | Whether the design has a point of view or looks like everything else |
+| Buffett | Known risks, abandon criteria, what's working | What could kill this and what's worth protecting |
+
+**Example of good vs bad questions:**
+
+BAD (generic, same every time):
 ```
-Before Jack Ma reviews your idea, he wants to know:
-
-1. Who is *desperate* for this? Not interested — desperate.
-2. What are they doing today without your product? How painful is that?
-3. Why you? Why now? What do you see that bigger players don't?
-```
-
-#### Phase 2: Jobs
-```
-Before Steve Jobs reviews the scope, he wants to know:
-
-1. What is the ONE thing this product does better than anything else?
-2. What have you decided NOT to build? What did you kill?
-3. Describe this product in one sentence to someone at a bar.
-```
-
-#### Phase 3: Torvalds + Dyson + Su (batched)
-```
-Three reviewers are about to work in parallel. Quick answers for each:
-
-ENGINEERING (Torvalds):
-1. What's the hardest technical problem in this project?
-2. What are you building from scratch vs. using existing tools?
-3. Where do you expect this to break first under real load?
-
-DESIGN (Dyson):
-1. Who is the user and what are they doing in the first 30 seconds?
-2. What's the most important action on the main screen?
-3. What existing product does this feel closest to?
-
-PERFORMANCE (Su):
-1. What's your performance target? (load time, response time, throughput)
-2. What's the heaviest operation in the system?
-3. Have you measured anything yet, or starting from zero?
+What is the ONE thing this product does better than anything else?
 ```
 
-#### Phase 4: Atrioc + Sacco (batched)
+GOOD (specific to this project):
 ```
-Two reviewers are about to work in parallel:
-
-MARKETING (Atrioc):
-1. Who are you selling to? Job title, company size, pain level.
-2. What do competitors call themselves? How are you different?
-3. One sentence someone would use to recommend this to a friend?
-
-AI SLOP (Sacco):
-1. What's the brand personality? If this product were a person, how would they carry themselves?
-2. Do you have existing brand guidelines (colors, fonts, visual language)?
-3. What products do you want this to look NOTHING like?
+Your README pitches "8 department heads who argue" but the actual
+SKILL.md files show they're all running in the same context.
+Is the isolation story real yet, or aspirational?
 ```
 
-#### Phase 5: Buffett
+BAD (already answered in docs):
 ```
-Before Warren Buffett closes the deliberation:
+What database are you using?
+```
 
-1. What's the biggest risk you know about but haven't addressed?
-2. What would make you abandon this project entirely?
-3. What's the one thing that went right so far that you want to protect?
+GOOD (targets a gap):
+```
+ARCHITECTURE.md doesn't mention how complaints route between
+personas in Round 2. Is that designed or still TBD?
 ```
 
 **In auto mode:** Skip all interviews. Agents review with context brief only.
