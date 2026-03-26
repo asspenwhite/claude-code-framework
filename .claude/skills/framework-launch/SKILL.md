@@ -475,14 +475,15 @@ After each agent returns, save its report:
 
 **File path:** `docs/reports/[role]/[YYYY-MM-DD]-[project]-[type].md`
 
-Add the standard header to each report:
+Add the standard header to each report. **Detect the run number** by counting existing report files for this role in `docs/reports/[role]/` — if there are 2 previous reports, this is Run 3.
+
 ```markdown
 # [Role] Report: [Project Name]
 
 **Date:** [YYYY-MM-DD]
 **Tier:** [Greenfield / WIP / Polish]
-**Round:** 1
-**Status:** Initial
+**Run:** [N] (count of previous reports for this role + 1)
+**Status:** [Initial / Incremental / Redesign — based on mode and context]
 **Mode:** Swarm (isolated agent)
 **Honesty:** Unfiltered
 
