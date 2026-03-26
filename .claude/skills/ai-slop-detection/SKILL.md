@@ -151,8 +151,65 @@ The team lead will only ask questions where the answer ISN'T already in the proj
 2. Read the project files — especially stylesheets, component files, layouts, any design tokens
 3. Run every item on the 10-pattern blacklist (F1-F3, D1-D3, C1-C4)
 4. Grade the UI (A through F)
-5. File complaints against other roles if their decisions produce AI slop
-6. Return your output in the exact format specified in the prompt
+5. **Produce a Design Token recommendation** — not just a grade. See "Design Token Deliverables" below.
+6. File complaints against other roles if their decisions produce AI slop
+7. Return your output in the exact format specified in the prompt
+
+### Design Token Deliverables (REQUIRED)
+
+A grade without a fix is useless. Your report MUST include a **Recommended Design Tokens** section — the actual values a developer should use to eliminate slop. Think like Sacco specifying the exact paint code, not just saying "the color is wrong."
+
+```markdown
+### Recommended Design Tokens
+
+**Color Palette** (with semantic meaning — not just "looks nice"):
+| Token | Value | Use |
+|-------|-------|-----|
+| `--color-primary` | [hex/oklch] | [primary actions, brand identity] |
+| `--color-surface` | [hex/oklch] | [card/container backgrounds] |
+| `--color-surface-elevated` | [hex/oklch] | [modals, dropdowns, popovers] |
+| `--color-text` | [hex/oklch] | [body text] |
+| `--color-text-muted` | [hex/oklch] | [secondary text, captions] |
+| `--color-accent` | [hex/oklch] | [highlights, active states] |
+| `--color-border` | [hex/oklch] | [dividers, input borders] |
+
+**Typography:**
+| Token | Value | Use |
+|-------|-------|-----|
+| `--font-heading` | [font-family] | [headings — NOT Inter/Roboto] |
+| `--font-body` | [font-family] | [body text] |
+| `--font-mono` | [font-family] | [code, data] |
+| `--text-scale` | [ratio, e.g., 1.25] | [type scale multiplier] |
+
+**Spacing System:**
+| Token | Value | Use |
+|-------|-------|-----|
+| `--space-unit` | [e.g., 4px] | [base unit] |
+| `--space-xs` | [e.g., 4px] | [tight gaps] |
+| `--space-sm` | [e.g., 8px] | [inline spacing] |
+| `--space-md` | [e.g., 16px] | [component padding] |
+| `--space-lg` | [e.g., 24px] | [section gaps] |
+| `--space-xl` | [e.g., 48px] | [major section breaks] |
+
+**Border Radius:**
+| Token | Value | Use |
+|-------|-------|-----|
+| `--radius-sm` | [e.g., 4px] | [buttons, inputs] |
+| `--radius-md` | [e.g., 8px] | [cards] |
+| `--radius-lg` | [e.g., 16px] | [modals, panels] |
+
+**Shadows:**
+| Token | Value | Use |
+|-------|-------|-----|
+| `--shadow-sm` | [value] | [subtle elevation — cards] |
+| `--shadow-md` | [value] | [dropdowns, popovers] |
+| `--shadow-lg` | [value] | [modals, dialogs] |
+```
+
+**If the project has no design system:** Create the full token set above based on the project's brand/personality.
+**If the project has a design system:** Audit it against the blacklist and recommend specific token changes to fix slop.
+
+**Why this matters:** "Change the colors" is useless feedback. `--color-primary: oklch(0.78 0.1 65)` is implementable in 30 seconds.
 
 ### Filing Complaints
 You are the taste police. If it looks AI-generated, you flag it:
@@ -219,6 +276,6 @@ When you receive complaints against your slop assessment:
 ```
 
 ### Doc Contributions
-After your review, recommend updates to project documentation:
-- **DESIGN.md** — Brand identity, anti-patterns to avoid, visual principles
-- **TODO.md** — Slop fixes (F-tier immediate, D-tier before ship, C-tier backlog)
+After your review, provide CONCRETE content for project documentation — not just "recommend updates." Write the actual tokens and rules:
+- **DESIGN.md** — Full design token table (from Design Token Deliverables above), anti-pattern blacklist for this project, visual principles
+- **TODO.md** — Slop fixes with priority: `- [ ] [P0] Replace Inter with [recommended font] — Sacco, [date]`

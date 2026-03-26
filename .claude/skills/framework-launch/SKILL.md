@@ -219,13 +219,40 @@ Before spawning any agents, gather:
 1. **Project state** — Read key files: README, any plan/spec docs, package.json/pyproject.toml, existing code structure
 2. **User's request** — What the user asked for or described
 3. **Existing reports** — Check `docs/reports/` for previous deliberation rounds
-4. **Tier detection** — Greenfield / WIP / Polish based on project state or user input
+4. **Existing living docs** — Check for `docs/DECISIONS.md`, `docs/TODO.md`, `docs/ARCHITECTURE.md`, etc. Read them — this is institutional memory from previous runs
+5. **Tier detection** — Greenfield / WIP / Polish based on project state or user input
 
 Prepare a **context brief** — a concise summary (under 500 words) of the project state that every agent will receive. Include:
 - What exists (tech stack, file structure, key decisions already made)
 - What the user wants (feature, redesign, new product, etc.)
 - Tier and why
 - Links to key files the agent should read
+- Summary of existing living docs (if any) — key decisions, open TODOs, known constraints
+
+### Step 0.5: Scaffold Docs Structure
+
+**On first run** (no `docs/reports/` directory or no previous summary files), create the docs scaffold:
+
+```bash
+mkdir -p docs/reports/{brainstorm,ceo,engineering,design,performance,marketing,ai-slop,qa,security,retrospective,incidents}
+```
+
+**Check and create missing living docs** — these are the institutional memory files that compound across runs. If any don't exist, create them with a minimal header:
+
+| File | Create If Missing | Header |
+|------|------------------|--------|
+| `docs/DECISIONS.md` | Yes | `# Decisions\n\nArchitectural and scope decisions with rationale.\n` |
+| `docs/TODO.md` | Yes | `# TODO\n\n## High Priority\n\n## Medium Priority\n\n## Low Priority\n` |
+| `docs/ARCHITECTURE.md` | Yes | `# Architecture\n\nTechnical architecture and design decisions.\n` |
+| `docs/CONSTRAINTS.md` | Yes | `# Constraints\n\nBudget, technical, and scope constraints.\n` |
+| `docs/DESIGN.md` | Yes | `# Design System\n\nDesign tokens, component specs, and anti-patterns.\n` |
+| `docs/PERFORMANCE.md` | Yes | `# Performance\n\nBaselines, targets, and optimization history.\n` |
+| `docs/MARKETING.md` | Yes | `# Marketing\n\nAudience, positioning, and messaging.\n` |
+| `docs/LESSONS.md` | Yes | `# Lessons\n\nCompounding lessons from deliberations.\n` |
+
+**Do NOT create** `docs/MARKET.md` unless Ma (brainstorm) is in the tier. Do NOT overwrite existing files.
+
+This scaffold ensures Step 9 always has files to write to, and the docs/ folder is immediately useful as a project knowledge base — even before the first deliberation completes.
 
 ### Step 1: User Interviews (Interactive Mode Only)
 
@@ -564,29 +591,164 @@ If any **Block** complaints are still unresolved (Overruled or Escalated):
 
 **Max 3 rounds.** If counter-complaints create new Blocks in Round 2, present ALL remaining disagreements to the user in Round 3. The user is the tiebreaker. Period.
 
-### Step 9: Update Project Docs
+### Step 8.5: Checkpoint Before Synthesis (CRITICAL)
 
-After all rounds complete, collect doc contributions from every persona and update project docs:
+**This step prevents context exhaustion.** By this point, ~170-190k tokens have accumulated from agent prompts, reports, complaints, and user reactions. If auto-compaction triggers during Steps 9-11, all report content is lost and docs never get written.
 
-1. **Collect** — Gather all "Doc Contributions" sections from every report
-2. **Merge** — Combine recommendations by doc file (multiple personas may suggest TODO items)
-3. **Create or update** the following docs:
+**Save everything to disk before synthesizing:**
+
+1. **Save complaint ledger** to `docs/reports/[YYYY-MM-DD]-[project]-complaint-ledger.md`:
+   ```markdown
+   # Complaint Ledger: [Project Name]
+   **Date:** [date]
+   **Rounds completed:** [1-3]
+
+   | # | From | To | Severity | Objection | Response | Resolution |
+   |---|------|----|----------|-----------|----------|------------|
+   | 1 | [role] | [role] | [sev] | [summary] | [Accept/Modify/Overrule/Escalate] | [outcome] |
+   ```
+
+2. **Save session state** to `docs/reports/[YYYY-MM-DD]-[project]-session-state.md`:
+   ```markdown
+   # Session State: [Project Name]
+   **Date:** [date]
+   **Tier:** [tier]
+   **Mode:** [mode]
+   **Rounds completed:** [count]
+
+   ## Saved Report Files
+   - brainstorm: docs/reports/brainstorm/[filename]
+   - ceo: docs/reports/ceo/[filename]
+   - engineering: docs/reports/engineering/[filename]
+   - design: docs/reports/design/[filename]
+   - performance: docs/reports/performance/[filename]
+   - marketing: docs/reports/marketing/[filename]
+   - ai-slop: docs/reports/ai-slop/[filename]
+   - retrospective: docs/reports/retrospective/[filename]
+
+   ## Key Decisions Made
+   1. [decision] — decided by [role/user]
+
+   ## Fire Recommendations
+   [list or "None"]
+
+   ## Ready for Step 9: Yes
+   ```
+
+3. **Announce checkpoint:** Tell the user "All deliberation rounds complete. Reports and complaint ledger saved to disk. Proceeding to doc updates and action plan."
+
+**After compaction recovery:** If context was compacted and you're resuming, detect this by checking for the session-state file. If it exists and says "Ready for Step 9: Yes", read all reports back from disk and continue from Step 9.
+
+### Step 9: Update Project Docs (MANDATORY — Read From Disk)
+
+**This step MUST execute.** It is the entire point of the deliberation. Reports without doc updates are snapshots that nobody reads. Living docs are institutional memory that compounds.
+
+**Process:**
+
+1. **Read all saved reports from disk** — do NOT rely on context memory (it may have been compacted):
+   ```
+   docs/reports/brainstorm/[date]-[project]-*.md
+   docs/reports/ceo/[date]-[project]-*.md
+   docs/reports/engineering/[date]-[project]-*.md
+   docs/reports/design/[date]-[project]-*.md
+   docs/reports/performance/[date]-[project]-*.md
+   docs/reports/marketing/[date]-[project]-*.md
+   docs/reports/ai-slop/[date]-[project]-*.md
+   docs/reports/retrospective/[date]-[project]-*.md
+   ```
+
+2. **Extract Doc Contributions** — each report has a `### Doc Contributions` section. Parse what each persona recommends for each doc file.
+
+3. **Create or update** each doc:
 
 | Doc File | Who Contributes | What Goes In |
 |----------|----------------|-------------|
-| `docs/DECISIONS.md` | Jobs, Buffett | Scope decisions with rationale |
-| `docs/TODO.md` | Everyone | Action items, prioritized by importance |
-| `docs/CONSTRAINTS.md` | Jobs, Ma, Torvalds, Su | Budget, technical, market, performance constraints |
-| `docs/ARCHITECTURE.md` | Torvalds | Architecture decisions, data models |
-| `docs/DESIGN.md` | Dyson, Sacco | Design principles, anti-patterns, brand |
+| `docs/DECISIONS.md` | Jobs, Buffett | Scope decisions with rationale, key tradeoffs |
+| `docs/TODO.md` | Everyone | Action items, prioritized High/Med/Low |
+| `docs/CONSTRAINTS.md` | Jobs, Ma, Torvalds, Su | Budget, technical, market, performance limits |
+| `docs/ARCHITECTURE.md` | Torvalds | Architecture decisions, data models, failure modes |
+| `docs/DESIGN.md` | Dyson, Sacco | Design system, component specs, anti-patterns, tokens |
 | `docs/PERFORMANCE.md` | Su | Baselines, targets, optimization priorities |
-| `docs/MARKETING.md` | Atrioc | Audience, positioning, messaging |
+| `docs/MARKETING.md` | Atrioc | Audience, positioning, messaging framework |
+| `docs/MARKET.md` | Ma | Demand validation, competitive landscape, wedge |
 | `docs/LESSONS.md` | Buffett | Compounding lessons from this deliberation |
 
+4. **For each doc file:**
+   - If file doesn't exist: **create it** using the template format from `docs/templates/` (if template exists) or the format below
+   - If file exists: **append** a new dated section — never overwrite existing content
+   - Header each new section with: `## Deliberation: [YYYY-MM-DD] ([Tier] — [Mode])`
+
+5. **Doc creation formats** (when file doesn't exist):
+
+   **DECISIONS.md:**
+   ```markdown
+   # Decisions
+
+   ## Deliberation: [YYYY-MM-DD] ([Tier] — [Mode])
+
+   | # | Decision | Decided By | Rationale | Status |
+   |---|----------|-----------|-----------|--------|
+   | 1 | [decision] | [persona/user] | [why] | Active |
+   ```
+
+   **TODO.md:**
+   ```markdown
+   # TODO
+
+   ## High Priority
+   - [ ] [task] — from [persona], [date]
+
+   ## Medium Priority
+   - [ ] [task] — from [persona], [date]
+
+   ## Low Priority
+   - [ ] [task] — from [persona], [date]
+   ```
+
+   **ARCHITECTURE.md:**
+   ```markdown
+   # Architecture
+
+   ## Deliberation: [YYYY-MM-DD]
+
+   ### Stack
+   [from Torvalds's report]
+
+   ### Key Decisions
+   [architecture decisions with rationale]
+
+   ### Data Model
+   [if discussed]
+
+   ### Failure Modes
+   [identified risks]
+   ```
+
+   **DESIGN.md:**
+   ```markdown
+   # Design System
+
+   ## Deliberation: [YYYY-MM-DD]
+
+   ### Design Tokens
+   [from Sacco's report — colors, fonts, spacing]
+
+   ### Component Specs
+   [from Dyson's report — key components with variants/states]
+
+   ### Anti-Patterns
+   [from Sacco's AI slop report — what to avoid]
+
+   ### Dimension Scores
+   [from Dyson's 8-dimension ratings]
+   ```
+
 **Rules:**
+- **This step is not optional.** If context was compacted, re-read reports from disk and still execute.
 - Create files that don't exist yet
 - Append to existing files (never overwrite existing content)
 - Mark items from this deliberation with the date
+- Use the exemplar pattern: bayareatrafficschool's DECISIONS.md format (context/decision/reasoning)
 
 ### Step 10: Generate Action Plan
 

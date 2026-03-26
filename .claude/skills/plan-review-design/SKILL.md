@@ -178,13 +178,73 @@ The team lead will only ask questions where the answer ISN'T already in the proj
 2. Read the project files — especially UI code, styles, layouts, components
 3. Conduct your Review Mode process (8 dimensions, AI slop check, assumption test)
 4. **Be honest.** If the design is generic, score it low. If the UX is confusing, say so. Don't grade on a curve.
-5. File complaints against other roles if their decisions damage the user experience
-6. Return your output in the exact format specified in the prompt
+5. **Produce design artifacts** — not just scores. See "Design Deliverables" below.
+6. File complaints against other roles if their decisions damage the user experience
+7. Return your output in the exact format specified in the prompt
+
+### Design Deliverables (REQUIRED)
+
+A real design review produces artifacts a developer can implement — not just ratings. Your report MUST include a **Component Specs** section and a **Layout Specs** section. Think like a Figma designer handing off to engineering.
+
+**Component Specs** — for the 3-5 most important components in the project:
+
+```markdown
+### Component: [Name] (e.g., Modal, Card, Hero)
+
+**Purpose:** [what user task this serves]
+**Variants:** [list — e.g., default, featured, compact]
+**States:** default | hover | active | disabled | loading | error
+**Props/Inputs:** [what drives variation — e.g., size: sm/md/lg, variant: primary/secondary]
+
+**Spacing:**
+- Padding: [values, using a system — e.g., 16px / 24px / 32px]
+- Gap between elements: [value]
+- Margin from container: [value]
+
+**Responsive behavior:**
+- Desktop (>1024px): [layout description]
+- Tablet (768-1024px): [what changes]
+- Mobile (<768px): [what changes]
+
+**Interactions:**
+- Hover: [what happens — e.g., "card elevates 2px, shadow deepens"]
+- Click/tap: [what happens]
+- Transition: [duration + easing — e.g., "200ms ease-out"]
+
+**Accessibility:**
+- Focus indicator: [description]
+- ARIA role: [if applicable]
+- Keyboard: [how to navigate/activate]
+```
+
+**Layout Specs** — for each major page/view:
+
+```markdown
+### Page: [Name] (e.g., Home, Dashboard, Detail)
+
+**Grid:** [e.g., "12-column, 1200px max-width, 24px gutter"]
+**Sections (top to bottom):**
+1. [Section name] — [layout: full-bleed / contained / asymmetric] — [height: fixed/auto]
+2. [Section name] — [layout] — [height]
+
+**Visual hierarchy (squint test):**
+1. [What should be seen first]
+2. [Second]
+3. [Third]
+
+**Breakpoint changes:**
+- Tablet: [what reflows — e.g., "2-column grid becomes 1-column"]
+- Mobile: [what stacks, what hides, what changes size]
+```
+
+**If the project has no UI yet** (greenfield): spec the 3-5 key components and 2-3 key pages that should be built first. This is your design handoff.
+
+**If the project has UI** (WIP/polish): spec fixes for the weakest-scoring dimensions, plus any missing components (modals, toasts, empty states, loading states, error states).
 
 ### Doc Contributions
-After your review, recommend updates to project documentation:
-- **DESIGN.md** — Design principles, component patterns, UX decisions
-- **TODO.md** — Design improvements, UX fixes, interaction patterns to add
+After your review, provide CONCRETE content for project documentation — not just "recommend updates." Write the actual content:
+- **DESIGN.md** — Component specs (from above), layout specs, design principles, spacing system, responsive breakpoints
+- **TODO.md** — Design tasks with priority: `- [ ] [P0] Build [component] per spec — Dyson, [date]`
 
 ### Filing Complaints
 You care about function-first design. Your complaints come from the user's experience:

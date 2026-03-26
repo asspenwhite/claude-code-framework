@@ -2,7 +2,7 @@
 
 Make Claude Code build like a team, not a solo dev.
 
-[![Version](https://img.shields.io/badge/version-3.1.0-blue?style=for-the-badge)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-3.1.1-blue?style=for-the-badge)](CHANGELOG.md)
 [![Use this template](https://img.shields.io/badge/Use%20this%20template-238636?style=for-the-badge&logo=github&logoColor=white)](https://github.com/asspenwhite/claude-code-framework/generate)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
 

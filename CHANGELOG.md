@@ -6,6 +6,27 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). This p
 
 ---
 
+## [3.1.1] - 2026-03-25
+
+### Fixed
+- **Context exhaustion killing Steps 9-11** — Added Step 8.5 checkpoint that saves complaint ledger + session state to disk before synthesis. Steps 9-11 now read reports from disk instead of relying on context memory. Greenfield runs (8 agents, ~170k tokens) no longer lose all data at compaction.
+- **Step 9 never actually executing** — Rewritten from "documented intention" to mandatory execution with specific file formats, disk-read process, and creation templates for all 9 doc files.
+- **Incremental mode not compounding** — Step 0 now reads existing living docs (DECISIONS.md, TODO.md, etc.) and includes them in context brief. Step 9 appends to existing files instead of only creating from scratch.
+
+### Added
+- **Step 0.5: Docs scaffolding** — First framework run creates the full docs/ structure (DECISIONS.md, TODO.md, ARCHITECTURE.md, CONSTRAINTS.md, DESIGN.md, PERFORMANCE.md, MARKETING.md, LESSONS.md) with minimal headers. Step 9 always has target files to write to.
+- **Dyson produces component specs** — Design review now outputs Figma-standard component specs (variants, states, spacing, responsive behavior, interactions, accessibility) and layout specs (grid, sections, hierarchy, breakpoints). Not just scores.
+- **Sacco produces design tokens** — AI slop review now outputs implementable design token tables (colors with semantic meaning, typography, spacing system, border radius, shadows). Not just grades.
+- **Framework dogfooding** — Created docs/DECISIONS.md (9 decisions with rationale) and docs/TODO.md (prioritized task list) for the framework repo itself.
+- **Incident report system** — Comprehensive audit report at docs/reports/incidents/2026-03-25-framework-audit.md covering all 5 systemic issues.
+- **Competitive analysis** — Benchmarked against 20+ competitors (Superpowers, everything-claude-code, gstack, SuperClaude, Ruflo, etc.). Framework's unique moat: genuine agent isolation + complaint system + incremental mode + AI slop grading.
+- **Exemplar project patterns** — Documented what bayareatrafficschool, stumblercode, and proxmox do right as the standard of excellence.
+
+### Changed
+- Step 9 doc contribution format — personas now provide CONCRETE content (actual token values, actual decision entries) not just "recommend updating DESIGN.md"
+- Dyson's Doc Contributions now write component specs directly to DESIGN.md
+- Sacco's Doc Contributions now write design token tables directly to DESIGN.md
+
 ## [3.1.0] - 2026-03-24
 
 ### Added
