@@ -6,6 +6,11 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). This p
 
 ---
 
+## [3.1.2] - 2026-03-25
+
+### Changed
+- **SKILL.md split for context efficiency** — framework-launch/SKILL.md cut from 1,037 lines (~10k tokens) to 351 lines (~3k tokens). Agent prompt templates, output format templates, and complaint system reference extracted into 3 just-in-time reference files (PROMPTS.md, FORMATS.md, COMPLAINTS.md). Team lead reads them only when needed, not upfront. Reduces context consumption during deliberation runs.
+
 ## [3.1.1] - 2026-03-25
 
 ### Fixed
@@ -113,6 +118,8 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). This p
 
 | Version | Date | Highlights |
 |---------|------|------------|
+| 3.1.2 | 2026-03-25 | SKILL.md split — 66% smaller, just-in-time reference files for context efficiency |
+| 3.1.1 | 2026-03-25 | Context checkpoint, mandatory Step 9, docs scaffolding, design artifacts, stack recommendations |
 | 3.1.0 | 2026-03-24 | Session persistence, Context7 MCP integration, retry loops, llms.txt, system prompt injection guide |
 | 3.0.0 | 2026-03-24 | Interactive interviews, 8 personas in deliberation, anti-sycophancy, action plans, fire mechanic |
 | 2.0.0 | 2026-03-24 | Swarm deliberation, genuine agent isolation, complaint system, global install |
