@@ -252,6 +252,25 @@ mkdir -p docs/reports/{brainstorm,ceo,engineering,design,performance,marketing,a
 
 **Do NOT create** `docs/MARKET.md` unless Ma (brainstorm) is in the tier. Do NOT overwrite existing files.
 
+**Create or read the deliberation log** — `docs/DELIBERATION_LOG.md`. This is the run history that tracks every framework-launch execution like meeting minutes:
+
+If it doesn't exist, create it:
+```markdown
+# Deliberation Log
+
+Run history for this project. Each `/framework-launch` execution is one entry.
+
+| Run | Date | Tier | Mode | Personas | Key Decisions | Health |
+|-----|------|------|------|----------|--------------|--------|
+```
+
+If it exists, **read it** to determine:
+- **Run number** — count existing rows + 1
+- **Previous health** — what score did the last run give? Is the project improving?
+- **Previous decisions** — what was decided? Is it being followed?
+
+Include the run number and previous run context in the context brief for all agents. Agents should know "this is Run 3, previous runs scored 5.2/10 and 6.1/10."
+
 This scaffold ensures Step 9 always has files to write to, and the docs/ folder is immediately useful as a project knowledge base — even before the first deliberation completes.
 
 ### Step 1: User Interviews (Interactive Mode Only)
@@ -847,6 +866,25 @@ To start working through this plan:
 [The final one-sentence description after all reviews]
 ```
 
+### Step 12: Update Deliberation Log
+
+**Append a row** to `docs/DELIBERATION_LOG.md` for this run:
+
+```markdown
+| [Run #] | [YYYY-MM-DD] | [Tier] | [Mode] | [persona count] | [top 2-3 decisions, comma-separated] | [Buffett's health score or average dimension score] |
+```
+
+**Example after 3 runs:**
+```markdown
+| Run | Date | Tier | Mode | Personas | Key Decisions | Health |
+|-----|------|------|------|----------|--------------|--------|
+| 1 | 2026-03-24 | Greenfield | Interactive | 8 | Dark theme, Docker + Vercel, anti-slop blacklist | — |
+| 2 | 2026-03-25 | WIP | Auto | 7 | Fix dead buttons, kill page-level use client, R2 pipeline | 4.8/10 |
+| 3 | 2026-03-26 | WIP | Interactive | 7 | Architectural redesign, multi-page routes, server components | 5.5/10 |
+```
+
+This is the **meeting minutes index**. Any human or AI can read this file and instantly understand: how many times has this project been reviewed, what was decided each time, and is it getting better or worse?
+
 ---
 
 ## The Complaint System
@@ -945,20 +983,19 @@ Jobs: "FIRE Atrioc. This is a developer tool. Marketing positioning is premature
 ## Checklist
 
 ```
-- [ ] Tier detected (Greenfield / WIP / Polish)
-- [ ] Mode detected (Interactive / Auto)
-- [ ] Context brief prepared (project state, user request, key files)
-- [ ] User interviews conducted (if interactive mode)
-- [ ] Round 1: Agents spawned per tier dependency chain
-- [ ] Round 1: User check-ins after each batch
-- [ ] Round 1: All reports saved to docs/reports/[role]/
-- [ ] Round 1: Complaint ledger built
-- [ ] Round 1: FIRE directives processed (if any)
-- [ ] Round 2: Rebuttal agents spawned for all targets (if complaints exist)
-- [ ] Round 2: Updated reports saved as -round2.md
-- [ ] Round 3: Unresolved Blocks escalated to user (if any)
-- [ ] Project docs updated (DECISIONS, TODO, ARCHITECTURE, etc.)
-- [ ] Action plan saved to docs/reports/[date]-[project]-action-plan.md
-- [ ] Summary saved to docs/reports/[date]-[project]-summary.md
+- [ ] Step 0: Tier detected, context brief prepared, living docs read
+- [ ] Step 0.5: Docs scaffolded (DECISIONS, TODO, ARCHITECTURE, etc. exist)
+- [ ] Step 0.5: Deliberation log read — run number determined
+- [ ] Step 1: User interviews conducted (if interactive mode)
+- [ ] Step 2-3: Agents spawned per tier, user check-ins after each batch
+- [ ] Step 4: All reports saved to docs/reports/[role]/ with correct run number
+- [ ] Step 5: Complaint ledger built
+- [ ] Step 6-7: Rebuttal agents spawned, updated reports saved (if complaints)
+- [ ] Step 8: Unresolved Blocks escalated to user (if any)
+- [ ] Step 8.5: CHECKPOINT — complaint ledger + session state saved to disk
+- [ ] Step 9: Living docs ACTUALLY UPDATED (DECISIONS, TODO, ARCHITECTURE, etc.)
+- [ ] Step 10: Action plan saved to docs/reports/[date]-[project]-action-plan.md
+- [ ] Step 11: Summary saved to docs/reports/[date]-[project]-summary.md
+- [ ] Step 12: Deliberation log updated with this run's row
 - [ ] All report files cross-reference each other
 ```
