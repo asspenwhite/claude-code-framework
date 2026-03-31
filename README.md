@@ -85,16 +85,30 @@ claude mcp add playwright -- npx @anthropic/mcp-playwright
 ## What's Included
 
 ```
-CLAUDE.md              -- AI instructions template (customize this)
+CLAUDE.md                          -- AI instructions template (customize this)
+.claude/
+  commands/deliberate.md           -- /deliberate command entry point
+  skills/deliberate/
+    SKILL.md                       -- Orchestrator (disable-model-invocation: true)
+    PROMPTS.md                     -- Agent prompt templates
+    FORMATS.md                     -- Report/doc output templates
+    COMPLAINTS.md                  -- Complaint system reference
+    personas/                      -- 8 persona files (ma, jobs, torvalds, dyson, su, atrioc, sacco, buffett)
 docs/
-  ARCHITECTURE.md      -- How progressive disclosure works
-  WORKFLOW.md          -- Documentation workflow guide
-  MCP.md               -- MCP server setup guide
-  FILE_FORMATS.md      -- Token-efficient format guidelines
-  CLAUDE.md.example    -- Full CLAUDE.md example
-  CLAUDE_4_6_UPGRADE.md -- Claude 4.6 migration guide
-  templates/           -- Doc templates (CHANGELOG, TODO, DECISIONS, etc.)
+  ARCHITECTURE.md                  -- How progressive disclosure works
+  WORKFLOW.md                      -- Documentation workflow guide
+  MCP.md                           -- MCP server setup guide
+  FILE_FORMATS.md                  -- Token-efficient format guidelines
+  CLAUDE.md.example                -- Full CLAUDE.md example
+  CLAUDE_4_6_UPGRADE.md            -- Claude 4.6 migration guide
+  templates/                       -- Doc templates (CHANGELOG, TODO, DECISIONS, etc.)
 ```
+
+### Deliberation Engine
+
+The one custom skill: `/deliberate`. Spawns 8 personas as isolated Agent instances for genuine disagreement (not one Claude playing all roles). Zero startup cost -- only loads when you invoke it.
+
+Three tiers (Greenfield/WIP/Polish), interactive or auto mode, complaint routing between personas, checkpoint system for long deliberations, and automatic doc generation.
 
 ---
 

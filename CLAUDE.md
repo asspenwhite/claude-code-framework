@@ -1,13 +1,12 @@
 ---
-name: Project Name
-type: project-type
-stack: Your Stack Here
-port: 3000
+name: Claude Code Framework
+type: framework
+version: 1.5
 ---
 
-# Project Name - AI Instructions
+# Claude Code Framework - AI Instructions
 
-**Brief project description.** One or two sentences max.
+**Lightweight project template for Claude Code.** Plugins + MCP over custom skills. One custom skill: the deliberation engine.
 
 ---
 
@@ -69,6 +68,20 @@ Claude Code plugins load on-demand and are maintained upstream. Prefer these ove
 
 ---
 
+## Deliberation Engine
+
+Run `/deliberate` to launch the swarm deliberation. Each of 8 personas runs as an isolated Agent for genuine disagreement. Zero startup cost (`disable-model-invocation: true`) -- only loads when invoked.
+
+| Tier | Personas | When |
+|------|----------|------|
+| Greenfield | 8 (Ma -> Jobs -> Torvalds/Dyson/Su -> Atrioc/Sacco -> Buffett) | New project |
+| WIP | 7 (skip Ma) | Half-finished |
+| Polish | 5 (Torvalds/Dyson/Su -> Sacco -> Buffett) | Almost done |
+
+Details: `.claude/skills/deliberate/SKILL.md`
+
+---
+
 ## AI Rules
 
 <rules>
@@ -116,4 +129,4 @@ Your context window will be automatically compacted as it approaches its limit. 
 
 ---
 
-*Last updated: DATE*
+*Last updated: 2026-03-30*
