@@ -1,385 +1,127 @@
 # Claude Code Framework
 
-A complete AI-guided development framework for [Claude Code](https://docs.anthropic.com/en/docs/claude-code) that makes AI-assisted coding significantly better.
+A lightweight project template for [Claude Code](https://docs.anthropic.com/en/docs/claude-code). Sets up documentation structure and AI rules so Claude writes better code from the start.
 
 [![Use this template](https://img.shields.io/badge/Use%20this%20template-238636?style=for-the-badge&logo=github&logoColor=white)](https://github.com/asspenwhite/claude-code-framework/generate)
 
 ---
 
-## What is Claude Code?
+## What This Is
 
-**Claude Code** is Anthropic's official command-line tool that lets you code with Claude AI directly in your terminal. Instead of copying/pasting code from a chat window, Claude Code can:
+A `CLAUDE.md` template + documentation structure that configures Claude Code with:
 
-- Read and write files in your project
-- Run terminal commands
-- Browse the web for documentation
-- Test your app in a real browser
+- **Progressive disclosure** -- Claude reads what it needs when it needs it
+- **Claude 4.6 rules** -- prevents over-engineering, enables parallel tool calls
+- **MCP integration** -- points Claude to Obsidian, context7, Playwright, Figma
+- **Plugin-first** -- uses official Claude Code plugins instead of custom skills
+- **Doc templates** -- CHANGELOG, TODO, DECISIONS, API, SCHEMA ready to customize
 
-**This template** configures Claude Code with best practices so it writes better code and catches more issues.
-
----
-
-## Prerequisites
-
-Before using this template, you need:
-
-### 1. Node.js (Required)
-
-You need Node.js to install Claude Code. Download and install it first:
-
-[Download Node.js](https://nodejs.org/) (LTS version recommended)
-
-Verify it's installed:
-
-```bash
-node --version
-npm --version
-```
-
-### 2. Claude Code CLI (Required)
-
-Install Claude Code globally:
-
-```bash
-npm install -g @anthropic-ai/claude-code
-```
-
-Then authenticate:
-
-```bash
-claude auth
-```
-
-
-### 3. Git (Required)
-
-You need Git to clone repositories. Check if you have it:
-
-```bash
-git --version
-```
-
-> Don't have Git? [Download it here](https://git-scm.com/downloads)
-
-### 4. A Code Editor (Optional)
-
-I built this entire framework using just Claude Code in the terminal - no editor needed. But if you prefer one: VS Code, Cursor, Sublime, etc. all work.
-
----
-
-## What This Framework Provides
-
-Instead of basic Claude Code, this framework provides:
-
-| Feature | What It Does |
-|---------|--------------|
-| **Skills** | Auto-activate when relevant to prevent common mistakes (bad UI patterns, security issues) |
-| **Agents** | Manual review workflows that catch issues before you ship |
-| **Commands** | Simple `/slash-commands` to run agents (like `/security-audit`) |
-| **Docs Workflow** | Auto-maintains CHANGELOG, TODO, and architecture docs |
+This is intentionally minimal. The real power comes from Claude Code's plugin ecosystem and MCP servers, not static markdown files.
 
 ---
 
 ## Quick Start
 
-### Option A: New Project (Recommended)
+### New Project
 
-**Step 1:** Click the green **"Use this template"** button at the top of this page → **"Create a new repository"**
-
-> This creates a new repo in YOUR GitHub account with all the template files already copied.
-
-**Step 2:** Name your repository (e.g., `my-awesome-app`) and click **"Create repository"**
-
-**Step 3:** Clone YOUR new repository to your computer:
-
-```bash
-# Replace YOUR-USERNAME and your-repo-name with your actual values
-git clone https://github.com/YOUR-USERNAME/your-repo-name.git
-
-# Example:
-git clone https://github.com/johndoe/my-awesome-app.git
-```
-
-**Step 4:** Open a terminal IN your project folder:
-
-```bash
-cd my-awesome-app    # <- Use YOUR folder name
-```
-
-**Step 5:** Start Claude Code:
-
-```bash
-claude
-```
-
-**Step 6:** Paste this prompt (fill in your details):
+1. Click **"Use this template"** above -- create a new repo
+2. Clone it and open in terminal
+3. Run `claude` and paste:
 
 ```
 Customize this template for my project:
 
-**Project Name:** [Your app name]
-**Description:** [What it does in 1-2 sentences]
-**Tech Stack:** [e.g., Next.js 14, Supabase, Stripe, Tailwind]
-**Key Features:**
-1. [Feature 1]
-2. [Feature 2]
-3. [Feature 3]
+**Project Name:** [name]
+**Description:** [what it does]
+**Tech Stack:** [e.g., Next.js 14, Supabase, Tailwind]
 
-Update CLAUDE.md, customize the skills and agents for my project, and create initial docs.
+Update CLAUDE.md and create initial docs.
 ```
 
-Claude reads the template files and customizes everything for your project.
-
----
-
-### Option B: Add to Existing Project
-
-If you already have a project and want to add the Claude Code configuration:
+### Existing Project
 
 ```bash
-# Navigate to your existing project
-cd /path/to/your/existing-project
-
-# Download just the .claude folder and docs
-git clone --depth 1 https://github.com/asspenwhite/claude-code-framework.git temp-template
-cp -r temp-template/.claude ./
-cp -r temp-template/docs ./
-cp temp-template/QUICKSTART.md ./
-rm -rf temp-template
-
-# Start Claude Code
+cd /path/to/your/project
+git clone --depth 1 https://github.com/asspenwhite/claude-code-framework.git temp
+cp temp/CLAUDE.md ./
+cp -r temp/docs ./
+rm -rf temp
 claude
 ```
 
-Then paste the customization prompt above.
-
 ---
 
-### After Setup: Install MCP Servers (Optional but Recommended)
+## Recommended Plugins
 
-**What are MCP Servers?** They're plugins that give Claude Code extra abilities - like controlling a browser, accessing component libraries, or reading documentation.
-
-Run these in your project folder:
+Install from the official marketplace. These load on-demand -- no startup cost.
 
 ```bash
-# Playwright - Lets Claude control a browser to test your app visually
-claude mcp add playwright -- npx @anthropic/mcp-playwright
-
-# shadcn/ui - Gives Claude access to the shadcn component library
-claude mcp add shadcn -- npx -y @anthropic-ai/shadcn-mcp@latest
-
-# Context7 - Gives Claude up-to-date docs for popular libraries
-claude mcp add context7 -- npx -y @anthropic-ai/context7-mcp@latest
+claude plugin install code-review
+claude plugin install security-guidance
+claude plugin install frontend-design
+claude plugin install pr-review-toolkit
+claude plugin install commit-commands
 ```
 
 ---
 
-See [QUICKSTART.md](QUICKSTART.md) for more example prompts.
+## Recommended MCP Servers
+
+These give Claude capabilities its built-in tools can't match.
+
+```bash
+# Up-to-date library docs (React, Next.js, Prisma, etc.)
+claude mcp add context7 -- npx -y @anthropic-ai/context7-mcp@latest
+
+# Browser control for visual testing
+claude mcp add playwright -- npx @anthropic/mcp-playwright
+
+# Obsidian vault for cross-project knowledge (if you use Obsidian)
+# See: https://github.com/MarkusPfundstein/mcp-obsidian
+```
 
 ---
 
 ## What's Included
 
 ```
-.claude/
-├── skills/                    # Auto-activate during creation
-│   ├── frontend-design/       # Prevents "AI slop" (generic fonts, purple gradients)
-│   └── security/              # Enforces secure patterns
-│
-├── agents/                    # Manual review workflows
-│   ├── design-review-agent.md
-│   ├── security-audit-agent.md
-│   ├── code-review-agent.md
-│   ├── accessibility-agent.md
-│   ├── user-flow-test-agent.md
-│   └── docs-update-agent.md
-│
-└── commands/                  # Human-readable agent triggers
-    └── [matching .md files]
-
+CLAUDE.md              -- AI instructions template (customize this)
 docs/
-├── ARCHITECTURE.md            # How Skills/Agents/Commands work
-├── WORKFLOW.md                # Documentation workflow guide
-├── MCP.md                     # MCP server setup guide
-├── CLAUDE_CODE_INTERNALS.md   # Session storage, folder migration
-├── CLAUDE_4_6_UPGRADE.md      # Claude 4.6 migration guide + new features
-├── CLAUDE.md.example          # Template for main instructions
-└── templates/                 # Documentation templates
-    ├── CHANGELOG.template.md      # Version history
-    ├── TODO.template.md           # Task tracking
-    ├── DECISIONS.template.md      # Architectural decisions
-    ├── LOGIC_AUDIT.template.md    # User flows & edge cases
-    ├── API.template.md            # API documentation
-    ├── SCHEMA.template.md         # Database schema
-    └── PROJECT_README.template.md # Project overview
+  ARCHITECTURE.md      -- How progressive disclosure works
+  WORKFLOW.md          -- Documentation workflow guide
+  MCP.md               -- MCP server setup guide
+  FILE_FORMATS.md      -- Token-efficient format guidelines
+  CLAUDE.md.example    -- Full CLAUDE.md example
+  CLAUDE_4_6_UPGRADE.md -- Claude 4.6 migration guide
+  templates/           -- Doc templates (CHANGELOG, TODO, DECISIONS, etc.)
 ```
 
 ---
 
-## Architecture Overview
+## Philosophy
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                        CLAUDE.md                             │
-│                   (Project-specific rules)                   │
-└─────────────────────────────────────────────────────────────┘
-                              │
-        ┌─────────────────────┼─────────────────────┐
-        ▼                     ▼                     ▼
-┌──────────────┐      ┌──────────────┐      ┌──────────────┐
-│    Skills    │      │    Agents    │      │   Commands   │
-│ (Auto-load)  │      │   (Manual)   │      │   (Manual)   │
-│              │      │              │      │              │
-│ Prevents     │      │ Catches      │      │ /security    │
-│ mistakes     │      │ issues       │      │ /code-review │
-│ during       │      │ during       │      │ /design      │
-│ creation     │      │ review       │      │              │
-└──────────────┘      └──────────────┘      └──────────────┘
-```
-
-### Progressive Disclosure
-
-Skills use 3-level loading to save tokens:
-
-1. **Level 1:** Metadata only (~100 tokens) - loaded at startup
-2. **Level 2:** SKILL.md body (<500 lines) - when task is relevant
-3. **Level 3:** Reference files - only when specifically needed
+1. **Plugins over skills.** Official plugins are maintained upstream, load on-demand, and don't bloat your context window. Don't reinvent them as markdown files.
+2. **MCP over static knowledge.** A running Obsidian vault or context7 server has live data. A SKILL.md has stale data.
+3. **Less is more.** Every line in CLAUDE.md costs context tokens. Keep it short, point to docs/ for detail.
+4. **Templates over prescriptions.** This framework gives you structure. You fill in the content.
 
 ---
 
-## Customizing for Your Project
+## Claude 4.6 Notes
 
-### Skills
+This template is optimized for Claude Opus 4.6. Key things it handles:
 
-Edit the skills to match your domain:
-
-- `frontend-design/` - Already universal, customize color palettes in THEMES.md
-- `security/` - Adapt patterns for your auth/payment system
-
-### Agents
-
-Modify agents for your workflows:
-
-- Update file paths to match your project structure
-- Add project-specific checks to checklists
-- Remove irrelevant sections
-
-### CLAUDE.md
-
-This is your main configuration. Include:
-
-- Project overview and tech stack
-- Key directories and file locations
-- Critical rules (security, patterns to follow)
-- Links to detailed docs
-
----
-
-## Documentation Workflow
-
-This template includes a complete **docs-as-code** workflow with templates for every doc your project needs:
-
-| Document | Purpose | When to Update |
-|----------|---------|----------------|
-| **CHANGELOG.md** | Version history | After every change |
-| **TODO.md** | Tasks by priority with file paths | When adding/completing tasks |
-| **DECISIONS.md** | Architectural decisions with context | When making tech choices |
-| **LOGIC_AUDIT.md** | User states, page logic, edge cases | When changing user flows |
-| **API.md** | Routes, requests, responses | When changing API |
-| **SCHEMA.md** | Database tables, RLS, queries | When changing database |
-
-All templates are in `docs/templates/` - Claude will customize them for your project.
-
-### How It Works
-
-1. **Claude updates docs automatically** - Every code change updates CHANGELOG
-2. **Decisions are logged** - Tech choices are documented with reasoning
-3. **TODOs stay current** - Tasks marked complete as work finishes
-4. **Run `/docs-update`** - Syncs all docs after a coding session
-
-See [docs/WORKFLOW.md](docs/WORKFLOW.md) for the full guide.
-
----
-
-## Session Management
-
-Claude Code stores your conversation history locally. Key things to know:
-
-| Command | Purpose |
-|---------|---------|
-| `claude --resume` | Pick from recent sessions for current folder |
-| `claude --continue` | Continue most recent session (any project) |
-| `claude` | Start fresh session |
-
-**Moving or renaming project folders?** Your session history won't automatically follow. See [docs/CLAUDE_CODE_INTERNALS.md](docs/CLAUDE_CODE_INTERNALS.md) for how to migrate sessions to a new folder path.
-
----
-
-## Claude 4.6 Optimizations
-
-This framework is optimized for **Claude Opus 4.6** (`claude-opus-4-6`), the current flagship model. Key improvements over the original 4.5 design:
-
-| Change | Why |
-|--------|-----|
-| **Parallel tool calls** XML block in CLAUDE.md | 4.6 handles parallel calls better; explicit instruction boosts usage to ~100% |
-| **Do-not-overengineer** XML block | 4.6 is proactive by default and will add unrequested features without this constraint |
-| **Context window** XML block | 4.6 has automatic compaction — tells Claude not to stop early |
-| **Softened tool-use language** | `"You MUST use X"` → `"Use X when relevant"` — 4.6 overtriggers on aggressive imperatives |
-| **No anti-laziness prompts** | `"be thorough"`, `"do not be lazy"` amplify already-proactive behavior, causing runaway tokens |
-| **Adaptive thinking** (API-level) | Replace `thinking: {budget_tokens: N}` with `thinking: {type: "adaptive"}` in API calls |
-
-### Key 4.6 API Changes (if you call the API directly)
-
-```python
-# OLD (deprecated on Opus 4.6 — still works but avoid)
-response = client.beta.messages.create(
-    model="claude-opus-4-5",
-    thinking={"type": "enabled", "budget_tokens": 32000},
-    betas=["interleaved-thinking-2025-05-14"],
-    ...
-)
-
-# NEW (Opus 4.6)
-response = client.messages.create(
-    model="claude-opus-4-6",
-    thinking={"type": "adaptive"},
-    output_config={"effort": "high"},  # max | high | medium | low
-    ...
-)
-```
+| Rule | Why |
+|------|-----|
+| `<do_not_overengineer>` block | 4.6 is proactive -- will add unrequested features without this |
+| `<parallel_tool_calls>` block | Explicit instruction boosts parallel usage to ~100% |
+| No anti-laziness prompts | "be thorough" amplifies proactive behavior, wastes tokens |
+| Soft tool-use language | "Use X when relevant" not "You MUST use X" -- 4.6 overtriggers |
 
 See `docs/CLAUDE_4_6_UPGRADE.md` for the full migration guide.
 
 ---
 
-## Research Background
-
-This framework builds on research from:
-
-- [Building Effective Agents](https://www.anthropic.com/research/building-effective-agents)
-- [Claude Code Best Practices](https://www.anthropic.com/engineering/claude-code-best-practices)
-- [Claude Opus 4.6 Model Card](https://www.anthropic.com/claude/opus)
-
-Key insight: **Skills prevent mistakes during creation**, while **Agents catch issues during review**. Using both together produces the best results.
-
----
-
-## Built With
-
-This framework was built using [Claude Code](https://www.npmjs.com/package/@anthropic-ai/claude-code), Anthropic's official CLI for AI-assisted development.
-
-```bash
-npm install -g @anthropic-ai/claude-code
-```
-
----
-
 ## License
 
-MIT - Use this however you want.
-
----
-
-## Contributing
-
-Found something that could be better? PRs welcome!
+MIT

@@ -11,7 +11,7 @@ port: 3000
 
 ---
 
-## Constraints (CRITICAL)
+## Constraints
 
 <constraints critical="true">
   <budget>Define your budget constraints</budget>
@@ -19,91 +19,76 @@ port: 3000
   <principle>Key guiding principle</principle>
 </constraints>
 
-→ `docs/CONSTRAINTS.md` for full limits (if exists)
-
 ---
 
-## Documentation (Progressive Disclosure)
+## Documentation
 
-**Level 1 - This file** (summary)
-**Level 2 - docs/** (detail)
-**Level 3 - .claude/** (skills/agents)
+**Level 1 - This file** (summary) → **Level 2 - docs/** (detail)
 
 | Priority | Doc | When to Read |
 |----------|-----|--------------|
-| 🔴 | `docs/CONSTRAINTS.md` | Before proposing ANY solution |
-| 🔴 | `docs/REFERENCE.md` | Before modifying existing code |
-| 🟡 | `docs/api.yaml` | When working with API endpoints |
-| 🟡 | `docs/schema.yaml` | When working with database |
-| 🟢 | `docs/MCP.md` | When testing or using tools |
+| High | `docs/DECISIONS.md` | Before proposing ANY solution |
+| High | `docs/CHANGELOG.md` | Before modifying existing code |
+| Medium | `docs/api.yaml` | When working with API endpoints |
+| Medium | `docs/schema.yaml` | When working with database |
 
 ---
 
-## MCP Tools
+## MCP Servers
 
-| Server | Key Tools | Use For |
-|--------|-----------|---------|
-| Playwright | `browser_navigate`, `browser_snapshot` | Visual testing |
-| Supabase | `execute_sql`, `apply_migration` | Database |
-| Context7 | `resolve-library-id`, `query-docs` | Library docs |
+Use these tools — they're already running and provide capabilities beyond built-in tools.
 
-→ `docs/MCP.md` for full tools and examples
+| Server | Use For |
+|--------|---------|
+| **Obsidian** | Cross-project knowledge, hub notes, infrastructure docs |
+| **context7** | Up-to-date library/framework documentation |
+| **Playwright** | Visual testing, browser snapshots, E2E flows |
+| **Figma** | Design context from real Figma files |
 
----
+### Obsidian Integration
 
-## Skills (Auto-loaded)
-
-### Core Skills
-| Skill | Activates When |
-|-------|----------------|
-| `docs-safety` | Modifying TODO.md, CHANGELOG.md, any docs |
-| `code-review` | Writing or modifying code files |
-| `design-review` | Building UI, styling, visual work |
-| `security-audit` | Auth, API routes, user data |
-
-### Feature Skills
-| Skill | Activates When |
-|-------|----------------|
-| `frontend-design` | UI components, styling |
-| `security` | Auth flows, payments |
-
-→ `.claude/skills/` for full skill files
+Before starting work:
+1. Query the vault for existing context on this project
+2. Check infrastructure notes if making infra changes
+3. After significant decisions, update the project's hub note
 
 ---
 
-## Agents (Manual `/command`)
+## Plugins
 
-| Agent | Command | Use For |
-|-------|---------|---------|
-| design-review | `/design-review` | UI audit |
-| security-audit | `/security-audit` | Security check |
-| code-review | `/code-review` | Code quality |
-| docs-update | `/docs-update` | Sync docs |
+Claude Code plugins load on-demand and are maintained upstream. Prefer these over custom skills.
 
-→ `.claude/agents/` for full agent instructions
+| Need | Plugin |
+|------|--------|
+| Code quality | `code-review` |
+| Security | `security-guidance` |
+| Frontend design | `frontend-design` |
+| PR workflow | `pr-review-toolkit` |
+| Commits | `commit-commands` |
+| Design review | `figma` |
 
 ---
 
 ## AI Rules
 
 <rules>
-  <rule priority="1">Use progressive disclosure - Read 🔴 docs before proposing solutions</rule>
-  <rule priority="2">Skills auto-apply - Don't skip guardrails</rule>
-  <rule priority="3">Test with Playwright - Verify UI works</rule>
-  <rule priority="4">Update docs - Keep documentation current</rule>
-  <rule priority="5">Never delete history - Mark items done, don't remove</rule>
+  <rule priority="1">Read docs/ before proposing solutions</rule>
+  <rule priority="2">Query Obsidian vault for cross-project context</rule>
+  <rule priority="3">Use context7 for library docs - training data may be stale</rule>
+  <rule priority="4">Test with Playwright - verify UI works visually</rule>
+  <rule priority="5">Update docs after changes</rule>
 </rules>
 
 <parallel_tool_calls>
-If you intend to call multiple tools and there are no dependencies between them, make all independent tool calls in parallel. Maximize parallel tool calls for speed and efficiency.
+If you intend to call multiple tools and there are no dependencies between them, make all independent tool calls in parallel.
 </parallel_tool_calls>
 
 <do_not_overengineer>
-Only make changes that are directly requested or clearly necessary. Keep solutions simple and focused. Don't add features, refactor code, or make improvements beyond what was asked. Don't add comments, docstrings, or type annotations to code you didn't change.
+Only make changes that are directly requested or clearly necessary. Keep solutions simple and focused. Don't add features, refactor code, or make improvements beyond what was asked.
 </do_not_overengineer>
 
 <context_window>
-Your context window will be automatically compacted as it approaches its limit, allowing you to continue working indefinitely. Do not stop tasks early due to context concerns.
+Your context window will be automatically compacted as it approaches its limit. Do not stop tasks early due to context concerns.
 </context_window>
 
 ---
@@ -116,8 +101,6 @@ Your context window will be automatically compacted as it approaches its limit, 
   <gotcha context="data">Ask before flagging real data as placeholder</gotcha>
 </gotchas>
 
-→ `docs/REFERENCE.md` for full gotchas
-
 ---
 
 ## Quick Reference
@@ -128,8 +111,8 @@ Your context window will be automatically compacted as it approaches its limit, 
 | Stack | Define here |
 | Database | Define here |
 
-**Status:** Feature 1 ✅ | Feature 2 ✅ | Feature 3 ⏳
-**Not built:** Feature 4, Feature 5
+**Status:** Feature 1 ✅ | Feature 2 ⏳
+**Not built:** Feature 3, Feature 4
 
 ---
 
