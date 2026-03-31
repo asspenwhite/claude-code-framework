@@ -103,6 +103,28 @@ See `CLAUDE_4_6_UPGRADE.md` for the full migration guide.
 
 ---
 
+## Deliberation Engine
+
+The one exception to "plugins over skills." No plugin replicates swarm deliberation with isolated agents.
+
+```
+~/.claude/commands/deliberate.md      -- entry point (/deliberate)
+~/.claude/skills/deliberate/
+  SKILL.md                            -- orchestrator (disable-model-invocation: true)
+  PROMPTS.md                          -- agent prompt templates
+  FORMATS.md                          -- output format templates
+  COMPLAINTS.md                       -- complaint system reference
+  personas/                           -- 8 persona files
+```
+
+**How it works:** Each persona runs as a separate `Agent` tool invocation with its own context window. No persona sees another's output until the team lead (main conversation) routes it. This produces genuine disagreement instead of polite consensus.
+
+**Why `disable-model-invocation: true`:** Without this flag, Claude reads all skill files at startup. The deliberation engine is ~1,000 lines across 15 files — that's wasted context on every session. The flag makes it invisible until `/deliberate` is typed.
+
+**Installed globally** at `~/.claude/` so it works from any project directory.
+
+---
+
 ## Doc Templates
 
 The `templates/` directory provides starter docs:
