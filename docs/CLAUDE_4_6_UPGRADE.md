@@ -326,13 +326,14 @@ The agent should execute:
 
 ```json
 {
-  "effort": "max",
+  "effortLevel": "max",
   "env": {
-    "CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING": "1",
-    "CLAUDE_CODE_THINKING_BUDGET": "31999"
+    "CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING": "1"
   }
 }
 ```
+
+> Schema docs only enumerate `low|medium|high` for `effortLevel`, but Claude Code accepts `"max"` (matches the `--effort max` CLI flag for Opus 4.6). `CLAUDE_CODE_THINKING_BUDGET` only has effect on the Node `cli.js` patch variant below — skip on native-binary installs.
 
 **Step B — detect install type:**
 
