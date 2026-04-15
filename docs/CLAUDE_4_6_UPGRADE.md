@@ -370,17 +370,21 @@ CLI_JS=$(dirname "$CLAUDE_BIN")/cli.js
 
 Richer patch with tunable budget:
 
+Two passes: the braced form `{type:"adaptive"}` gets the richer replacement with budget injection; any remaining `type:"adaptive"` (e.g. `{type:"adaptive",display:h8}` in current cli.js) gets a plain enable.
+
 ```bash
 cp "$CLI_JS" "$CLI_JS.bak.$(date +%s)"
 if sed --version 2>/dev/null | grep -q GNU; then
-  sed -i 's/{type:"adaptive"}/{type:"enabled",budget_tokens:+process.env.CLAUDE_CODE_THINKING_BUDGET||24000}/g' "$CLI_JS"
+  SED_I=(sed -i)
 else
   # BSD sed (macOS default)
-  sed -i '' 's/{type:"adaptive"}/{type:"enabled",budget_tokens:+process.env.CLAUDE_CODE_THINKING_BUDGET||24000}/g' "$CLI_JS"
+  SED_I=(sed -i '')
 fi
+"${SED_I[@]}" 's/{type:"adaptive"}/{type:"enabled",budget_tokens:+process.env.CLAUDE_CODE_THINKING_BUDGET||24000}/g' "$CLI_JS"
+"${SED_I[@]}" 's/type:"adaptive"/type:"enabled"/g' "$CLI_JS"
 # Verify
 grep -c 'type:"adaptive"' "$CLI_JS"              # expect 0
-grep -c 'CLAUDE_CODE_THINKING_BUDGET' "$CLI_JS"  # expect ≥ 5
+grep -c 'CLAUDE_CODE_THINKING_BUDGET' "$CLI_JS"  # expect ≥ 4 (most adaptive sites are the braced form)
 ```
 
 **Step D — verify end-to-end:**
