@@ -1,7 +1,7 @@
 ---
 name: Claude Code Framework
 type: framework
-version: 1.5
+version: 1.6
 ---
 
 # Claude Code Framework - AI Instructions
@@ -28,6 +28,7 @@ version: 1.5
 |----------|-----|--------------|
 | High | `docs/DECISIONS.md` | Before proposing ANY solution |
 | High | `docs/CHANGELOG.md` | Before modifying existing code |
+| High | `docs/CLAUDE_4_6_UPGRADE.md` | Before running Claude Code on a fresh machine, or if thinking blocks appear missing from responses |
 | Medium | `docs/api.yaml` | When working with API endpoints |
 | Medium | `docs/schema.yaml` | When working with database |
 
@@ -129,4 +130,4 @@ Your context window will be automatically compacted as it approaches its limit. 
 
 ---
 
-*Last updated: 2026-03-30*
+*Last updated: 2026-04-14*

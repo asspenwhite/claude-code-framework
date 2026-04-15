@@ -51,6 +51,16 @@ claude
 
 ---
 
+## Setting up Claude Code on a new machine
+
+Before Claude 4.6 on a fresh install behaves well, apply the adaptive thinking fix. Open `claude` and ask:
+
+> Apply the adaptive thinking fix per `docs/CLAUDE_4_6_UPGRADE.md`.
+
+The agent will merge `settings.json`, patch the local client (native binary or `cli.js`), and verify. See [`docs/CLAUDE_4_6_UPGRADE.md`](docs/CLAUDE_4_6_UPGRADE.md#adaptive-thinking-fix-claude-code-client-regression) for the benchmark data and the three-layer rationale.
+
+---
+
 ## Recommended Plugins
 
 Install from the official marketplace. These load on-demand -- no startup cost.
