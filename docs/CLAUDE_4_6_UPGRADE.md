@@ -233,6 +233,8 @@ details instead of asking.
 </default_to_action>
 ```
 
+> **asspenwhite's config:** this `<default_to_action>` block is intentionally **omitted**. The other three XML blocks (`<parallel_tool_calls>`, `<do_not_overengineer>`, `<context_window>`) are applied everywhere, but this one is not — the preference is for Claude to confirm-then-act on ambiguous intent rather than infer. Use `<do_not_act_before_instructions>` selectively on review/docs agents where conservative behavior is explicitly wanted.
+
 For more conservative behavior (review agents, docs agents):
 
 ```xml

@@ -131,3 +131,9 @@ Your context window will be automatically compacted as it approaches its limit. 
 ---
 
 *Last updated: 2026-04-14*
+
+---
+
+## Proactiveness preference (asspenwhite)
+
+Apply `<parallel_tool_calls>`, `<do_not_overengineer>`, `<context_window>` to every project's CLAUDE.md. Do NOT apply `<default_to_action>` — the preference is for Claude to confirm-then-act on ambiguous intent. See `docs/CLAUDE_4_6_UPGRADE.md` §Proactiveness Controls.
