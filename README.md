@@ -1,44 +1,26 @@
 # Claude Code Framework
 
-A lightweight project template for [Claude Code](https://docs.anthropic.com/en/docs/claude-code). Sets up documentation structure and AI rules so Claude writes better code from the start.
+A lightweight configuration template that gets the most out of [Claude Code](https://docs.anthropic.com/en/docs/claude-code). Prompting rules, MCP integration, documentation structure, and one custom skill (deliberation engine).
 
 [![Use this template](https://img.shields.io/badge/Use%20this%20template-238636?style=for-the-badge&logo=github&logoColor=white)](https://github.com/asspenwhite/claude-code-framework/generate)
 
 ---
 
-## What This Is
+## Apply to a project
 
-A `CLAUDE.md` template + documentation structure that configures Claude Code with:
-
-- **Progressive disclosure** -- Claude reads what it needs when it needs it
-- **Prompting rules** -- prevents over-engineering, enables parallel tool calls
-- **MCP integration** -- points Claude to Obsidian, context7, Playwright, Figma
-- **Plugin-first** -- uses official Claude Code plugins instead of custom skills
-- **Doc templates** -- CHANGELOG, TODO, DECISIONS, API, SCHEMA ready to customize
-
-This is intentionally minimal. The real power comes from Claude Code's plugin ecosystem and MCP servers, not static markdown files.
-
----
-
-## Quick Start
-
-### New Project
-
-1. Click **"Use this template"** above -- create a new repo
-2. Clone it and open in terminal
-3. Run `claude` and paste:
+Open Claude Code in any project and say:
 
 ```
-Customize this template for my project:
-
-**Project Name:** [name]
-**Description:** [what it does]
-**Tech Stack:** [e.g., Next.js 14, Supabase, Tailwind]
-
-Update CLAUDE.md and create initial docs.
+Apply the claude-code-framework from https://github.com/asspenwhite/claude-code-framework to this project.
 ```
 
-### Existing Project
+Claude will:
+1. Clone the framework
+2. Copy `CLAUDE.md` and `docs/` templates into your project
+3. Customize for your stack (you'll be asked project name, description, tech stack)
+4. Ask if you want to update your home-level `~/.claude/CLAUDE.md` with the prompting rules too
+
+### Manual setup
 
 ```bash
 cd /path/to/your/project
@@ -46,14 +28,68 @@ git clone --depth 1 https://github.com/asspenwhite/claude-code-framework.git tem
 cp temp/CLAUDE.md ./
 cp -r temp/docs ./
 rm -rf temp
-claude
+claude  # Claude will read CLAUDE.md and follow the rules
 ```
 
 ---
 
-## Recommended Plugins
+## What it does
 
-Install from the official marketplace. These load on-demand -- no startup cost.
+### Prompting rules (why this matters)
+
+Claude Code is powerful but needs guardrails. Without them, it over-engineers, adds unrequested features, serializes tool calls, and sometimes stops mid-task. This framework configures Claude via `CLAUDE.md` with:
+
+| Rule | What it prevents |
+|------|-----------------|
+| `<do_not_overengineer>` | Claude adding features, refactoring code, or "improving" things you didn't ask for |
+| `<parallel_tool_calls>` | Serialized tool execution — with this, parallel usage approaches 100% |
+| `<context_window>` | Claude stopping mid-task saying "running low on context" |
+| No `<default_to_action>` | Claude acting on ambiguous intent without confirming first |
+| No anti-laziness prompts | "be thorough" / "think carefully" waste tokens and amplify over-action |
+
+Full reference: [`docs/PROMPTING.md`](docs/PROMPTING.md)
+
+### MCP integration
+
+Points Claude to external tools that extend its capabilities beyond built-in:
+
+| Server | What it gives Claude |
+|--------|---------------------|
+| **context7** | Current library/framework docs (React, Next.js, Prisma, etc.) |
+| **Playwright** | Browser control for visual testing and E2E flows |
+| **Obsidian** | Cross-project knowledge from your vault |
+| **Figma** | Design context from real Figma files |
+
+### Documentation structure
+
+Templates for common project docs that Claude reads before acting:
+
+```
+docs/
+├── templates/
+│   ├── CHANGELOG.template.md
+│   ├── DECISIONS.template.md
+│   ├── TODO.template.md
+│   ├── API.template.md
+│   ├── SCHEMA.template.md
+│   └── LOGIC_AUDIT.template.md
+├── PROMPTING.md           — XML blocks, effort levels, anti-patterns
+├── MIGRATION_4_7.md       — Cleanup checklist for Opus 4.6 → 4.7
+├── ARCHITECTURE.md        — How progressive disclosure works
+├── WORKFLOW.md            — Documentation workflow guide
+├── MCP.md                 — MCP server setup guide
+└── FILE_FORMATS.md        — Token-efficient format guidelines
+```
+
+### Deliberation engine (`/deliberate`)
+
+The one custom skill. Spawns 8 personas as isolated Agent instances for genuine disagreement — not one Claude playing all roles. Three tiers (Greenfield / WIP / Polish), interactive or auto mode, checkpoint system for long deliberations.
+
+---
+
+## Recommended setup
+
+### Plugins (official marketplace)
 
 ```bash
 claude plugin install code-review
@@ -63,76 +99,41 @@ claude plugin install pr-review-toolkit
 claude plugin install commit-commands
 ```
 
----
-
-## Recommended MCP Servers
-
-These give Claude capabilities its built-in tools can't match.
+### MCP servers
 
 ```bash
-# Up-to-date library docs (React, Next.js, Prisma, etc.)
+# Up-to-date library docs
 claude mcp add context7 -- npx -y @anthropic-ai/context7-mcp@latest
 
 # Browser control for visual testing
 claude mcp add playwright -- npx @anthropic/mcp-playwright
 
-# Obsidian vault for cross-project knowledge (if you use Obsidian)
+# Obsidian vault (if you use it)
 # See: https://github.com/MarkusPfundstein/mcp-obsidian
 ```
 
 ---
 
-## What's Included
+## Migrating from 4.6
 
-```
-CLAUDE.md                          -- AI instructions template (customize this)
-.claude/
-  commands/deliberate.md           -- /deliberate command entry point
-  skills/deliberate/
-    SKILL.md                       -- Orchestrator (disable-model-invocation: true)
-    PROMPTS.md                     -- Agent prompt templates
-    FORMATS.md                     -- Report/doc output templates
-    COMPLAINTS.md                  -- Complaint system reference
-    personas/                      -- 8 persona files (ma, jobs, torvalds, dyson, su, atrioc, sacco, buffett)
-docs/
-  ARCHITECTURE.md                  -- How progressive disclosure works
-  WORKFLOW.md                      -- Documentation workflow guide
-  MCP.md                           -- MCP server setup guide
-  FILE_FORMATS.md                  -- Token-efficient format guidelines
-  CLAUDE.md.example                -- Full CLAUDE.md example
-  PROMPTING.md                     -- XML blocks, effort levels, anti-patterns
-  templates/                       -- Doc templates (CHANGELOG, TODO, DECISIONS, etc.)
-```
+If you previously applied the adaptive thinking workaround (cli.js patching, `CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING` env var), see [`docs/MIGRATION_4_7.md`](docs/MIGRATION_4_7.md) for the cleanup checklist. Opus 4.7 no longer needs it.
 
-### Deliberation Engine
+---
 
-The one custom skill: `/deliberate`. Spawns 8 personas as isolated Agent instances for genuine disagreement (not one Claude playing all roles). Zero startup cost -- only loads when you invoke it.
+## Current model
 
-Three tiers (Greenfield/WIP/Polish), interactive or auto mode, complaint routing between personas, checkpoint system for long deliberations, and automatic doc generation.
+**Claude Opus 4.7** (`claude-opus-4-7`) — 1M context, 128k max output.
+
+For API reference: [docs.anthropic.com](https://docs.anthropic.com/en/docs/about-claude/models)
 
 ---
 
 ## Philosophy
 
-1. **Plugins over skills.** Official plugins are maintained upstream, load on-demand, and don't bloat your context window. Don't reinvent them as markdown files.
-2. **MCP over static knowledge.** A running Obsidian vault or context7 server has live data. A SKILL.md has stale data.
-3. **Less is more.** Every line in CLAUDE.md costs context tokens. Keep it short, point to docs/ for detail.
-4. **Templates over prescriptions.** This framework gives you structure. You fill in the content.
-
----
-
-## Prompting Rules
-
-This framework's CLAUDE.md includes XML blocks that shape Claude's behavior. See [`docs/PROMPTING.md`](docs/PROMPTING.md) for the full reference.
-
-| Rule | Why |
-|------|-----|
-| `<do_not_overengineer>` | Claude is proactive by default -- constrains scope to what was asked |
-| `<parallel_tool_calls>` | Explicit instruction boosts parallel tool usage to ~100% |
-| `<context_window>` | Prevents premature task abandonment due to context concerns |
-| No anti-laziness prompts | "be thorough" / "think carefully" waste tokens and amplify over-action |
-
-Current model: **Claude Opus 4.7** (`claude-opus-4-7`). For API details: [docs.anthropic.com](https://docs.anthropic.com/en/docs/about-claude/models)
+1. **Less is more.** Every line in CLAUDE.md costs context tokens. Keep it short, point to docs/ for detail.
+2. **Plugins over skills.** Official plugins are maintained upstream and load on-demand. Don't reinvent them.
+3. **MCP over static knowledge.** A running context7 or Obsidian server has live data. A markdown file has stale data.
+4. **Templates over prescriptions.** This framework gives structure. You fill in the content.
 
 ---
 
