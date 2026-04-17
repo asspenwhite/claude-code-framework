@@ -11,7 +11,7 @@ A lightweight project template for [Claude Code](https://docs.anthropic.com/en/d
 A `CLAUDE.md` template + documentation structure that configures Claude Code with:
 
 - **Progressive disclosure** -- Claude reads what it needs when it needs it
-- **Claude 4.6 rules** -- prevents over-engineering, enables parallel tool calls
+- **Prompting rules** -- prevents over-engineering, enables parallel tool calls
 - **MCP integration** -- points Claude to Obsidian, context7, Playwright, Figma
 - **Plugin-first** -- uses official Claude Code plugins instead of custom skills
 - **Doc templates** -- CHANGELOG, TODO, DECISIONS, API, SCHEMA ready to customize
@@ -48,16 +48,6 @@ cp -r temp/docs ./
 rm -rf temp
 claude
 ```
-
----
-
-## Setting up Claude Code on a new machine
-
-Before Claude 4.6 on a fresh install behaves well, apply the adaptive thinking fix. Open `claude` and ask:
-
-> Apply the adaptive thinking fix per `docs/CLAUDE_4_6_UPGRADE.md`.
-
-The agent will merge `settings.json`, patch the local client (native binary or `cli.js`), and verify. See [`docs/CLAUDE_4_6_UPGRADE.md`](docs/CLAUDE_4_6_UPGRADE.md#adaptive-thinking-fix-claude-code-client-regression) for the benchmark data and the three-layer rationale.
 
 ---
 

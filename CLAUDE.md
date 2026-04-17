@@ -1,7 +1,7 @@
 ---
 name: Claude Code Framework
 type: framework
-version: 1.6
+version: 1.7
 ---
 
 # Claude Code Framework - AI Instructions
@@ -28,7 +28,7 @@ version: 1.6
 |----------|-----|--------------|
 | High | `docs/DECISIONS.md` | Before proposing ANY solution |
 | High | `docs/CHANGELOG.md` | Before modifying existing code |
-| High | `docs/CLAUDE_4_6_UPGRADE.md` | Before running Claude Code on a fresh machine, or if thinking blocks appear missing from responses |
+| Low | `docs/CLAUDE_4_6_UPGRADE.md` | Reference for 4.6→4.7 API migration (model IDs, new features, prompting) |
 | Medium | `docs/api.yaml` | When working with API endpoints |
 | Medium | `docs/schema.yaml` | When working with database |
 
