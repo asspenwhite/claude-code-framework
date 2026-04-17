@@ -100,7 +100,7 @@ docs/
   MCP.md                           -- MCP server setup guide
   FILE_FORMATS.md                  -- Token-efficient format guidelines
   CLAUDE.md.example                -- Full CLAUDE.md example
-  CLAUDE_4_6_UPGRADE.md            -- Claude 4.6 migration guide
+  PROMPTING.md                     -- XML blocks, effort levels, anti-patterns
   templates/                       -- Doc templates (CHANGELOG, TODO, DECISIONS, etc.)
 ```
 
@@ -121,18 +121,18 @@ Three tiers (Greenfield/WIP/Polish), interactive or auto mode, complaint routing
 
 ---
 
-## Claude 4.6 Notes
+## Prompting Rules
 
-This template is optimized for Claude Opus 4.6. Key things it handles:
+This framework's CLAUDE.md includes XML blocks that shape Claude's behavior. See [`docs/PROMPTING.md`](docs/PROMPTING.md) for the full reference.
 
 | Rule | Why |
 |------|-----|
-| `<do_not_overengineer>` block | 4.6 is proactive -- will add unrequested features without this |
-| `<parallel_tool_calls>` block | Explicit instruction boosts parallel usage to ~100% |
-| No anti-laziness prompts | "be thorough" amplifies proactive behavior, wastes tokens |
-| Soft tool-use language | "Use X when relevant" not "You MUST use X" -- 4.6 overtriggers |
+| `<do_not_overengineer>` | Claude is proactive by default -- constrains scope to what was asked |
+| `<parallel_tool_calls>` | Explicit instruction boosts parallel tool usage to ~100% |
+| `<context_window>` | Prevents premature task abandonment due to context concerns |
+| No anti-laziness prompts | "be thorough" / "think carefully" waste tokens and amplify over-action |
 
-See `docs/CLAUDE_4_6_UPGRADE.md` for the full migration guide.
+Current model: **Claude Opus 4.7** (`claude-opus-4-7`). For API details: [docs.anthropic.com](https://docs.anthropic.com/en/docs/about-claude/models)
 
 ---
 

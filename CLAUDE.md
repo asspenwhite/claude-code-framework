@@ -28,7 +28,7 @@ version: 1.7
 |----------|-----|--------------|
 | High | `docs/DECISIONS.md` | Before proposing ANY solution |
 | High | `docs/CHANGELOG.md` | Before modifying existing code |
-| Low | `docs/CLAUDE_4_6_UPGRADE.md` | Reference for 4.6→4.7 API migration (model IDs, new features, prompting) |
+| High | `docs/PROMPTING.md` | XML blocks, effort levels, anti-patterns, proactiveness controls |
 | Medium | `docs/api.yaml` | When working with API endpoints |
 | Medium | `docs/schema.yaml` | When working with database |
 
@@ -136,4 +136,4 @@ Your context window will be automatically compacted as it approaches its limit. 
 
 ## Proactiveness preference (asspenwhite)
 
-Apply `<parallel_tool_calls>`, `<do_not_overengineer>`, `<context_window>` to every project's CLAUDE.md. Do NOT apply `<default_to_action>` — the preference is for Claude to confirm-then-act on ambiguous intent. See `docs/CLAUDE_4_6_UPGRADE.md` §Proactiveness Controls.
+Apply `<parallel_tool_calls>`, `<do_not_overengineer>`, `<context_window>` to every project's CLAUDE.md. Do NOT apply `<default_to_action>` — the preference is for Claude to confirm-then-act on ambiguous intent. See `docs/PROMPTING.md` §Proactiveness Controls.
