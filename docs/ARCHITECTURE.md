@@ -104,9 +104,16 @@ See `MODEL_NOTES.md` for the full era notes and v1.6 migration checklist.
 
 ---
 
-## Deliberation Engine
+## Custom Skills
 
-The one exception to "plugins over skills." No plugin replicates swarm deliberation with isolated agents.
+Two exceptions to "plugins over skills," both zero-startup-cost
+(`disable-model-invocation: true`):
+
+- **`/retro`** — end-of-session retrospective: harvests corrections and
+  discoveries into durable config (hooks, CLAUDE.md lines, docs) so the
+  setup compounds instead of staying static. One file,
+  `.claude/skills/retro/SKILL.md`.
+- **`/deliberate`** — swarm deliberation. No plugin replicates it.
 
 ```
 ~/.claude/skills/deliberate/

@@ -70,6 +70,27 @@ runs eslint on every file you edit"* and review the result.
 
 ---
 
+## Hooks Shipped With This Template
+
+| Hook | Event | Status |
+|------|-------|--------|
+| `.claude/hooks/protect-paths.sh` | `PreToolUse` (Edit\|Write) | **Active** — blocks writes to `.env`, `*.enc`, `secrets/` (allows `.env.example`). Covers Edit/Write only; add a Bash matcher if you need shell-level coverage. |
+| `.claude/hooks/docs-sync-gate.sh` | `Stop` | **Opt-in** — blocks the turn from ending while tracked files changed but `docs/CHANGELOG.md` didn't. Self-disables if the repo has no `docs/CHANGELOG.md`. |
+
+Enable the docs-sync gate by adding to `.claude/settings.json`:
+
+```json
+"Stop": [
+  { "hooks": [ { "type": "command", "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/docs-sync-gate.sh" } ] }
+]
+```
+
+It's opt-in because it judges by `git status`: in a repo that was dirty
+before the session it will ask once for an entry covering pre-existing
+drift. Adopt it when you adopt the audit-CHANGELOG workflow.
+
+---
+
 ## Starter Recipes
 
 ### 1. Lint/format after every edit

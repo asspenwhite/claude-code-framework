@@ -1,12 +1,12 @@
 ---
 name: Claude Code Framework
 type: framework
-version: 1.7
+version: 1.8
 ---
 
 # Claude Code Framework - AI Instructions
 
-**Lightweight project template for Claude Code.** Plugins + MCP over custom skills, hooks for guarantees, docs for state. One custom skill: the deliberation engine.
+**Lightweight project template for Claude Code.** Plugins + MCP over custom skills, hooks for guarantees, docs for state. Custom skills: `/deliberate` (swarm deliberation) and `/retro` (session retrospective).
 
 ---
 
@@ -62,6 +62,9 @@ CLAUDE.md is advisory; hooks are deterministic. Rules that must hold 100% of
 the time (format-after-edit, protected paths, audit-log entries, verification
 gates) live in `.claude/settings.json` hooks, not in this file. See `docs/HOOKS.md`.
 
+Shipped active: `protect-paths.sh` (blocks Edit/Write to secrets paths).
+Shipped opt-in: `docs-sync-gate.sh` (Stop gate — no turn ends with unlogged changes).
+
 ---
 
 ## Plugins
@@ -100,6 +103,8 @@ Details: `.claude/skills/deliberate/SKILL.md`
   <rule priority="3">Use context7 for library docs - training data may be stale</rule>
   <rule priority="4">Test with Playwright - verify UI works visually</rule>
   <rule priority="5">Update docs after changes — CHANGELOG always; AS-BUILT + incident report for operational changes</rule>
+  <rule priority="6">Run the Check command (Quick Reference) and show its output before claiming work done</rule>
+  <rule priority="7">After implementing anything non-trivial, have the adversarial-reviewer subagent attack the diff before calling it done</rule>
 </rules>
 
 <do_not_overengineer>
@@ -125,6 +130,7 @@ Only make changes that are directly requested or clearly necessary. Keep solutio
 | Port | 3000 |
 | Stack | Define here |
 | Database | Define here |
+| **Check command** | Define here — the one command that proves work is done (test suite, build, smoke script) |
 
 **Status:** Feature 1 ✅ | Feature 2 ⏳
 **Not built:** Feature 3, Feature 4

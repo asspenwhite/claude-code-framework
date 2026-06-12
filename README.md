@@ -11,7 +11,9 @@ A lightweight project template for [Claude Code](https://code.claude.com/docs) â
 A `CLAUDE.md` template + documentation structure that configures Claude Code with:
 
 - **Progressive disclosure** -- Claude reads what it needs when it needs it
-- **Hooks doctrine** -- CLAUDE.md for guidance, hooks for guarantees
+- **Working hooks, active on clone** -- secrets-path protection now, audit-log Stop gate opt-in. CLAUDE.md for guidance, hooks for guarantees
+- **A verification loop** -- a named Check command + an adversarial-reviewer subagent that attacks the diff in fresh context before work is called done
+- **A self-improvement loop** -- `/retro` harvests session corrections into hooks, CLAUDE.md lines, and docs, so the setup compounds
 - **MCP integration** -- points Claude to Obsidian, context7, Playwright
 - **Plugin-first** -- uses official Claude Code plugins instead of custom skills
 - **Doc templates** -- CHANGELOG, TODO, DECISIONS, API, SCHEMA â€” plus ops templates: INCIDENT, AS-BUILT, RUNBOOK
@@ -117,6 +119,14 @@ Setup details: [`docs/MCP.md`](docs/MCP.md)
 ```
 CLAUDE.md                          -- AI instructions template (customize this)
 .claude/
+  settings.json                    -- hook wiring (protect-paths active on clone)
+  hooks/
+    protect-paths.sh               -- PreToolUse: blocks Edit/Write to secrets paths (ACTIVE)
+    docs-sync-gate.sh              -- Stop: no turn ends with unlogged changes (opt-in)
+  agents/
+    adversarial-reviewer.md        -- fresh-context diff attacker (subagent)
+  skills/
+    retro/SKILL.md                 -- /retro: harvest session corrections into durable config
   skills/deliberate/
     SKILL.md                       -- /deliberate orchestrator (disable-model-invocation: true)
     PROMPTS.md                     -- Agent prompt templates
