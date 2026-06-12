@@ -278,20 +278,19 @@ After making changes, update relevant docs:
 | Database change | `docs/SCHEMA.md` - update schema |
 ```
 
-### Using the docs-update Agent
+### Running a Docs Sync Pass
 
-Run after any session with significant changes:
+After any session with significant changes, prompt Claude directly:
 
-```bash
-claude /docs-update
+```
+Diff the working tree against the last commit. Update CHANGELOG.md under
+[Unreleased], mark completed TODOs, and report any change not reflected
+in docs/.
 ```
 
-The agent will:
-1. Check what files changed
-2. Update CHANGELOG.md with changes
-3. Mark completed TODOs
-4. Verify docs match implementation
-5. Report any missing documentation
+To make this a guarantee instead of a habit, enforce it with a `Stop` hook
+that blocks the turn from ending while changes are undocumented — see
+HOOKS.md recipe #3.
 
 ---
 
@@ -301,7 +300,7 @@ The agent will:
 2. **Be specific in changelogs** - File paths, function names
 3. **Log decisions immediately** - Before you forget the reasoning
 4. **Review docs in PRs** - Docs changes should be reviewed too
-5. **Run /docs-update regularly** - Catch drift before it accumulates
+5. **Run a docs sync pass regularly** - Catch drift before it accumulates
 
 ---
 
@@ -312,6 +311,6 @@ The agent will:
 2. Update CHANGELOG.md under [Unreleased]
 3. Mark TODO items complete
 4. Log any decisions made
-5. Run /docs-update to verify
+5. Run a docs sync pass to verify
 6. Commit everything together
 ```

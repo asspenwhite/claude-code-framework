@@ -132,9 +132,3 @@ Only make changes that are directly requested or clearly necessary. Keep solutio
 ---
 
 *Last updated: 2026-06-12 (v1.7 — Claude 5 era; see docs/MODEL_NOTES.md)*
-
----
-
-## Proactiveness preference (asspenwhite)
-
-Apply `<do_not_overengineer>` to every project's CLAUDE.md. Do NOT apply `<default_to_action>` — the preference is for Claude to confirm-then-act on ambiguous intent. `<parallel_tool_calls>` and `<context_window>` are retired — both are native harness behavior now (see `docs/MODEL_NOTES.md`).

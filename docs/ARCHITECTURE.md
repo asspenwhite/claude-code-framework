@@ -121,7 +121,7 @@ The one exception to "plugins over skills." No plugin replicates swarm deliberat
 
 **Why `disable-model-invocation: true`:** Without this flag, Claude reads all skill files at startup. The deliberation engine is ~1,000 lines across 15 files — that's wasted context on every session. The flag makes it invisible until `/deliberate` is typed.
 
-**Installed globally** at `~/.claude/` so it works from any project directory.
+**Ships project-local** in this repo's `.claude/`. Copy `skills/deliberate/` to `~/.claude/skills/` to make `/deliberate` available from any project directory.
 
 ---
 

@@ -81,13 +81,15 @@ CLAUDE.md instructions are advisory — followed most of the time. Hooks are det
 
 Install from the official marketplace. These load on-demand -- no startup cost.
 
-```bash
-claude plugin install code-review
-claude plugin install security-guidance
-claude plugin install frontend-design
-claude plugin install pr-review-toolkit
-claude plugin install commit-commands
 ```
+/plugin install code-review@claude-plugins-official
+/plugin install security-guidance@claude-plugins-official
+/plugin install frontend-design@claude-plugins-official
+/plugin install pr-review-toolkit@claude-plugins-official
+/plugin install commit-commands@claude-plugins-official
+```
+
+Or browse interactively with `/plugin`. All five names verified against the [official marketplace](https://github.com/anthropics/claude-plugins-official) (June 2026).
 
 ---
 

@@ -60,6 +60,14 @@ And the structural rule that supersedes all phrasing advice: **if a rule must
 hold 100% of the time, it isn't a CLAUDE.md rule — it's a hook**
 (`docs/HOOKS.md`).
 
+## Keep Personal Preferences Out of the Template
+
+Per-person behavior tuning — e.g. "confirm-then-act on ambiguous intent
+rather than defaulting to action" — belongs in your user-level
+`~/.claude/CLAUDE.md` or a gitignored `CLAUDE.local.md`, not in a shared
+project template where every downstream user inherits it. v1.6 carried one
+such block in the template; v1.7 moved it out.
+
 ## Migrating a v1.6 Project
 
 1. Delete `docs/CLAUDE_4_6_UPGRADE.md`; un-patch any patched client (just update Claude Code).
