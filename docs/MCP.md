@@ -11,7 +11,7 @@ Model Context Protocol (MCP) servers extend Claude's capabilities with real-time
 Browser automation for testing UI changes.
 
 ```bash
-claude mcp add playwright -- npx @anthropic/mcp-playwright
+claude mcp add playwright -- npx @playwright/mcp@latest
 ```
 
 **Tools:**
@@ -34,62 +34,60 @@ Claude: Let me check the homepage layout
 
 ---
 
-### shadcn/ui (Component Library)
-
-Access shadcn/ui component source code and demos.
-
-```bash
-claude mcp add shadcn -- npx -y @anthropic-ai/shadcn-mcp@latest
-```
-
-**Tools:**
-| Tool | Purpose |
-|------|---------|
-| `get_component` | Get component source code |
-| `list_components` | See available components |
-
-**Usage:**
-```
-Claude: I need to add a dropdown menu
-[Uses get_component to see shadcn dropdown implementation]
-[Adapts for your project]
-```
-
----
-
 ### Context7 (Library Documentation)
 
 Get up-to-date documentation for any library.
 
 ```bash
-claude mcp add context7 -- npx -y @anthropic-ai/context7-mcp@latest
+claude mcp add context7 -- npx -y @upstash/context7-mcp
 ```
 
 **Tools:**
 | Tool | Purpose |
 |------|---------|
-| `get-library-docs` | Fetch current docs for a library |
+| `resolve-library-id` | Find the library's docs ID |
+| `query-docs` / `get-library-docs` | Fetch current docs for a library |
 
 **Usage:**
 ```
-Claude: How do I use the new Next.js 15 features?
-[Uses get-library-docs to fetch latest Next.js docs]
+Claude: How do I use the new Next.js features?
+[Resolves library, fetches latest Next.js docs]
 [Provides accurate, current information]
 ```
 
 ---
 
-### Supabase (Database)
+### Obsidian (Cross-Project Knowledge)
 
-Direct database access for queries and migrations.
+Your vault as Claude's queryable long-term memory. Requires the **Local REST
+API** community plugin in Obsidian, then an MCP bridge such as
+[mcp-obsidian](https://github.com/MarkusPfundstein/mcp-obsidian):
 
 ```bash
-claude mcp add supabase -- npx -y @anthropic-ai/supabase-mcp@latest
+claude mcp add obsidian -- uvx mcp-obsidian
+# (reads OBSIDIAN_API_KEY / OBSIDIAN_HOST from its environment — keep the key
+#  in an encrypted env file, not in shell history or committed config)
 ```
 
-**Setup:**
-1. Run `claude /mcp` to authenticate
-2. Select your Supabase project
+**Tools:**
+| Tool | Purpose |
+|------|---------|
+| `obsidian_simple_search` | Full-text search with surrounding context — use first |
+| `obsidian_batch_get_file_contents` | Read multiple notes in ONE call |
+| `obsidian_get_file_contents` | Read a single note |
+| `obsidian_patch_content` / `obsidian_append_content` | Write back to the vault |
+
+See `docs/playbooks/KNOWLEDGE_BASE.md` for the full vault pattern.
+
+---
+
+### Supabase (Database)
+
+Direct database access for queries and migrations (hosted HTTP server, OAuth on first use):
+
+```bash
+claude mcp add --transport http supabase https://mcp.supabase.com/mcp
+```
 
 **Tools:**
 | Tool | Purpose |
@@ -109,53 +107,15 @@ Payment management and webhook monitoring.
 claude mcp add --transport http stripe https://mcp.stripe.com/
 ```
 
-**Setup:**
-1. Run `claude /mcp` to authenticate with Stripe
-
-**Tools:**
-| Tool | Purpose |
-|------|---------|
-| `list_payment_intents` | View payments |
-| `search_stripe_documentation` | Search Stripe docs |
-| `list_webhooks` | View webhook endpoints |
-
----
-
-## Configuration
-
-MCP servers are configured in `~/.claude.json`:
-
-```json
-{
-  "mcpServers": {
-    "playwright": {
-      "command": "npx",
-      "args": ["@anthropic/mcp-playwright"]
-    },
-    "shadcn": {
-      "command": "npx",
-      "args": ["-y", "@anthropic-ai/shadcn-mcp@latest"]
-    }
-  }
-}
-```
-
 ---
 
 ## Managing MCP Servers
 
 ```bash
-# List installed servers
-claude /mcp
-
-# Add a server
+claude mcp list               # list configured servers
 claude mcp add <name> -- <command>
-
-# Remove a server
 claude mcp remove <name>
-
-# Re-authenticate
-claude mcp auth <name>
+/mcp                          # in-session: status + authenticate
 ```
 
 ---
@@ -169,12 +129,15 @@ Control MCP access in `.claude/settings.local.json`:
   "permissions": {
     "allow": [
       "mcp__playwright__*",
-      "mcp__shadcn__*",
-      "mcp__context7__*"
+      "mcp__context7__*",
+      "mcp__obsidian__obsidian_simple_search"
     ]
   }
 }
 ```
+
+Allowlist read-only tools freely; leave write tools (vault patch, SQL
+execution) behind prompts unless you've decided otherwise deliberately.
 
 ---
 
@@ -183,4 +146,5 @@ Control MCP access in `.claude/settings.local.json`:
 1. **Use MCP instead of guessing** - Don't ask user to check things manually
 2. **Playwright for visual verification** - Take screenshots to confirm UI changes
 3. **Context7 for docs** - Always get current library documentation
-4. **Supabase for database** - Run queries directly instead of asking user
+4. **Obsidian first for cross-project questions** - search the vault before exploring the filesystem
+5. **Verify package names against the server's own README** - MCP install commands rot fast; two of the four in this file's previous revision were already wrong by mid-2026

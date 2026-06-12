@@ -1,12 +1,12 @@
 ---
 name: Claude Code Framework
 type: framework
-version: 1.6
+version: 1.7
 ---
 
 # Claude Code Framework - AI Instructions
 
-**Lightweight project template for Claude Code.** Plugins + MCP over custom skills. One custom skill: the deliberation engine.
+**Lightweight project template for Claude Code.** Plugins + MCP over custom skills, hooks for guarantees, docs for state. One custom skill: the deliberation engine.
 
 ---
 
@@ -28,9 +28,12 @@ version: 1.6
 |----------|-----|--------------|
 | High | `docs/DECISIONS.md` | Before proposing ANY solution |
 | High | `docs/CHANGELOG.md` | Before modifying existing code |
-| High | `docs/CLAUDE_4_6_UPGRADE.md` | Before running Claude Code on a fresh machine, or if thinking blocks appear missing from responses |
 | Medium | `docs/api.yaml` | When working with API endpoints |
 | Medium | `docs/schema.yaml` | When working with database |
+
+Operational projects (networks, hosts, live services) add: `docs/AS-BUILT.md`
+(live state), `docs/RUNBOOK.md` (ops + gotchas), `docs/INCIDENT-*.md`
+(outage reports). Templates in `docs/templates/`; role guides in `docs/playbooks/`.
 
 ---
 
@@ -43,7 +46,6 @@ Use these tools — they're already running and provide capabilities beyond buil
 | **Obsidian** | Cross-project knowledge, hub notes, infrastructure docs |
 | **context7** | Up-to-date library/framework documentation |
 | **Playwright** | Visual testing, browser snapshots, E2E flows |
-| **Figma** | Design context from real Figma files |
 
 ### Obsidian Integration
 
@@ -51,6 +53,14 @@ Before starting work:
 1. Query the vault for existing context on this project
 2. Check infrastructure notes if making infra changes
 3. After significant decisions, update the project's hub note
+
+---
+
+## Hooks
+
+CLAUDE.md is advisory; hooks are deterministic. Rules that must hold 100% of
+the time (format-after-edit, protected paths, audit-log entries, verification
+gates) live in `.claude/settings.json` hooks, not in this file. See `docs/HOOKS.md`.
 
 ---
 
@@ -65,7 +75,6 @@ Claude Code plugins load on-demand and are maintained upstream. Prefer these ove
 | Frontend design | `frontend-design` |
 | PR workflow | `pr-review-toolkit` |
 | Commits | `commit-commands` |
-| Design review | `figma` |
 
 ---
 
@@ -90,20 +99,12 @@ Details: `.claude/skills/deliberate/SKILL.md`
   <rule priority="2">Query Obsidian vault for cross-project context</rule>
   <rule priority="3">Use context7 for library docs - training data may be stale</rule>
   <rule priority="4">Test with Playwright - verify UI works visually</rule>
-  <rule priority="5">Update docs after changes</rule>
+  <rule priority="5">Update docs after changes — CHANGELOG always; AS-BUILT + incident report for operational changes</rule>
 </rules>
-
-<parallel_tool_calls>
-If you intend to call multiple tools and there are no dependencies between them, make all independent tool calls in parallel.
-</parallel_tool_calls>
 
 <do_not_overengineer>
 Only make changes that are directly requested or clearly necessary. Keep solutions simple and focused. Don't add features, refactor code, or make improvements beyond what was asked.
 </do_not_overengineer>
-
-<context_window>
-Your context window will be automatically compacted as it approaches its limit. Do not stop tasks early due to context concerns.
-</context_window>
 
 ---
 
@@ -130,10 +131,10 @@ Your context window will be automatically compacted as it approaches its limit. 
 
 ---
 
-*Last updated: 2026-04-14*
+*Last updated: 2026-06-12 (v1.7 — Claude 5 era; see docs/MODEL_NOTES.md)*
 
 ---
 
 ## Proactiveness preference (asspenwhite)
 
-Apply `<parallel_tool_calls>`, `<do_not_overengineer>`, `<context_window>` to every project's CLAUDE.md. Do NOT apply `<default_to_action>` — the preference is for Claude to confirm-then-act on ambiguous intent. See `docs/CLAUDE_4_6_UPGRADE.md` §Proactiveness Controls.
+Apply `<do_not_overengineer>` to every project's CLAUDE.md. Do NOT apply `<default_to_action>` — the preference is for Claude to confirm-then-act on ambiguous intent. `<parallel_tool_calls>` and `<context_window>` are retired — both are native harness behavior now (see `docs/MODEL_NOTES.md`).

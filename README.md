@@ -1,6 +1,6 @@
 # Claude Code Framework
 
-A lightweight project template for [Claude Code](https://docs.anthropic.com/en/docs/claude-code). Sets up documentation structure and AI rules so Claude writes better code from the start.
+A lightweight project template for [Claude Code](https://code.claude.com/docs) — documentation structure, AI rules, hooks guidance, and battle-tested playbooks for running Claude Code as an operator, not just a coding assistant.
 
 [![Use this template](https://img.shields.io/badge/Use%20this%20template-238636?style=for-the-badge&logo=github&logoColor=white)](https://github.com/asspenwhite/claude-code-framework/generate)
 
@@ -11,12 +11,13 @@ A lightweight project template for [Claude Code](https://docs.anthropic.com/en/d
 A `CLAUDE.md` template + documentation structure that configures Claude Code with:
 
 - **Progressive disclosure** -- Claude reads what it needs when it needs it
-- **Claude 4.6 rules** -- prevents over-engineering, enables parallel tool calls
-- **MCP integration** -- points Claude to Obsidian, context7, Playwright, Figma
+- **Hooks doctrine** -- CLAUDE.md for guidance, hooks for guarantees
+- **MCP integration** -- points Claude to Obsidian, context7, Playwright
 - **Plugin-first** -- uses official Claude Code plugins instead of custom skills
-- **Doc templates** -- CHANGELOG, TODO, DECISIONS, API, SCHEMA ready to customize
+- **Doc templates** -- CHANGELOG, TODO, DECISIONS, API, SCHEMA — plus ops templates: INCIDENT, AS-BUILT, RUNBOOK
+- **Role playbooks** -- network admin, virtualization admin, SaaS operator, knowledge base — distilled from daily production use
 
-This is intentionally minimal. The real power comes from Claude Code's plugin ecosystem and MCP servers, not static markdown files.
+This is intentionally minimal. The real power comes from Claude Code's plugin ecosystem, MCP servers, and hooks — not static markdown files.
 
 ---
 
@@ -49,15 +50,30 @@ rm -rf temp
 claude
 ```
 
+### Operating a System (network, hypervisor, live service)
+
+Read `docs/playbooks/README.md`, pick the playbook nearest your role, and ask Claude to bootstrap the workspace from it — starting read-only: snapshot state, write the AS-BUILT, then plan.
+
 ---
 
-## Setting up Claude Code on a new machine
+## Beyond Coding: The Playbooks
 
-Before Claude 4.6 on a fresh install behaves well, apply the adaptive thinking fix. Open `claude` and ask:
+Claude Code runs real systems well when you give it an operating contract. These playbooks are how this framework is actually used day-to-day — genericized for public consumption:
 
-> Apply the adaptive thinking fix per `docs/CLAUDE_4_6_UPGRADE.md`.
+| Playbook | Role |
+|----------|------|
+| [`docs/playbooks/NETWORK_ADMIN.md`](docs/playbooks/NETWORK_ADMIN.md) | Network administrator (UniFi-style controller APIs, VLAN work, firewall policy) |
+| [`docs/playbooks/VIRTUALIZATION_ADMIN.md`](docs/playbooks/VIRTUALIZATION_ADMIN.md) | Proxmox / hypervisor / homelab admin (VMs, GPU passthrough, Docker stacks) |
+| [`docs/playbooks/SAAS_OPERATOR.md`](docs/playbooks/SAAS_OPERATOR.md) | Website / SaaS operator (sprint loop with adversarial review, ADRs, launch gates) |
+| [`docs/playbooks/KNOWLEDGE_BASE.md`](docs/playbooks/KNOWLEDGE_BASE.md) | Knowledge-base maintainer (Obsidian vault as Claude's cross-project memory) |
 
-The agent will merge `settings.json`, patch the local client (native binary or `cli.js`), and verify. See [`docs/CLAUDE_4_6_UPGRADE.md`](docs/CLAUDE_4_6_UPGRADE.md#adaptive-thinking-fix-claude-code-client-regression) for the benchmark data and the three-layer rationale.
+Shared doctrine: a repo per system · AS-BUILT vs DRAFT-plan separation · append-only audit CHANGELOG · read-only by default · same-day incident reports. Details in [`docs/playbooks/README.md`](docs/playbooks/README.md).
+
+---
+
+## Hooks: Guarantees, Not Guidance
+
+CLAUDE.md instructions are advisory — followed most of the time. Hooks are deterministic — every time. Anything that must happen without exception (lint after edit, protected paths, audit-log entries, verification gates) belongs in a hook. [`docs/HOOKS.md`](docs/HOOKS.md) covers the events that matter, exit-code semantics, five starter recipes, and lessons from running hooks in production (including why over-hooking backfires).
 
 ---
 
@@ -81,14 +97,16 @@ These give Claude capabilities its built-in tools can't match.
 
 ```bash
 # Up-to-date library docs (React, Next.js, Prisma, etc.)
-claude mcp add context7 -- npx -y @anthropic-ai/context7-mcp@latest
+claude mcp add context7 -- npx -y @upstash/context7-mcp
 
 # Browser control for visual testing
-claude mcp add playwright -- npx @anthropic/mcp-playwright
+claude mcp add playwright -- npx @playwright/mcp@latest
 
 # Obsidian vault for cross-project knowledge (if you use Obsidian)
 # See: https://github.com/MarkusPfundstein/mcp-obsidian
 ```
+
+Setup details: [`docs/MCP.md`](docs/MCP.md)
 
 ---
 
@@ -97,9 +115,8 @@ claude mcp add playwright -- npx @anthropic/mcp-playwright
 ```
 CLAUDE.md                          -- AI instructions template (customize this)
 .claude/
-  commands/deliberate.md           -- /deliberate command entry point
   skills/deliberate/
-    SKILL.md                       -- Orchestrator (disable-model-invocation: true)
+    SKILL.md                       -- /deliberate orchestrator (disable-model-invocation: true)
     PROMPTS.md                     -- Agent prompt templates
     FORMATS.md                     -- Report/doc output templates
     COMPLAINTS.md                  -- Complaint system reference
@@ -107,11 +124,13 @@ CLAUDE.md                          -- AI instructions template (customize this)
 docs/
   ARCHITECTURE.md                  -- How progressive disclosure works
   WORKFLOW.md                      -- Documentation workflow guide
+  HOOKS.md                         -- Deterministic guarantees: events, recipes, lessons
+  MODEL_NOTES.md                   -- Claude 5 / Opus 4.8 era notes + v1.6 migration
   MCP.md                           -- MCP server setup guide
   FILE_FORMATS.md                  -- Token-efficient format guidelines
   CLAUDE.md.example                -- Full CLAUDE.md example
-  CLAUDE_4_6_UPGRADE.md            -- Claude 4.6 migration guide
-  templates/                       -- Doc templates (CHANGELOG, TODO, DECISIONS, etc.)
+  playbooks/                       -- Role playbooks (network, virtualization, SaaS, knowledge base)
+  templates/                       -- Doc templates (CHANGELOG, TODO, DECISIONS, INCIDENT, AS-BUILT, RUNBOOK, ...)
 ```
 
 ### Deliberation Engine
@@ -126,23 +145,16 @@ Three tiers (Greenfield/WIP/Polish), interactive or auto mode, complaint routing
 
 1. **Plugins over skills.** Official plugins are maintained upstream, load on-demand, and don't bloat your context window. Don't reinvent them as markdown files.
 2. **MCP over static knowledge.** A running Obsidian vault or context7 server has live data. A SKILL.md has stale data.
-3. **Less is more.** Every line in CLAUDE.md costs context tokens. Keep it short, point to docs/ for detail.
-4. **Templates over prescriptions.** This framework gives you structure. You fill in the content.
+3. **Hooks over repetition.** If a CLAUDE.md rule keeps getting violated, don't write it louder — make it a hook and delete the prose.
+4. **Less is more.** Every line in CLAUDE.md costs context tokens. Keep it short, point to docs/ for detail.
+5. **If it changed, log it. If it broke, write the incident.** The audit CHANGELOG and incident corpus become institutional memory Claude reads on demand.
+6. **Templates over prescriptions.** This framework gives you structure. You fill in the content.
 
 ---
 
-## Claude 4.6 Notes
+## Model-Era Notes
 
-This template is optimized for Claude Opus 4.6. Key things it handles:
-
-| Rule | Why |
-|------|-----|
-| `<do_not_overengineer>` block | 4.6 is proactive -- will add unrequested features without this |
-| `<parallel_tool_calls>` block | Explicit instruction boosts parallel usage to ~100% |
-| No anti-laziness prompts | "be thorough" amplifies proactive behavior, wastes tokens |
-| Soft tool-use language | "Use X when relevant" not "You MUST use X" -- 4.6 overtriggers |
-
-See `docs/CLAUDE_4_6_UPGRADE.md` for the full migration guide.
+v1.7 is tuned for the Claude 5 era (Fable 5 / Opus 4.8). What carried over from 4.6, what was retired (including the old adaptive-thinking client patch — do not apply it anymore), and a migration checklist for v1.6 projects: [`docs/MODEL_NOTES.md`](docs/MODEL_NOTES.md).
 
 ---
 

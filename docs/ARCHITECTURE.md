@@ -10,8 +10,9 @@ Claude Code out of the box is capable but unconfigured. This framework provides:
 
 1. **CLAUDE.md** -- project-specific rules and context
 2. **docs/** -- detailed documentation Claude reads when needed
-3. **Plugins** -- on-demand capabilities maintained upstream
-4. **MCP servers** -- live data sources (docs, browser, knowledge base)
+3. **Hooks** -- deterministic guarantees for rules that must always hold (see `HOOKS.md`)
+4. **Plugins** -- on-demand capabilities maintained upstream
+5. **MCP servers** -- live data sources (docs, browser, knowledge base)
 
 ---
 
@@ -87,19 +88,19 @@ See `FILE_FORMATS.md` for detailed guidelines.
 
 ---
 
-## Claude 4.6 Behavior
+## Model-Era Behavior (Claude 5 / Opus 4.8)
 
-Key differences from older models that affect CLAUDE.md design:
+Current-model traits that affect CLAUDE.md design:
 
 | Behavior | Impact on CLAUDE.md |
 |----------|-------------------|
-| High proactiveness | Need `<do_not_overengineer>` block |
+| High proactiveness | Keep the `<do_not_overengineer>` block |
 | Over-triggers on imperatives | Use "when relevant" not "You MUST" |
-| Native parallel tool calls | Add `<parallel_tool_calls>` block |
-| Auto-compaction | Add `<context_window>` block |
+| Parallel tool calls + compaction are native | `<parallel_tool_calls>` / `<context_window>` blocks retired — redundant |
 | No anti-laziness needed | Remove "be thorough", "think carefully" |
+| Advisory adherence is ~80%, not 100% | Must-hold rules become hooks (`HOOKS.md`), not louder prose |
 
-See `CLAUDE_4_6_UPGRADE.md` for the full migration guide.
+See `MODEL_NOTES.md` for the full era notes and v1.6 migration checklist.
 
 ---
 
@@ -108,9 +109,8 @@ See `CLAUDE_4_6_UPGRADE.md` for the full migration guide.
 The one exception to "plugins over skills." No plugin replicates swarm deliberation with isolated agents.
 
 ```
-~/.claude/commands/deliberate.md      -- entry point (/deliberate)
 ~/.claude/skills/deliberate/
-  SKILL.md                            -- orchestrator (disable-model-invocation: true)
+  SKILL.md                            -- orchestrator + /deliberate entry point (disable-model-invocation: true)
   PROMPTS.md                          -- agent prompt templates
   FORMATS.md                          -- output format templates
   COMPLAINTS.md                       -- complaint system reference
@@ -138,5 +138,9 @@ The `templates/` directory provides starter docs:
 | `API.template.md` | API route documentation |
 | `SCHEMA.template.md` | Database schema |
 | `PROJECT_README.template.md` | Project overview |
+| `INCIDENT.template.md` | Outage/failure reports — severity, timeline, root cause, lessons |
+| `AS-BUILT.template.md` | Live-state reference for operated systems (vs DRAFT plans) |
+| `RUNBOOK.template.md` | Operational procedures, write-safety rules, gotchas |
 
 Claude will customize these for your project when you ask it to set up docs.
+The three ops templates are the backbone of the role playbooks in `playbooks/`.

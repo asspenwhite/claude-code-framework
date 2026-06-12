@@ -2,8 +2,14 @@
 name: deliberate
 description: Swarm deliberation engine — each persona runs as an isolated Agent for genuine disagreement. Hub-and-spoke orchestration with complaint routing. Three tiers, interactive or auto mode.
 disable-model-invocation: true
+argument-hint: "[greenfield|wip|polish|auto|incremental]"
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Agent
 ---
+
+**Invocation:** `/deliberate $ARGUMENTS` — no arguments = interactive mode
+with auto-detected tier. Valid arguments: `greenfield`, `wip`, `polish`,
+`auto`, `incremental` (combinable, e.g. `auto polish`). Start at Step 0 and
+follow every step in order; do not skip steps.
 
 # Deliberate — Swarm Deliberation Engine
 

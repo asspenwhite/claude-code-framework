@@ -32,6 +32,18 @@ Your project should have these files in `docs/`:
 | `SCHEMA.md` | Database tables, RLS, queries | [SCHEMA.template.md](templates/SCHEMA.template.md) |
 | `LOGIC_AUDIT.md` | User states, page logic, edge cases | [LOGIC_AUDIT.template.md](templates/LOGIC_AUDIT.template.md) |
 
+Operational projects (a network, a hypervisor, a live service) add three more:
+
+| File | Purpose | Template |
+|------|---------|----------|
+| `AS-BUILT.md` | Live state — what exists *right now*, snapshot-dated | [AS-BUILT.template.md](templates/AS-BUILT.template.md) |
+| `RUNBOOK.md` | Access, write-safety rules, common ops, gotchas | [RUNBOOK.template.md](templates/RUNBOOK.template.md) |
+| `INCIDENT-YYYY-MM-DD-slug.md` | One per outage, written same-day | [INCIDENT.template.md](templates/INCIDENT.template.md) |
+
+For these repos the CHANGELOG doubles as an **append-only audit log**: every
+change records the instruction, the action, and the rollback. See
+`playbooks/README.md` for the full doctrine.
+
 ```
 docs/
 ├── README.md        # Project overview
