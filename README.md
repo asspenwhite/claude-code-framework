@@ -1,14 +1,39 @@
 # Claude Code Framework
 
-A lightweight project template for [Claude Code](https://code.claude.com/docs) — documentation structure, AI rules, hooks guidance, and battle-tested playbooks for running Claude Code as an operator, not just a coding assistant.
+A lightweight project template for [Claude Code](https://code.claude.com/docs) — documentation structure, AI rules, working hooks, and battle-tested playbooks for running Claude Code as an operator, not just a coding assistant.
 
 [![Use this template](https://img.shields.io/badge/Use%20this%20template-238636?style=for-the-badge&logo=github&logoColor=white)](https://github.com/asspenwhite/claude-code-framework/generate)
 
 ---
 
-## What This Is
+## Apply to a Project
 
-A `CLAUDE.md` template + documentation structure that configures Claude Code with:
+Open Claude Code in any project and say:
+
+```
+Apply the claude-code-framework from https://github.com/asspenwhite/claude-code-framework to this project.
+```
+
+Claude will clone the framework, copy `CLAUDE.md` + `docs/` + `.claude/` into your project, and customize for your stack (it will ask for project name, description, and tech stack).
+
+### Manual setup
+
+```bash
+cd /path/to/your/project
+git clone --depth 1 https://github.com/asspenwhite/claude-code-framework.git temp
+cp temp/CLAUDE.md ./
+cp -r temp/docs temp/.claude ./
+rm -rf temp
+claude
+```
+
+### Operating a system (network, hypervisor, live service)
+
+Read `docs/playbooks/README.md`, pick the playbook nearest your role, and ask Claude to bootstrap the workspace from it — starting read-only: snapshot state, write the AS-BUILT, then plan.
+
+---
+
+## What You Get
 
 - **Progressive disclosure** -- Claude reads what it needs when it needs it
 - **Working hooks, active on clone** -- secrets-path protection now, audit-log Stop gate opt-in. CLAUDE.md for guidance, hooks for guarantees
@@ -20,41 +45,6 @@ A `CLAUDE.md` template + documentation structure that configures Claude Code wit
 - **Role playbooks** -- network admin, virtualization admin, SaaS operator, knowledge base — distilled from daily production use
 
 This is intentionally minimal. The real power comes from Claude Code's plugin ecosystem, MCP servers, and hooks — not static markdown files.
-
----
-
-## Quick Start
-
-### New Project
-
-1. Click **"Use this template"** above -- create a new repo
-2. Clone it and open in terminal
-3. Run `claude` and paste:
-
-```
-Customize this template for my project:
-
-**Project Name:** [name]
-**Description:** [what it does]
-**Tech Stack:** [e.g., Next.js 14, Supabase, Tailwind]
-
-Update CLAUDE.md and create initial docs.
-```
-
-### Existing Project
-
-```bash
-cd /path/to/your/project
-git clone --depth 1 https://github.com/asspenwhite/claude-code-framework.git temp
-cp temp/CLAUDE.md ./
-cp -r temp/docs ./
-rm -rf temp
-claude
-```
-
-### Operating a System (network, hypervisor, live service)
-
-Read `docs/playbooks/README.md`, pick the playbook nearest your role, and ask Claude to bootstrap the workspace from it — starting read-only: snapshot state, write the AS-BUILT, then plan.
 
 ---
 
@@ -131,7 +121,7 @@ docs/
   ARCHITECTURE.md                  -- How progressive disclosure works
   WORKFLOW.md                      -- Documentation workflow guide
   HOOKS.md                         -- Deterministic guarantees: events, recipes, lessons
-  MODEL_NOTES.md                   -- Claude 5 / Opus 4.8 era notes + v1.6 migration
+  MODEL_NOTES.md                   -- Claude 5 / Opus 4.8 era notes, proactiveness controls, migration
   MCP.md                           -- MCP server setup guide
   FILE_FORMATS.md                  -- Token-efficient format guidelines
   CLAUDE.md.example                -- Full CLAUDE.md example
@@ -158,7 +148,7 @@ The one custom skill. Run it at the end of a session: it harvests corrections, r
 
 ## Model-Era Notes
 
-v1.7 is tuned for the Claude 5 era (Fable 5 / Opus 4.8). What carried over from 4.6, what was retired (including the old adaptive-thinking client patch — do not apply it anymore), and a migration checklist for v1.6 projects: [`docs/MODEL_NOTES.md`](docs/MODEL_NOTES.md).
+v1.9 is tuned for the Claude 5 era (Fable 5 / Opus 4.8). What carried over from earlier model generations, what was retired (including the old adaptive-thinking client patch — do not apply it anymore), proactiveness controls, and a migration checklist: [`docs/MODEL_NOTES.md`](docs/MODEL_NOTES.md).
 
 ---
 

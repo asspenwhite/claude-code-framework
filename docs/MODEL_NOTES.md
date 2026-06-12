@@ -60,6 +60,32 @@ And the structural rule that supersedes all phrasing advice: **if a rule must
 hold 100% of the time, it isn't a CLAUDE.md rule — it's a hook**
 (`docs/HOOKS.md`).
 
+## Proactiveness Controls
+
+Current models default to acting. Two opposing XML blocks let you shift that
+default per project — use **at most one**, and only when the default is wrong
+for the work:
+
+```xml
+<default_to_action>
+Implement changes rather than only suggesting them. If the user's intent is
+unclear, infer the most useful likely action and proceed, using tools to
+discover missing details instead of asking.
+</default_to_action>
+```
+
+```xml
+<do_not_act_before_instructions>
+Do not implement changes unless clearly instructed. When intent is ambiguous,
+default to providing information and recommendations rather than taking action.
+</do_not_act_before_instructions>
+```
+
+The conservative block earns its keep in **operational repos** (the network
+and virtualization playbooks assume confirm-before-mutate) and review/docs
+agents. The action block suits unattended build pipelines. For interactive
+coding, ship neither — the default is already balanced.
+
 ## Keep Personal Preferences Out of the Template
 
 Per-person behavior tuning — e.g. "confirm-then-act on ambiguous intent
@@ -70,7 +96,7 @@ such block in the template; v1.7 moved it out.
 
 ## Migrating a v1.6 Project
 
-1. Delete `docs/CLAUDE_4_6_UPGRADE.md`; un-patch any patched client (just update Claude Code).
+1. Delete `docs/CLAUDE_4_6_UPGRADE.md`; un-patch any patched client (just update Claude Code). Verify clean: `grep -c 'CLAUDE_CODE_THINKING_BUDGET' "$(readlink -f "$(command -v claude)")"` should find nothing, and remove `CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING` from `~/.claude/settings.json` if present.
 2. Remove `<parallel_tool_calls>` and `<context_window>` blocks from CLAUDE.md. Keep `<do_not_overengineer>`.
 3. If you have `.claude/commands/*.md`, fold each into a skill (`.claude/skills/<name>/SKILL.md` with `name` + `description` frontmatter).
 4. Pick your one or two highest-violation CLAUDE.md rules and convert them to hooks.
