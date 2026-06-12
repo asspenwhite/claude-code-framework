@@ -106,29 +106,22 @@ See `MODEL_NOTES.md` for the full era notes and v1.6 migration checklist.
 
 ## Custom Skills
 
-Two exceptions to "plugins over skills," both zero-startup-cost
-(`disable-model-invocation: true`):
+One exception to "plugins over skills":
 
 - **`/retro`** — end-of-session retrospective: harvests corrections and
   discoveries into durable config (hooks, CLAUDE.md lines, docs) so the
   setup compounds instead of staying static. One file,
   `.claude/skills/retro/SKILL.md`.
-- **`/deliberate`** — swarm deliberation. No plugin replicates it.
 
-```
-~/.claude/skills/deliberate/
-  SKILL.md                            -- orchestrator + /deliberate entry point (disable-model-invocation: true)
-  PROMPTS.md                          -- agent prompt templates
-  FORMATS.md                          -- output format templates
-  COMPLAINTS.md                       -- complaint system reference
-  personas/                           -- 8 persona files
-```
+**Why `disable-model-invocation: true`:** without this frontmatter flag,
+Claude reads skill files at startup — wasted context on every session for a
+skill you invoke explicitly. The flag makes a skill invisible until its
+`/name` is typed. Apply it to any workflow skill you add.
 
-**How it works:** Each persona runs as a separate `Agent` tool invocation with its own context window. No persona sees another's output until the team lead (main conversation) routes it. This produces genuine disagreement instead of polite consensus.
-
-**Why `disable-model-invocation: true`:** Without this flag, Claude reads all skill files at startup. The deliberation engine is ~1,000 lines across 15 files — that's wasted context on every session. The flag makes it invisible until `/deliberate` is typed.
-
-**Ships project-local** in this repo's `.claude/`. Copy `skills/deliberate/` to `~/.claude/skills/` to make `/deliberate` available from any project directory.
+(Versions ≤1.8 also shipped a multi-agent deliberation engine; it was removed
+in v1.9 — multi-agent fan-outs are expensive and most teams get more from a
+single adversarial-reviewer subagent. It remains in git history at `c5de935`
+if you want it.)
 
 ---
 

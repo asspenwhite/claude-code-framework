@@ -1,12 +1,12 @@
 ---
 name: Claude Code Framework
 type: framework
-version: 1.8
+version: 1.9
 ---
 
 # Claude Code Framework - AI Instructions
 
-**Lightweight project template for Claude Code.** Plugins + MCP over custom skills, hooks for guarantees, docs for state. Custom skills: `/deliberate` (swarm deliberation) and `/retro` (session retrospective).
+**Lightweight project template for Claude Code.** Plugins + MCP over custom skills, hooks for guarantees, docs for state. One custom skill: `/retro` (session retrospective).
 
 ---
 
@@ -81,20 +81,6 @@ Claude Code plugins load on-demand and are maintained upstream. Prefer these ove
 
 ---
 
-## Deliberation Engine
-
-Run `/deliberate` to launch the swarm deliberation. Each of 8 personas runs as an isolated Agent for genuine disagreement. Zero startup cost (`disable-model-invocation: true`) -- only loads when invoked.
-
-| Tier | Personas | When |
-|------|----------|------|
-| Greenfield | 8 (Ma -> Jobs -> Torvalds/Dyson/Su -> Atrioc/Sacco -> Buffett) | New project |
-| WIP | 7 (skip Ma) | Half-finished |
-| Polish | 5 (Torvalds/Dyson/Su -> Sacco -> Buffett) | Almost done |
-
-Details: `.claude/skills/deliberate/SKILL.md`
-
----
-
 ## AI Rules
 
 <rules>
@@ -137,4 +123,4 @@ Only make changes that are directly requested or clearly necessary. Keep solutio
 
 ---
 
-*Last updated: 2026-06-12 (v1.7 — Claude 5 era; see docs/MODEL_NOTES.md)*
+*Last updated: 2026-06-12 (v1.9 — Claude 5 era; see docs/MODEL_NOTES.md)*

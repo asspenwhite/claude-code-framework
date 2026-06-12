@@ -127,12 +127,6 @@ CLAUDE.md                          -- AI instructions template (customize this)
     adversarial-reviewer.md        -- fresh-context diff attacker (subagent)
   skills/
     retro/SKILL.md                 -- /retro: harvest session corrections into durable config
-  skills/deliberate/
-    SKILL.md                       -- /deliberate orchestrator (disable-model-invocation: true)
-    PROMPTS.md                     -- Agent prompt templates
-    FORMATS.md                     -- Report/doc output templates
-    COMPLAINTS.md                  -- Complaint system reference
-    personas/                      -- 8 persona files (ma, jobs, torvalds, dyson, su, atrioc, sacco, buffett)
 docs/
   ARCHITECTURE.md                  -- How progressive disclosure works
   WORKFLOW.md                      -- Documentation workflow guide
@@ -145,11 +139,9 @@ docs/
   templates/                       -- Doc templates (CHANGELOG, TODO, DECISIONS, INCIDENT, AS-BUILT, RUNBOOK, ...)
 ```
 
-### Deliberation Engine
+### /retro — The Compounding Loop
 
-The one custom skill: `/deliberate`. Spawns 8 personas as isolated Agent instances for genuine disagreement (not one Claude playing all roles). Zero startup cost -- only loads when you invoke it.
-
-Three tiers (Greenfield/WIP/Polish), interactive or auto mode, complaint routing between personas, checkpoint system for long deliberations, and automatic doc generation.
+The one custom skill. Run it at the end of a session: it harvests corrections, repeated friction, and hard-won discoveries, routes each to its durable home (a hook if it must hold 100% of the time, a CLAUDE.md line if it needs judgment, docs if it's project fact), and prunes CLAUDE.md so it never bloats. Your setup gets better every session instead of staying static.
 
 ---
 

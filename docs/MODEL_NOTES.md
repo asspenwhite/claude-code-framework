@@ -32,7 +32,7 @@ blocking daily work — and if you do patch, write down the removal condition.
 
 | Change | What to do about it |
 |--------|---------------------|
-| **Skills and slash commands unified** | Every skill gets a `/name` command automatically. `.claude/commands/` still works but is legacy — define everything as a skill in `.claude/skills/<name>/SKILL.md`. This repo's `/deliberate` migrated accordingly. |
+| **Skills and slash commands unified** | Every skill gets a `/name` command automatically. `.claude/commands/` still works but is legacy — define everything as a skill in `.claude/skills/<name>/SKILL.md`. |
 | **Hooks matured into a full lifecycle system** | ~30 events, blockable gates, JSON control output. The advisory-vs-deterministic split is now the core config decision — see `docs/HOOKS.md`. |
 | **Plan mode** | Explore → plan → implement → commit as an explicit workflow; Claude reads but doesn't change anything until you approve the plan. Use for multi-file or unfamiliar changes; skip it when you could describe the diff in one sentence. |
 | **Auto permission mode** | A classifier reviews commands and blocks only risky ones — replaces hand-maintained allowlists for many flows. `claude --permission-mode auto`. |
