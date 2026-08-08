@@ -100,6 +100,12 @@ Observed in daily use; treat as ground truth until contradicted:
   there is to claim.
 - **Resumes are endpoint-agnostic.** `claude --resume <id>` and
   `qlaude --resume <id>` open the same transcript on different backends.
+- **WebSearch and MCP servers are backend-agnostic.** Verified live on
+  qlaude: WebSearch executes (it's client-side in 2.1.226, not an
+  Anthropic server tool), and every configured MCP server loads and
+  responds. MCP servers are spawned by the Claude Code client; only tool
+  definitions and results cross the wire to the endpoint. Caveat: MCPs
+  that need interactive OAuth may be absent in headless/cron runs.
 
 ---
 
