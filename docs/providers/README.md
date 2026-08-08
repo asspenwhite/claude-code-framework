@@ -9,6 +9,9 @@ picker mapping, and cost routing for each, distilled from daily use.
 |----------|-------|--------|
 | QwenCloud | [QWENCLOUD.md](QWENCLOUD.md) | Daily driver, verified Aug 2026 |
 
+Once wired, the working doctrine — what carries over from the framework,
+what swaps, and what's backend-specific: [QLAUDE.md](QLAUDE.md).
+
 ---
 
 ## The Shared Doctrine
