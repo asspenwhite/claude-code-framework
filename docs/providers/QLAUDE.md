@@ -94,10 +94,13 @@ Observed in daily use; treat as ground truth until contradicted:
   rows show real model IDs, which matters when the catalog churns.
 - **Unknown-model warnings are cosmetic, and now actionable.** Claude
   Code doesn't recognize these model names, so it assumes a 200k window
-  for all of them — auto-compact fires early. Safe default. To claim
-  more of a real window: append `[1m]` to the model name, or set
-  `CLAUDE_CODE_MAX_CONTEXT_TOKENS`. The windows table below is what
-  there is to claim.
+  for all of them — auto-compact fires early. The 200k default stays not
+  because the windows are small (five of six are 1M) but because the opt-in
+  is unverified on a third-party endpoint — see Resolved Unknowns. To claim
+  more of a real window: append `[1m]` to the model name (per-model — clean
+  for a mixed roster, but confirm it strips client-side first), or set
+  `CLAUDE_CODE_MAX_CONTEXT_TOKENS` (global single number — can't express a
+  mixed 1M/256k roster). The windows table below is what there is to claim.
 - **Resumes are endpoint-agnostic.** `claude --resume <id>` and
   `qlaude --resume <id>` open the same transcript on different backends.
 - **WebSearch and MCP servers are backend-agnostic.** Verified live on
@@ -142,9 +145,14 @@ enforced max-output caps verified by probe:
 | `deepseek-v4-pro` | 1M | not probeable — server clamps silently |
 | `deepseek-v4-flash` | 1M | not probeable — server clamps silently |
 
-Hosted windows can trail vendor specs, and Claude Code still assumes
-200k for compaction — early, but safe. Opt in per the field note above
-when a session genuinely needs more.
+The endpoint's vendor is also its host (QwenCloud publishes and serves
+these models), so there's no vendor/host drift to worry about — five of
+six models are genuinely 1M (`kimi-k2.7-code` is 256k). The 200k default
+holds only because the opt-in is unverified here: the per-model `[1m]`
+suffix may pass through to the API and 404 (Claude Code's strip logic
+isn't confirmed in the 2.1.226 binary), and `CLAUDE_CODE_MAX_CONTEXT_TOKENS`
+is a single global number that can't express a mixed 1M/256k roster. Opt
+in per the field note above once you've confirmed the suffix strips cleanly.
 
 **Effort payoff.** A scored bake-off (objective merge-intervals task,
 generated code executed against 7 tests) ran the roster across effort
@@ -173,8 +181,9 @@ slot, with session-model fallback when the slot is unset.
 - Bake-off ceiling: a task every model aces can't rank models or
   effort. Real discrimination needs harder tasks; until then treat the
   defaults as unchallenged, not validated.
-- Hosted context windows may be narrower than vendor specs; the 200k
-  compaction assumption stays the default until someone opts in and
-  watches it hold.
+- The `[1m]` suffix is unverified on third-party endpoints (may pass
+  through to the API and 404); the global `CLAUDE_CODE_MAX_CONTEXT_TOKENS`
+  can't express a mixed 1M/256k roster. The 200k default stays until the
+  suffix is confirmed to strip client-side.
 - Subagent candidates were compared on one-shot prompts, not real
   multi-step delegated work.
