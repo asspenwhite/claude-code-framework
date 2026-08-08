@@ -43,6 +43,7 @@ Read `docs/playbooks/README.md`, pick the playbook nearest your role, and ask Cl
 - **Plugin-first** -- uses official Claude Code plugins instead of custom skills
 - **Doc templates** -- CHANGELOG, TODO, DECISIONS, API, SCHEMA — plus ops templates: INCIDENT, AS-BUILT, RUNBOOK
 - **Role playbooks** -- network admin, virtualization admin, SaaS operator, knowledge base — distilled from daily production use
+- **Provider guides** -- wiring third-party Anthropic-compatible endpoints (QwenCloud): wrapper pattern, model-picker mapping, cost routing
 
 This is intentionally minimal. The real power comes from Claude Code's plugin ecosystem, MCP servers, and hooks — not static markdown files.
 
@@ -126,6 +127,7 @@ docs/
   FILE_FORMATS.md                  -- Token-efficient format guidelines
   CLAUDE.md.example                -- Full CLAUDE.md example
   playbooks/                       -- Role playbooks (network, virtualization, SaaS, knowledge base)
+  providers/                       -- Provider guides (QwenCloud; third-party endpoint wiring)
   templates/                       -- Doc templates (CHANGELOG, TODO, DECISIONS, INCIDENT, AS-BUILT, RUNBOOK, ...)
 ```
 

@@ -34,6 +34,7 @@ version: 1.9
 Operational projects (networks, hosts, live services) add: `docs/AS-BUILT.md`
 (live state), `docs/RUNBOOK.md` (ops + gotchas), `docs/INCIDENT-*.md`
 (outage reports). Templates in `docs/templates/`; role guides in `docs/playbooks/`.
+Third-party model endpoint: `docs/providers/` (wrapper pattern, picker mapping, cost routing).
 
 ---
 
