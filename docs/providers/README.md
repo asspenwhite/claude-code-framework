@@ -9,6 +9,10 @@ picker mapping, and cost routing for each, distilled from daily use.
 |----------|-------|--------|
 | QwenCloud | [QWENCLOUD.md](QWENCLOUD.md) | Daily driver, verified Aug 2026 |
 
+Starting from zero — no Claude Code installed yet:
+[BOOTSTRAP.md](BOOTSTRAP.md). Self-serve doc plus a paste-able setup
+prompt written for any chat AI to drive the install.
+
 Once wired, the working doctrine — what carries over from the framework,
 what swaps, and what's backend-specific: [QLAUDE.md](QLAUDE.md).
 

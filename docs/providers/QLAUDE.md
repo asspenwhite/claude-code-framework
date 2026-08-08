@@ -41,7 +41,7 @@ The Claude-tuned items get qlaude equivalents:
 | `MODEL_NOTES.md` | Claude 5 era tuning | The roster below — same idea, different catalog |
 | Tier names | Fable / Opus / Sonnet / Haiku | Picker rows show real model IDs; think in **roles**, not names |
 | Cost discipline | Per-token: minimize spend | Flat subscription: minimize opportunity cost (see below) |
-| Context windows | Known per model | Unpublished; Claude Code assumes 200k for all of them |
+| Context windows | Known per model | Vendor specs below; Claude Code still assumes 200k |
 | Model stability | Rarely renamed | Catalog churns; re-verify names when one 404s |
 
 ---
@@ -72,18 +72,32 @@ flagship carries the hard 5%.
 
 Observed in daily use; treat as ground truth until contradicted:
 
-- **The auto-mode safety classifier runs on the session model.** When the
-  session model is briefly unavailable upstream, tool gating stalls with
-  it — edits queue with "cannot determine safety" until recovery. Two
-  consequences: pick a workhorse that classifies tool calls reliably,
-  and don't diagnose a frozen session before checking provider status.
+- **The auto-mode safety classifier runs on the Sonnet slot, not the
+  session model.** On a third-party base URL Claude Code resolves the
+  classifier to `ANTHROPIC_DEFAULT_SONNET_MODEL` when that slot is
+  deliberately set, and falls back to the session model only when it
+  isn't. Verified two ways: the resolution chain carved from the 2.1.226
+  binary, and a live auto-mode probe that logged the classifier calling
+  `qwen3.7-max` (the Sonnet slot) while the session ran `glm-5.2`.
+  `CLAUDE_CODE_SUBAGENT_MODEL` is a separate knob and doesn't affect it.
+  Mechanics worth knowing: the classifier is two-stage, skips actions
+  that acceptEdits mode would allow anyway (in-repo writes, built-in-safe
+  commands like `echo`), and costs roughly 11 seconds per action it does
+  judge. When the classifier model fails upstream, tool gating blocks for
+  safety until recovery — that, not a frozen session, is what an outage
+  stall looks like. In August 2026 the Sonnet slot was unset, so the
+  classifier followed the session model (`qwen3.8-max`) and its upstream
+  outage blocked edits; the five-slot mapping is itself the fix.
 - **The picker's Default row resolves through the Opus slot.** Verified
   both directions. Align it with the launch default or never click it.
 - **`_NAME` companion vars relabel every slot, Fable included.** Picker
   rows show real model IDs, which matters when the catalog churns.
-- **Unknown-model warnings are cosmetic.** Claude Code doesn't recognize
-  these model names; auto-compact assumes a 200k window for all of them.
-  Set `CLAUDE_CODE_MAX_CONTEXT_TOKENS` if you ever confirm real windows.
+- **Unknown-model warnings are cosmetic, and now actionable.** Claude
+  Code doesn't recognize these model names, so it assumes a 200k window
+  for all of them — auto-compact fires early. Safe default. To claim
+  more of a real window: append `[1m]` to the model name, or set
+  `CLAUDE_CODE_MAX_CONTEXT_TOKENS`. The windows table below is what
+  there is to claim.
 - **Resumes are endpoint-agnostic.** `claude --resume <id>` and
   `qlaude --resume <id>` open the same transcript on different backends.
 
@@ -105,16 +119,56 @@ affordable), the two compose:
 
 ---
 
-## Open Questions
+## Resolved Unknowns — August 2026
 
-Honest unknowns — fill these in as experience accumulates:
+The original four open questions, answered by vendor specs, endpoint
+probes, binary reading, and a scored bake-off.
 
-- Real context windows per model (unpublished; the 200k assumption is
-  untested at the edges).
-- How thinking / effort quality differs across the roster — effort
-  levels render and apply, but per-model payoff is unmapped.
-- The cost/perf sweet spot for subagents (currently the mid tier by
-  default; not systematically compared).
-- Whether the classifier follows the session model or the Fable slot
-  when the two differ (observed following the session model once; not
-  confirmed as the rule).
+**Context windows.** Vendor-published specs, with the endpoint's
+enforced max-output caps verified by probe:
+
+| Model | Context (vendor spec) | max_tokens cap (probed) |
+|-------|-----------------------|--------------------------|
+| `qwen3.8-max` | 1M | not probeable — server clamps silently |
+| `qwen3.7-max` | ~1M (991k) | 131,072 |
+| `glm-5.2` | 1M | 131,072 |
+| `kimi-k2.7-code` | 262,144 | 262,144 |
+| `deepseek-v4-pro` | 1M | not probeable — server clamps silently |
+| `deepseek-v4-flash` | 1M | not probeable — server clamps silently |
+
+Hosted windows can trail vendor specs, and Claude Code still assumes
+200k for compaction — early, but safe. Opt in per the field note above
+when a session genuinely needs more.
+
+**Effort payoff.** A scored bake-off (objective merge-intervals task,
+generated code executed against 7 tests) ran the roster across effort
+levels: 10/10 runs scored full marks — `glm-5.2` at low/high/max,
+`qwen3.8-max` at low/high/max, and the rest of the roster at high. The
+task was too easy to discriminate: effort levels applied but showed no
+measurable quality difference. Wall times per run: glm-5.2 9–15s,
+qwen3.8-max 16–18s, qwen3.7-max 11s, kimi-k2.7-code 16s,
+deepseek-v4-pro 9s, deepseek-v4-flash 12s. Working rule until a harder
+test says otherwise: effort is a speed/quota dial, not a quality dial,
+at this tier.
+
+**Subagent sweet spot.** `qwen3.7-max` keeps the slot: full marks in
+the bake-off, already wired as the subagent default. The classifier
+finding changes the calculus though — the Sonnet slot belongs to the
+classifier and `CLAUDE_CODE_SUBAGENT_MODEL` is independent of it, so
+the subagent model can be chosen on cost/perf alone. `deepseek-v4-flash`
+matched quality at the roster's lowest latency and is the cheaper
+alternative whenever delegated work feels over-served.
+
+**Classifier model choice.** Resolved in the field note above: Sonnet
+slot, with session-model fallback when the slot is unset.
+
+**Honest residuals** — what this didn't settle:
+
+- Bake-off ceiling: a task every model aces can't rank models or
+  effort. Real discrimination needs harder tasks; until then treat the
+  defaults as unchallenged, not validated.
+- Hosted context windows may be narrower than vendor specs; the 200k
+  compaction assumption stays the default until someone opts in and
+  watches it hold.
+- Subagent candidates were compared on one-shot prompts, not real
+  multi-step delegated work.
