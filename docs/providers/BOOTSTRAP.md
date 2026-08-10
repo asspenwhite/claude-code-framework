@@ -81,10 +81,33 @@ decrypted only at launch.
 ### Path B: you also use Anthropic (keep both side by side)
 
 Don't touch settings.json — it's global and would repoint your real
-Anthropic sessions too. Instead put the same vars in a wrapper shell
-function (`qlaude`) in your `~/.bashrc` or `~/.zshrc`: the full pattern,
-with fail-fast key handling and per-launch overrides, is in
+Anthropic sessions too. Instead:
+
+**macOS / Linux / WSL:** put the same vars in a wrapper shell function
+(`qlaude`) in your `~/.bashrc` or `~/.zshrc`: the full pattern, with
+fail-fast key handling and per-launch overrides, is in
 [QWENCLOUD.md](QWENCLOUD.md).
+
+**Windows (PowerShell):** put the env block in its own file (e.g.
+`%USERPROFILE%\.claude\qwen-settings.json`, same JSON as Path A) and make
+the wrapper a one-liner — `claude --settings` scopes the config to that
+launch and touches nothing in your shell:
+
+```powershell
+function qlaude {
+  claude --settings "$env:USERPROFILE\.claude\qwen-settings.json" @args
+}
+```
+
+Two Windows facts, both verified on real hardware (2026-08-09): Windows
+PowerShell 5.1 and PowerShell 7 keep **separate profile files** — even
+`$PROFILE.CurrentUserAllHosts` is per-edition — so put the function in
+one file (e.g. `%USERPROFILE%\.claude\qlaude.ps1`) and add
+`. "$env:USERPROFILE\.claude\qlaude.ps1"` to *both*
+`Documents\WindowsPowerShell\profile.ps1` and
+`Documents\PowerShell\profile.ps1`. And a settings-file `env` block
+**overrides** shell env vars, so anything you want to vary per-launch
+must stay out of the settings file.
 
 ## Step 3 — Verify
 
@@ -163,9 +186,18 @@ Plan:
    - If NO (QwenCloud only): merge the env block from step 3 into
      ~/.claude/settings.json (%USERPROFILE%\.claude\settings.json on
      Windows), keeping any existing settings.
-   - If YES: instead write a shell function named qlaude into my
-     ~/.bashrc or ~/.zshrc that exports the same variables and ends
-     with: claude "$@"   — so plain `claude` stays on Anthropic.
+   - If YES: keep plain `claude` on Anthropic and add a qlaude wrapper.
+     macOS/Linux/WSL: a shell function named qlaude in my ~/.bashrc or
+     ~/.zshrc that exports the same variables and ends with: claude "$@"
+     Windows PowerShell: write the env block from step 3 into
+     %USERPROFILE%\.claude\qwen-settings.json instead, and define
+       function qlaude { claude --settings "$env:USERPROFILE\.claude\qwen-settings.json" @args }
+     in a file %USERPROFILE%\.claude\qlaude.ps1, dot-sourced (add the
+     line  . "$env:USERPROFILE\.claude\qlaude.ps1"  ) from BOTH
+     Documents\WindowsPowerShell\profile.ps1 AND
+     Documents\PowerShell\profile.ps1 — PowerShell 5.1 and 7 keep
+     separate profiles, so writing to only one edition's profile makes
+     qlaude "not recognized" in the other.
 
 3. The variables, either path:
    ANTHROPIC_AUTH_TOKEN = YOUR_KEY_HERE   (my QwenCloud seat key)
