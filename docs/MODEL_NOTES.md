@@ -1,18 +1,32 @@
-# Model-Era Notes — Claude 5 / Opus 4.8
+# Model-Era Notes — Claude 5 / Opus 5
 
-What changed since this framework's last tuning pass (Opus 4.6, April 2026),
+What changed since this framework's last tuning pass (Opus 4.8, June 2026),
 and what it means for your CLAUDE.md and workflow.
 
 ---
 
-## Current Lineup (June 2026)
+## Current Lineup (September 2026)
 
 | Model | ID | Notes |
 |-------|----|----|
-| **Claude Fable 5** | `claude-fable-5` | First of the Claude 5 family. Mythos-class tier — sits above Opus in capability. |
-| Claude Opus 4.8 | `claude-opus-4-8` | Supports **fast mode** (`/fast`) — same model, faster output. |
-| Claude Sonnet 4.6 | `claude-sonnet-4-6` | Workhorse tier. |
+| **Claude Opus 5** | `claude-opus-5` | **Default Opus in Claude Code** since 2026-07-22. 1M context. Supports **fast mode** (`/fast`). |
+| Claude Sonnet 5 | `claude-sonnet-5` | Default for Pro / Team Standard / Enterprise seats since 2026-07-01. 1M native context, adaptive thinking on by default. |
+| Claude Fable 5.1 | `claude-fable-5-1` | Top capability tier, above Opus. Thinking always on; priced above Opus. |
+| Claude Opus 4.8 | `claude-opus-4-8` | Previous default. Still supports fast mode. |
 | Claude Haiku 4.5 | `claude-haiku-4-5-20251001` | Cheap/fast tier, good for subagents. |
+
+**Fast mode** (`/fast`) applies to **Opus 5 and Opus 4.8 only** — support was removed
+from Opus 4.7. Same model, up to 2.5x output speed, premium pricing.
+
+### Effort is the knob this doc used to be missing
+
+`xhigh` is the recommended effort for most coding and agentic work, and is the
+Claude Code default. Dial it with the interactive `/effort` slider. Opus 4.8 and
+later run at **high effort by default**, so raising to `xhigh` is a deliberate
+step up for hard tasks, and `low` is right for subagents and routine edits.
+
+Hooks can read the active level via `effort.level` and `$CLAUDE_EFFORT` — gate
+expensive checks on high-effort turns only. See `docs/HOOKS.md`.
 
 ---
 
